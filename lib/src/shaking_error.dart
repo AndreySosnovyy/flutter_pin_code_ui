@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// TODO(Sosnovyy): check https://github.com/dheeraj-bhadoria/Flutter-shake-my-widget/tree/main
 class ShakingError extends StatelessWidget {
   const ShakingError({
     required this.child,

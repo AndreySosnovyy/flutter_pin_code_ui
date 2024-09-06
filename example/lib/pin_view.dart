@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pin_ui/pin_ui.dart';
 
 class PinView extends StatefulWidget {
   const PinView({super.key});
@@ -15,7 +16,22 @@ class _PinViewState extends State<PinView> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      body: Column(
+        children: [
+          const Spacer(),
+          const Pinput(),
+          const SizedBox(height: 64),
+          Pinpad(
+            onKeyTap: (text) {},
+            onEraseButtonTap: () {},
+          ),
+          const SizedBox(height: 64),
+          const Text('Forgot PIN?'),
+          const Spacer(),
+        ],
+      ),
+    );
   }
 
   @override

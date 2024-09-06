@@ -35,6 +35,7 @@ class Pinpad extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(bottom: verticalSpacing),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 for (int j = 0; j < 3; j++)
                   Padding(
@@ -52,6 +53,7 @@ class Pinpad extends StatelessWidget {
             ),
           ),
         Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             PinpadKey(
               onTap: () {},
@@ -71,7 +73,11 @@ class Pinpad extends StatelessWidget {
               onTap: () {},
               defaultDecoration: keyDefaultDecoration,
               pressedDecoration: keyPressedDecoration,
-              child: eraseKeyChild ?? const Icon(Icons.backspace_rounded),
+              child: eraseKeyChild ??
+                  const Icon(
+                    Icons.backspace_rounded,
+                    size: 16,
+                  ),
             ),
           ],
         ),

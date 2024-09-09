@@ -18,7 +18,7 @@ class Pinpad extends StatelessWidget {
     super.key,
   });
 
-  final Function(String text) onKeyTap;
+  final Function(String key) onKeyTap;
   final BoxDecoration? keyDefaultDecoration;
   final BoxDecoration? keyPressedDecoration;
   final BoxDecoration? keyDisabledDecoration;
@@ -66,6 +66,14 @@ class Pinpad extends StatelessWidget {
     return max;
   }
 
+  double _getKeyHeight(BuildContext context) =>
+      keyHeight ??
+      _getMaxKeyTextWidth(context) + _getDefaultVerticalSpacing(context);
+
+  double _getKeyWidth(BuildContext context) =>
+      keyWidth ??
+      _getMaxKeyTextWidth(context) + _getDefaultHorizontalSpacing(context);
+
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
@@ -73,57 +81,43 @@ class Pinpad extends StatelessWidget {
       child: Column(
         children: [
           for (int i = 0; i < 3; i++)
-            Padding(
-              padding:
-                  EdgeInsets.only(bottom: _getDefaultVerticalSpacing(context)),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  for (int j = 0; j < 3; j++)
-                    Padding(
-                      padding: j == 2
-                          ? EdgeInsets.zero
-                          : EdgeInsets.only(
-                              right: _getDefaultHorizontalSpacing(context)),
-                      child: PinpadKey.text(
-                        (3 * i + j + 1).toString(),
-                        textStyle: _getDefaultTextStyle(context),
-                        onTap: () => onKeyTap((3 * i + j + 1).toString()),
-                        decoration: _defaultDecoration,
-                        pressedDecoration: keyPressedDecoration,
-                        width: keyWidth,
-                      ),
-                    ),
-                ],
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (int j = 0; j < 3; j++)
+                  PinpadKey.text(
+                    (3 * i + j + 1).toString(),
+                    textStyle: _getDefaultTextStyle(context),
+                    onTap: () => onKeyTap((3 * i + j + 1).toString()),
+                    decoration: _defaultDecoration,
+                    pressedDecoration: keyPressedDecoration,
+                    width: _getKeyWidth(context),
+                    height: _getKeyHeight(context),
+                  ),
+              ],
             ),
-          // TODO(Sosnovyy): implement extra keys
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              leftExtraKeyChild ??
-                  PinpadKey(
-                    onTap: () {},
-                    decoration: _defaultDecoration,
-                    pressedDecoration: keyPressedDecoration,
-                    child: const SizedBox(),
-                  ),
-              SizedBox(width: _getDefaultHorizontalSpacing(context)),
+              SizedBox(
+                width: _getKeyWidth(context),
+                height: _getKeyHeight(context),
+                child: leftExtraKeyChild,
+              ),
               PinpadKey.text(
                 '0',
                 textStyle: _getDefaultTextStyle(context),
-                onTap: () {},
+                onTap: () => onKeyTap('0'),
                 decoration: _defaultDecoration,
                 pressedDecoration: keyPressedDecoration,
+                width: _getKeyWidth(context),
+                height: _getKeyHeight(context),
               ),
-              SizedBox(width: _getDefaultHorizontalSpacing(context)),
-              rightExtraKeyChild ??
-                  PinpadKey(
-                    onTap: () {},
-                    decoration: _defaultDecoration,
-                    pressedDecoration: keyPressedDecoration,
-                    child: const SizedBox(),
-                  ),
+              SizedBox(
+                width: _getKeyWidth(context),
+                height: _getKeyHeight(context),
+                child: rightExtraKeyChild,
+              ),
             ],
           ),
         ],

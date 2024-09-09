@@ -6,7 +6,6 @@ class PinpadKey extends StatefulWidget {
   const PinpadKey({
     required this.child,
     required this.onTap,
-    this.onLongPress,
     this.decoration,
     this.pressedDecoration,
     this.width,
@@ -19,7 +18,6 @@ class PinpadKey extends StatefulWidget {
     String text, {
     required VoidCallback onTap,
     TextStyle? textStyle,
-    VoidCallback? onLongPress,
     BoxDecoration? decoration,
     BoxDecoration? pressedDecoration,
     double? width,
@@ -27,7 +25,6 @@ class PinpadKey extends StatefulWidget {
   }) {
     return PinpadKey(
       onTap: onTap,
-      onLongPress: onLongPress,
       decoration: decoration,
       pressedDecoration: pressedDecoration,
       width: width,
@@ -38,7 +35,6 @@ class PinpadKey extends StatefulWidget {
 
   final Widget child;
   final VoidCallback onTap;
-  final VoidCallback? onLongPress;
   final BoxDecoration? decoration;
   final BoxDecoration? pressedDecoration;
   final double? width;
@@ -56,7 +52,6 @@ class _PinpadKeyState extends State<PinpadKey> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: widget.onTap,
-      onLongPress: widget.onLongPress,
       onPanStart: (_) => setState(() => _isPressed = true),
       onPanDown: (_) => setState(() => _isPressed = true),
       onPanEnd: (_) => setState(() => _isPressed = false),

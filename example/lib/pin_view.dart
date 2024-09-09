@@ -13,6 +13,8 @@ class _PinViewState extends State<PinView> {
   final pressedDecoration = const BoxDecoration();
   final disabledDecoration = const BoxDecoration();
 
+  final pinTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +22,18 @@ class _PinViewState extends State<PinView> {
         child: Column(
           children: [
             const Spacer(flex: 3),
+            PinIndicator(
+              length: 4,
+              currentLength: pinTextController.text.length,
+              isError: false,
+              isSuccess: false,
+            ),
+            const SizedBox(height: 64),
             Pinpad(
-              onKeyTap: (key) {},
+              onKeyTap: (key) {
+                pinTextController.text += key;
+                setState(() {});
+              },
               keysTextStyle: Theme.of(context)
                   .textTheme
                   .titleLarge!
@@ -29,6 +41,30 @@ class _PinViewState extends State<PinView> {
               keyDefaultDecoration: defaultDecoration,
               keyPressedDecoration: pressedDecoration,
               keyDisabledDecoration: disabledDecoration,
+              leftExtraKeyChild: Center(
+                child: Text(
+                  'Extra key',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+              rightExtraKeyChild: pinTextController.text.isEmpty
+                  ? GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        // Call your biometrics method here
+                      },
+                      // Display current biometrics type here
+                      child: const Icon(Icons.fingerprint_rounded, size: 32),
+                    )
+                  : GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        pinTextController.text = pinTextController.text
+                            .substring(0, pinTextController.text.length - 1);
+                        setState(() {});
+                      },
+                      child: const Icon(Icons.backspace_outlined, size: 24),
+                    ),
             ),
             const Spacer(),
           ],

@@ -42,10 +42,12 @@ class Pinpad extends StatelessWidget {
       4;
 
   double _getHorizontalSpacing(BuildContext context) =>
-      horizontalSpacing ?? _getDefaultSpacing(context);
+      horizontalSpacing ??
+      _getDefaultSpacing(context) - 2 * _getMaxKeyTextWidth(context);
 
   double _getVerticalSpacing(BuildContext context) =>
-      verticalSpacing ?? _getDefaultSpacing(context) / 2;
+      verticalSpacing ??
+      _getDefaultSpacing(context) / 2 - 0.4 * _getKeyHeight(context);
 
   Size _getKeyTextSize(BuildContext context, String keyText) => (TextPainter(
         text: TextSpan(text: keyText, style: _getTextStyle(context)),
@@ -65,10 +67,10 @@ class Pinpad extends StatelessWidget {
   }
 
   double _getKeyHeight(BuildContext context) =>
-      keyHeight ?? _getKeyTextSize(context, '0').height;
+      keyHeight ?? _getKeyTextSize(context, '0').height * 1.4;
 
   double _getKeyWidth(BuildContext context) =>
-      keyWidth ?? _getMaxKeyTextWidth(context);
+      keyWidth ?? _getMaxKeyTextWidth(context) * 3;
 
   @override
   Widget build(BuildContext context) {

@@ -31,6 +31,12 @@ class Pinpad extends StatelessWidget {
   final double? keyWidth;
   final double? keyHeight;
 
+  BoxDecoration? get _defaultDecoration =>
+      enabled ? keyDefaultDecoration : keyDisabledDecoration;
+
+  TextStyle? _getTextStyle(BuildContext context) =>
+      keysTextStyle ?? Theme.of(context).textTheme.titleLarge;
+
   double _getDefaultSpacing(BuildContext context) =>
       (MediaQuery.of(context).size.width - _getMaxKeyTextWidth(context) * 3) /
       4;
@@ -40,12 +46,6 @@ class Pinpad extends StatelessWidget {
 
   double _getVerticalSpacing(BuildContext context) =>
       verticalSpacing ?? _getDefaultSpacing(context) / 2;
-
-  TextStyle? _getTextStyle(BuildContext context) =>
-      keysTextStyle ?? Theme.of(context).textTheme.titleLarge;
-
-  BoxDecoration? get _defaultDecoration =>
-      enabled ? keyDefaultDecoration : keyDisabledDecoration;
 
   Size _getKeyTextSize(BuildContext context, String keyText) => (TextPainter(
         text: TextSpan(text: keyText, style: _getTextStyle(context)),
@@ -64,11 +64,8 @@ class Pinpad extends StatelessWidget {
     return max;
   }
 
-  double _getKeyTextHeight(BuildContext context) =>
-      _getKeyTextSize(context, '0').height;
-
   double _getKeyHeight(BuildContext context) =>
-      keyHeight ?? _getKeyTextHeight(context);
+      keyHeight ?? _getKeyTextSize(context, '0').height;
 
   double _getKeyWidth(BuildContext context) =>
       keyWidth ?? _getMaxKeyTextWidth(context);

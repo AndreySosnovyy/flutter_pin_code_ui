@@ -10,10 +10,10 @@ class PinpadKey extends StatefulWidget {
     required this.child,
     required this.onTap,
     this.onLongPress,
-    this.defaultDecoration,
+    this.decoration,
     this.pressedDecoration,
-    this.width = defaultKeyWidth,
-    this.height = defaultKeyHeight,
+    this.width,
+    this.height,
     super.key,
   });
 
@@ -23,15 +23,16 @@ class PinpadKey extends StatefulWidget {
     required VoidCallback onTap,
     TextStyle? textStyle,
     VoidCallback? onLongPress,
-    BoxDecoration? defaultDecoration,
+    BoxDecoration? decoration,
     BoxDecoration? pressedDecoration,
-    double width = defaultKeyWidth,
-    double height = defaultKeyHeight,
+    double? width,
+    double? height,
   }) {
     return PinpadKey(
       onTap: onTap,
       onLongPress: onLongPress,
-      defaultDecoration: defaultDecoration,
+      decoration: decoration,
+      pressedDecoration: pressedDecoration,
       width: width,
       height: height,
       child: Text(text, style: textStyle),
@@ -41,28 +42,33 @@ class PinpadKey extends StatefulWidget {
   final Widget child;
   final VoidCallback onTap;
   final VoidCallback? onLongPress;
-  final BoxDecoration? defaultDecoration;
+  final BoxDecoration? decoration;
   final BoxDecoration? pressedDecoration;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
 
   @override
   State<PinpadKey> createState() => _PinpadKeyState();
 }
 
 class _PinpadKeyState extends State<PinpadKey> {
-  // TODO(Sosnovyy): implement pressed animation
+  bool _isPressed = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: widget.onTap,
       onLongPress: widget.onLongPress,
+      onPanStart: (_) => setState(() => _isPressed = true),
+      onPanDown: (_) => setState(() => _isPressed = true),
+      onPanEnd: (_) => setState(() => _isPressed = false),
+      onPanCancel: () => setState(() => _isPressed = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 120),
-        width: widget.width,
-        height: widget.height,
-        decoration: widget.defaultDecoration,
+        width: widget.width ?? defaultKeyWidth,
+        height: widget.height ?? defaultKeyHeight,
+        decoration: _isPressed ? widget.pressedDecoration : widget.decoration,
         child: Center(child: widget.child),
       ),
     );

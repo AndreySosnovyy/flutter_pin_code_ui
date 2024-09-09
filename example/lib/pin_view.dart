@@ -9,10 +9,9 @@ class PinView extends StatefulWidget {
 }
 
 class _PinViewState extends State<PinView> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  final defaultDecoration = const BoxDecoration();
+  final pressedDecoration = const BoxDecoration();
+  final disabledDecoration = const BoxDecoration();
 
   @override
   Widget build(BuildContext context) {
@@ -20,24 +19,21 @@ class _PinViewState extends State<PinView> {
       body: Center(
         child: Column(
           children: [
-            const Spacer(),
-            const Pinput(),
-            const SizedBox(height: 64),
+            const Spacer(flex: 3),
             Pinpad(
               onKeyTap: (text) {},
-              onEraseButtonTap: () {},
+              keysTextStyle: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontSize: 32),
+              keyDefaultDecoration: defaultDecoration,
+              keyPressedDecoration: pressedDecoration,
+              keyDisabledDecoration: disabledDecoration,
             ),
-            const SizedBox(height: 64),
-            const Text('Forgot PIN?'),
             const Spacer(),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

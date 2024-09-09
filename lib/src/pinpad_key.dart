@@ -49,19 +49,22 @@ class _PinpadKeyState extends State<PinpadKey> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: widget.onTap,
-      onPanStart: (_) => setState(() => _isPressed = true),
-      onPanDown: (_) => setState(() => _isPressed = true),
-      onPanEnd: (_) => setState(() => _isPressed = false),
-      onPanCancel: () => setState(() => _isPressed = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 120),
-        width: widget.width,
-        height: widget.height,
-        decoration: _isPressed ? widget.pressedDecoration : widget.decoration,
-        child: Center(child: widget.child),
+    return Container(
+      color: Colors.red,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: widget.onTap,
+        onPanStart: (_) => setState(() => _isPressed = true),
+        onPanDown: (_) => setState(() => _isPressed = true),
+        onPanEnd: (_) => setState(() => _isPressed = false),
+        onPanCancel: () => setState(() => _isPressed = false),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 120),
+          width: widget.width,
+          height: widget.height,
+          decoration: _isPressed ? widget.pressedDecoration : widget.decoration,
+          child: Center(child: widget.child),
+        ),
       ),
     );
   }

@@ -21,9 +21,7 @@ class _PinViewState extends State<PinView> {
           children: [
             const Spacer(flex: 3),
             Pinpad(
-              onKeyTap: (key) {
-                print('key = ${key}');
-              },
+              onKeyTap: (key) {},
               keysTextStyle: Theme.of(context)
                   .textTheme
                   .titleLarge!

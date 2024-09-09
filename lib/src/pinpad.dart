@@ -31,20 +31,15 @@ class Pinpad extends StatelessWidget {
   final double? keyWidth;
   final double? keyHeight;
 
-  double _getDefaultSpacing(BuildContext context) {
-    final a =
-        (MediaQuery.of(context).size.width - _getMaxKeyTextWidth(context) * 3) /
-            4;
-    print('MediaQuery.of(context).size.width = ${MediaQuery.of(context).size.width}');
-    print('a = ${a}');
-    return a;
-  }
+  double _getDefaultSpacing(BuildContext context) =>
+      (MediaQuery.of(context).size.width - _getMaxKeyTextWidth(context) * 3) /
+      4;
 
   double _getDefaultHorizontalSpacing(BuildContext context) =>
       horizontalSpacing ?? _getDefaultSpacing(context);
 
   double _getDefaultVerticalSpacing(BuildContext context) =>
-      verticalSpacing ?? _getDefaultSpacing(context);
+      verticalSpacing ?? _getDefaultSpacing(context) / 2;
 
   TextStyle? _getDefaultTextStyle(BuildContext context) =>
       keysTextStyle ?? Theme.of(context).textTheme.titleLarge;
@@ -53,17 +48,19 @@ class Pinpad extends StatelessWidget {
       enabled ? keyDefaultDecoration : keyDisabledDecoration;
 
   double _getMaxKeyTextWidth(BuildContext context) {
-    double getKeyWidth(String keyText) => (TextPainter(
-          text: TextSpan(text: keyText, style: _getDefaultTextStyle(context)),
-          maxLines: 1,
-          textDirection: TextDirection.ltr,
-        )..layout(minWidth: 0, maxWidth: double.infinity))
-            .size
-            .width;
-
+    if (keyWidth != null) return keyWidth!;
     double max = 0;
     for (int i = 0; i < 10; i++) {
-      final double width = getKeyWidth((i).toString());
+      final double width = (TextPainter(
+        text: TextSpan(
+          text: i.toString(),
+          style: _getDefaultTextStyle(context),
+        ),
+        maxLines: 1,
+        textDirection: TextDirection.ltr,
+      )..layout(minWidth: 0, maxWidth: double.infinity))
+          .size
+          .width;
       if (width > max) max = width;
     }
     return max;
@@ -83,8 +80,7 @@ class Pinpad extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   for (int j = 0; j < 3; j++)
-                    Container(
-                      color: Colors.red,
+                    Padding(
                       padding: j == 2
                           ? EdgeInsets.zero
                           : EdgeInsets.only(

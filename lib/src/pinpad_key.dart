@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
-
-const double defaultKeyWidth = 52;
-const double defaultKeyHeight = 52;
+import 'package:flutter/material.dart';
 
 /// Single key widget for pin pad
 class PinpadKey extends StatefulWidget {
@@ -66,8 +63,8 @@ class _PinpadKeyState extends State<PinpadKey> {
       onPanCancel: () => setState(() => _isPressed = false),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 120),
-        width: widget.width ?? defaultKeyWidth,
-        height: widget.height ?? defaultKeyHeight,
+        width: widget.width,
+        height: widget.height,
         decoration: _isPressed ? widget.pressedDecoration : widget.decoration,
         child: Center(child: widget.child),
       ),

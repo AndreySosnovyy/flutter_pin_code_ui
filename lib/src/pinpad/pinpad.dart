@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pin_ui/src/pinpad_key.dart';
+import 'package:pin_ui/src/pinpad/pinpad_key.dart';
 
 class Pinpad extends StatelessWidget {
   const Pinpad({

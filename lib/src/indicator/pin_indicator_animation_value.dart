@@ -2,8 +2,14 @@ import 'package:flutter/animation.dart';
 
 class PinIndicatorAnimationValue {
   PinIndicatorAnimationValue({
-    this.currentLength = 0,
-    this.maxLength = 4,
+    required this.currentLength,
+    required this.maxLength,
+    this.inputAnimationController,
+    this.loadingAnimationController,
+    this.successAnimationController,
+    this.errorAnimationController,
+    this.clearAnimationController,
+    this.eraseAnimationController,
   });
 
   /// Current length of input
@@ -14,17 +20,48 @@ class PinIndicatorAnimationValue {
   final int maxLength;
 
   /// Controller for animating one key input
-  late final AnimationController? inputAnimationController;
+  final AnimationController? inputAnimationController;
+
+  /// Controller for animating loading state
+  final AnimationController? loadingAnimationController;
 
   /// Controller for animating valid pin
-  late final AnimationController? successAnimationController;
+  final AnimationController? successAnimationController;
 
   /// Controller for animating invalid pin
-  late final AnimationController? errorAnimationController;
+  final AnimationController? errorAnimationController;
 
   /// Controller for animating whole pin clearing
-  late final AnimationController? clearAnimationController;
+  final AnimationController? clearAnimationController;
 
   /// Controller for animating one symbol erasing
-  late final AnimationController? eraseAnimationController;
+  final AnimationController? eraseAnimationController;
+
+  PinIndicatorAnimationValue copyWith({
+    int? currentLength,
+    int? maxLength,
+    AnimationController? inputAnimationController,
+    AnimationController? loadingAnimationController,
+    AnimationController? successAnimationController,
+    AnimationController? errorAnimationController,
+    AnimationController? clearAnimationController,
+    AnimationController? eraseAnimationController,
+  }) {
+    return PinIndicatorAnimationValue(
+      currentLength: currentLength ?? this.currentLength,
+      maxLength: maxLength ?? this.maxLength,
+      inputAnimationController:
+          inputAnimationController ?? this.inputAnimationController,
+      loadingAnimationController:
+          loadingAnimationController ?? this.loadingAnimationController,
+      successAnimationController:
+          successAnimationController ?? this.successAnimationController,
+      errorAnimationController:
+          errorAnimationController ?? this.errorAnimationController,
+      clearAnimationController:
+          clearAnimationController ?? this.clearAnimationController,
+      eraseAnimationController:
+          eraseAnimationController ?? this.eraseAnimationController,
+    );
+  }
 }

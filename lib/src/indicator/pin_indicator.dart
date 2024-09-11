@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animations_config.dart';
 import 'package:pin_ui/src/indicator/pin_indicator_animation_value.dart';
@@ -11,7 +13,7 @@ class PinIndicator extends StatefulWidget {
     required this.isError,
     required this.isSuccess,
     this.animationsConfig,
-    this.animationController,
+    this.controller,
     this.errorColor = Colors.red,
     this.successColor = Colors.green,
     this.inputColor = Colors.blue,
@@ -21,7 +23,7 @@ class PinIndicator extends StatefulWidget {
     super.key,
   });
 
-  final PinIndicatorAnimationController? animationController;
+  final PinIndicatorAnimationController? controller;
   final PinIndicatorAnimationsConfig? animationsConfig;
   final int length;
   final int currentLength;
@@ -48,9 +50,9 @@ class _PinIndicatorState extends State<PinIndicator> {
 
   @override
   void initState() {
-    if (widget.animationController != null) {
-      widget.animationController!._config =
-          widget.animationsConfig ?? PinIndicatorAnimationsConfig.defaults();
+    if (widget.controller != null) {
+      widget.controller!._setConfig(
+          widget.animationsConfig ?? PinIndicatorAnimationsConfig.defaults());
     }
     super.initState();
   }

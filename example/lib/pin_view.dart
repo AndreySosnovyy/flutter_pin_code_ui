@@ -8,12 +8,13 @@ class PinView extends StatefulWidget {
   State<PinView> createState() => _PinViewState();
 }
 
-class _PinViewState extends State<PinView> {
+class _PinViewState extends State<PinView> with TickerProviderStateMixin {
   final defaultDecoration = const BoxDecoration();
   final pressedDecoration = const BoxDecoration();
   final disabledDecoration = const BoxDecoration();
 
-  final pinTextController = TextEditingController();
+  late final animationController = PinIndicatorAnimationController(vsync: this);
+  String pinText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +24,19 @@ class _PinViewState extends State<PinView> {
           children: [
             const Spacer(flex: 3),
             PinIndicator(
+              controller: animationController,
               length: 4,
-              currentLength: pinTextController.text.length,
+              currentLength: pinText.length,
               isError: false,
               isSuccess: false,
             ),
             const SizedBox(height: 64),
             Pinpad(
-              onKeyTap: (key) {
-                pinTextController.text += key;
+              onKeyTap: (key) async {
+                pinText += key;
                 setState(() {});
+                await animationController.animateInput(
+                    currentLength: pinText.length);
               },
               keysTextStyle: Theme.of(context)
                   .textTheme
@@ -47,7 +51,7 @@ class _PinViewState extends State<PinView> {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
-              rightExtraKeyChild: pinTextController.text.isEmpty
+              rightExtraKeyChild: pinText.isEmpty
                   ? GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
@@ -58,10 +62,11 @@ class _PinViewState extends State<PinView> {
                     )
                   : GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        pinTextController.text = pinTextController.text
-                            .substring(0, pinTextController.text.length - 1);
+                      onTap: () async {
+                        pinText = pinText.substring(0, pinText.length - 1);
                         setState(() {});
+                        await animationController.animateErase(
+                            currentLength: pinText.length);
                       },
                       child: const Icon(Icons.backspace_outlined, size: 24),
                     ),

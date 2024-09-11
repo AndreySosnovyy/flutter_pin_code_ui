@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:pin_ui/src/indicator/animation_controller_providers.dart';
 import 'package:pin_ui/src/indicator/animations_config.dart';
 import 'package:pin_ui/src/indicator/pin_indicator_animation_value.dart';
 

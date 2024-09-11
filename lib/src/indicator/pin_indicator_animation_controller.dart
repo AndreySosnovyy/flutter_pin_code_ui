@@ -19,7 +19,13 @@ class PinIndicatorAnimationController
   void _setConfig(PinIndicatorAnimationsConfig config) {
     _config = config;
     _configInitializationCompleter.complete();
-    // TODO(Sosnovyy): set animation controllers
+    value = value.copyWith(
+      inputAnimationController:
+          PinAnimationControllerProvider.getControllerFor(
+        _config.inputAnimation!,
+        vsync: vsync,
+      ),
+    );
   }
 
   void _verifyInitialized() {

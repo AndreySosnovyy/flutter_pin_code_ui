@@ -9,11 +9,22 @@ class PinView extends StatefulWidget {
 }
 
 class _PinViewState extends State<PinView> with TickerProviderStateMixin {
-  final defaultDecoration = const BoxDecoration();
-  final pressedDecoration = const BoxDecoration();
-  final disabledDecoration = const BoxDecoration();
+  late final defaultDecoration = const BoxDecoration(
+    shape: BoxShape.circle,
+  );
+  late final pressedDecoration = defaultDecoration.copyWith(
+    color: Colors.blue.withOpacity(0.1),
+  );
+  late final disabledDecoration = defaultDecoration.copyWith();
 
-  late final animationController = PinIndicatorAnimationController(vsync: this);
+  late final defaultTextStyle =
+      Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 32);
+  late final pressedTextStyle = defaultTextStyle.copyWith(color: Colors.blue);
+  late final disabledTextStyle =
+      defaultTextStyle.copyWith(color: Colors.black26);
+
+  late final pinIndicatorAnimationController =
+      PinIndicatorAnimationController(vsync: this);
   String pinText = '';
 
   @override
@@ -24,7 +35,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
           children: [
             const Spacer(flex: 3),
             PinIndicator(
-              controller: animationController,
+              controller: pinIndicatorAnimationController,
               length: 4,
               currentLength: pinText.length,
               isError: false,
@@ -35,13 +46,12 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
               onKeyTap: (key) async {
                 pinText += key;
                 setState(() {});
-                await animationController.animateInput(
+                await pinIndicatorAnimationController.animateInput(
                     currentLength: pinText.length);
               },
-              keysTextStyle: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(fontSize: 32),
+              keysDefaultTextStyle: defaultTextStyle,
+              keysPressedTextStyle: pressedTextStyle,
+              keysDisabledTextStyle: disabledTextStyle,
               keyDefaultDecoration: defaultDecoration,
               keyPressedDecoration: pressedDecoration,
               keyDisabledDecoration: disabledDecoration,
@@ -65,7 +75,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       onTap: () async {
                         pinText = pinText.substring(0, pinText.length - 1);
                         setState(() {});
-                        await animationController.animateErase(
+                        await pinIndicatorAnimationController.animateErase(
                             currentLength: pinText.length);
                       },
                       child: const Icon(Icons.backspace_outlined, size: 24),

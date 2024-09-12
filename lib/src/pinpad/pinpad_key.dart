@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// Single key widget for pin pad
+// TODO(Sosnovyy): refactor to avoid duplicate code
+
 class PinpadKey extends StatefulWidget {
-  // Default constructor for pin pad key with any child inside
   const PinpadKey({
     required this.child,
     required this.onTap,
@@ -12,26 +12,6 @@ class PinpadKey extends StatefulWidget {
     this.height,
     super.key,
   });
-
-  // Constructor for pin pad key with any text widget inside
-  factory PinpadKey.text(
-    String text, {
-    required VoidCallback onTap,
-    TextStyle? textStyle,
-    BoxDecoration? decoration,
-    BoxDecoration? pressedDecoration,
-    double? width,
-    double? height,
-  }) {
-    return PinpadKey(
-      onTap: onTap,
-      decoration: decoration,
-      pressedDecoration: pressedDecoration,
-      width: width,
-      height: height,
-      child: Text(text, style: textStyle),
-    );
-  }
 
   final Widget child;
   final VoidCallback onTap;
@@ -62,6 +42,61 @@ class _PinpadKeyState extends State<PinpadKey> {
         height: widget.height,
         decoration: _isPressed ? widget.pressedDecoration : widget.decoration,
         child: Center(child: widget.child),
+      ),
+    );
+  }
+}
+
+class PinpadTextKey extends StatefulWidget {
+  const PinpadTextKey(
+    this.text, {
+    required this.onTap,
+    this.defaultTextStyle,
+    this.pressedTextStyle,
+    this.decoration,
+    this.pressedDecoration,
+    this.width,
+    this.height,
+    super.key,
+  });
+
+  final String text;
+  final TextStyle? defaultTextStyle;
+  final TextStyle? pressedTextStyle;
+  final VoidCallback onTap;
+  final BoxDecoration? decoration;
+  final BoxDecoration? pressedDecoration;
+  final double? width;
+  final double? height;
+
+  @override
+  State<PinpadTextKey> createState() => _PinpadTextKeyState();
+}
+
+class _PinpadTextKeyState extends State<PinpadTextKey> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: widget.onTap,
+      onPanStart: (_) => setState(() => _isPressed = true),
+      onPanDown: (_) => setState(() => _isPressed = true),
+      onPanEnd: (_) => setState(() => _isPressed = false),
+      onPanCancel: () => setState(() => _isPressed = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 120),
+        width: widget.width,
+        height: widget.height,
+        decoration: _isPressed ? widget.pressedDecoration : widget.decoration,
+        child: Center(
+          child: Text(
+            widget.text,
+            style:
+                _isPressed ? widget.pressedTextStyle : widget.defaultTextStyle,
+          ),
+        ),
       ),
     );
   }

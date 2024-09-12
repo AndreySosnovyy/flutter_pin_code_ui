@@ -12,7 +12,9 @@ class Pinpad extends StatelessWidget {
     this.enabled = true,
     this.rightExtraKeyChild,
     this.leftExtraKeyChild,
-    this.keysTextStyle,
+    this.keysDefaultTextStyle,
+    this.keysPressedTextStyle,
+    this.keysDisabledTextStyle,
     this.keyHeight,
     this.keyWidth,
     super.key,
@@ -27,15 +29,18 @@ class Pinpad extends StatelessWidget {
   final bool enabled;
   final Widget? rightExtraKeyChild;
   final Widget? leftExtraKeyChild;
-  final TextStyle? keysTextStyle;
+  final TextStyle? keysDefaultTextStyle;
+  final TextStyle? keysPressedTextStyle;
+  final TextStyle? keysDisabledTextStyle;
   final double? keyWidth;
   final double? keyHeight;
 
-  BoxDecoration? get _defaultDecoration =>
+  BoxDecoration? get _getDecoration =>
       enabled ? keyDefaultDecoration : keyDisabledDecoration;
 
   TextStyle? _getTextStyle(BuildContext context) =>
-      keysTextStyle ?? Theme.of(context).textTheme.titleLarge;
+      (enabled ? keysDefaultTextStyle : keysDisabledTextStyle) ??
+      Theme.of(context).textTheme.titleLarge;
 
   double _getDefaultSpacing(BuildContext context) =>
       (MediaQuery.of(context).size.width - _getMaxKeyTextWidth(context) * 3) /
@@ -88,11 +93,12 @@ class Pinpad extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(
                           right: j == 2 ? 0 : _getHorizontalSpacing(context)),
-                      child: PinpadKey.text(
+                      child: PinpadTextKey(
                         (3 * i + j + 1).toString(),
-                        textStyle: _getTextStyle(context),
+                        defaultTextStyle: _getTextStyle(context),
+                        pressedTextStyle: keysPressedTextStyle,
                         onTap: () => onKeyTap((3 * i + j + 1).toString()),
-                        decoration: _defaultDecoration,
+                        decoration: _getDecoration,
                         pressedDecoration: keyPressedDecoration,
                         width: _getKeyWidth(context),
                         height: _getKeyHeight(context),
@@ -110,11 +116,12 @@ class Pinpad extends StatelessWidget {
                 child: leftExtraKeyChild,
               ),
               SizedBox(width: _getHorizontalSpacing(context)),
-              PinpadKey.text(
+              PinpadTextKey(
                 '0',
-                textStyle: _getTextStyle(context),
+                defaultTextStyle: _getTextStyle(context),
+                pressedTextStyle: keysPressedTextStyle,
                 onTap: () => onKeyTap('0'),
-                decoration: _defaultDecoration,
+                decoration: _getDecoration,
                 pressedDecoration: keyPressedDecoration,
                 width: _getKeyWidth(context),
                 height: _getKeyHeight(context),

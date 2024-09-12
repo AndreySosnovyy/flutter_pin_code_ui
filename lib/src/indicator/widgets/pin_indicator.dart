@@ -60,42 +60,42 @@ class _PinIndicatorState extends State<PinIndicator> {
     super.initState();
   }
 
-  bool get hasController => widget.controller != null;
+  bool get _hasController => widget.controller != null;
 
-  bool get hasInputAnimationController =>
+  bool get _hasInputAnimationController =>
       widget.controller?.value.inputAnimationController != null;
 
-  AnimationController? get inputAnimationController =>
+  AnimationController? get _inputAnimationController =>
       widget.controller?.value.inputAnimationController;
 
-  bool get hasLoadingAnimationController =>
+  bool get _hasLoadingAnimationController =>
       widget.controller?.value.loadingAnimationController != null;
 
-  AnimationController? get loadingAnimationController =>
+  AnimationController? get _loadingAnimationController =>
       widget.controller?.value.loadingAnimationController;
 
-  bool get hasSuccessAnimationController =>
+  bool get _hasSuccessAnimationController =>
       widget.controller?.value.successAnimationController != null;
 
-  AnimationController? get successAnimationController =>
+  AnimationController? get _successAnimationController =>
       widget.controller?.value.successAnimationController;
 
-  bool get hasErrorAnimationController =>
+  bool get _hasErrorAnimationController =>
       widget.controller?.value.errorAnimationController != null;
 
-  AnimationController? get errorAnimationController =>
+  AnimationController? get _errorAnimationController =>
       widget.controller?.value.errorAnimationController;
 
-  bool get hasClearAnimationController =>
+  bool get _hasClearAnimationController =>
       widget.controller?.value.clearAnimationController != null;
 
-  AnimationController? get clearAnimationController =>
+  AnimationController? get _clearAnimationController =>
       widget.controller?.value.clearAnimationController;
 
-  bool get hasEraseAnimationController =>
+  bool get _hasEraseAnimationController =>
       widget.controller?.value.eraseAnimationController != null;
 
-  AnimationController? get eraseAnimationController =>
+  AnimationController? get _eraseAnimationController =>
       widget.controller?.value.eraseAnimationController;
 
   @override
@@ -107,20 +107,20 @@ class _PinIndicatorState extends State<PinIndicator> {
           Padding(
             padding: EdgeInsets.only(
                 right: i == widget.length - 1 ? 0 : widget.spacing),
-            child: hasController &&
-                    hasInputAnimationController &&
+            child: _hasController &&
+                    _hasInputAnimationController &&
                     i == widget.currentLength - 1
                 ? AnimatedBuilder(
-                    animation: inputAnimationController!,
+                    animation: _inputAnimationController!,
                     builder: (context, _) {
                       return InputInflateTransition(
-                        animation: inputAnimationController!,
+                        animation: _inputAnimationController!,
                         child: PinIndicatorDot(
                           size: widget.size,
                           color: Color.lerp(
                             _getColorForIndex(i),
                             _getColorForIndex(i),
-                            inputAnimationController!.value,
+                            _inputAnimationController!.value,
                           )!,
                         ),
                       );

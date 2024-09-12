@@ -42,12 +42,18 @@ class PinIndicatorAnimationController
     await value.inputAnimationController!.reverse();
   }
 
+  bool get isAnimatingInput =>
+      value.inputAnimationController?.isAnimating ?? false;
+
   Future<void> animateLoading() async {
     _verifyInitialized();
     assert(value.loadingAnimationController != null &&
         _config.loadingAnimation != null);
     throw UnimplementedError();
   }
+
+  bool get isAnimatingLoading =>
+      value.loadingAnimationController?.isAnimating ?? false;
 
   Future<void> animateSuccess() async {
     _verifyInitialized();
@@ -56,6 +62,9 @@ class PinIndicatorAnimationController
     throw UnimplementedError();
   }
 
+  bool get isAnimatingSuccess =>
+      value.successAnimationController?.isAnimating ?? false;
+
   Future<void> animateError() async {
     _verifyInitialized();
     assert(value.errorAnimationController != null &&
@@ -63,12 +72,18 @@ class PinIndicatorAnimationController
     throw UnimplementedError();
   }
 
+  bool get isAnimatingError =>
+      value.errorAnimationController?.isAnimating ?? false;
+
   Future<void> animateClear() async {
     _verifyInitialized();
     assert(value.clearAnimationController != null &&
         _config.clearAnimation != null);
     throw UnimplementedError();
   }
+
+  bool get isAnimatingClear =>
+      value.clearAnimationController?.isAnimating ?? false;
 
   Future<void> animateErase({required int currentLength}) async {
     _verifyInitialized();
@@ -78,6 +93,9 @@ class PinIndicatorAnimationController
     value = value.copyWith(currentLength: currentLength);
     throw UnimplementedError();
   }
+
+  bool get isAnimatingErase =>
+      value.eraseAnimationController?.isAnimating ?? false;
 
   @override
   void dispose() {

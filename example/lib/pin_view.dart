@@ -39,7 +39,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
             const Spacer(flex: 3),
             PinIndicator(
               controller: pinIndicatorAnimationController,
-              length: 4,
+              length: validPin.length,
               currentLength: pinText.length,
               isError: false,
               isSuccess: false,
@@ -47,6 +47,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
             const SizedBox(height: 64),
             Pinpad(
               onKeyTap: (key) async {
+                if (pinText.length == validPin.length &&
+                    pinIndicatorAnimationController.isAnimatingInput) return;
                 pinText += key;
                 setState(() {});
                 await pinIndicatorAnimationController.animateInput(
@@ -56,7 +58,9 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                 } else if (pinText.length == validPin.length) {
                   // await pinIndicatorAnimationController.animateError();
                 }
-                if (pinText.length == 4) setState(() => pinText = '');
+                if (pinText.length == validPin.length) {
+                  setState(() => pinText = '');
+                }
               },
               keysDefaultTextStyle: defaultTextStyle,
               keysPressedTextStyle: pressedTextStyle,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animation_controller_providers.dart';
 import 'package:pin_ui/src/indicator/animations_config.dart';
 import 'package:pin_ui/src/indicator/pin_indicator_animation_value.dart';
+import 'package:pin_ui/src/indicator/transitions/input_inflate_transition.dart';
 
 part 'pin_indicator_animation_controller.dart';
 
@@ -58,6 +59,44 @@ class _PinIndicatorState extends State<PinIndicator> {
     super.initState();
   }
 
+  bool get hasController => widget.controller != null;
+
+  bool get hasInputAnimationController =>
+      widget.controller?.value.inputAnimationController != null;
+
+  AnimationController? get inputAnimationController =>
+      widget.controller?.value.inputAnimationController;
+
+  bool get hasLoadingAnimationController =>
+      widget.controller?.value.loadingAnimationController != null;
+
+  AnimationController? get loadingAnimationController =>
+      widget.controller?.value.loadingAnimationController;
+
+  bool get hasSuccessAnimationController =>
+      widget.controller?.value.successAnimationController != null;
+
+  AnimationController? get successAnimationController =>
+      widget.controller?.value.successAnimationController;
+
+  bool get hasErrorAnimationController =>
+      widget.controller?.value.errorAnimationController != null;
+
+  AnimationController? get errorAnimationController =>
+      widget.controller?.value.errorAnimationController;
+
+  bool get hasClearAnimationController =>
+      widget.controller?.value.clearAnimationController != null;
+
+  AnimationController? get clearAnimationController =>
+      widget.controller?.value.clearAnimationController;
+
+  bool get hasEraseAnimationController =>
+      widget.controller?.value.eraseAnimationController != null;
+
+  AnimationController? get eraseAnimationController =>
+      widget.controller?.value.eraseAnimationController;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -67,18 +106,55 @@ class _PinIndicatorState extends State<PinIndicator> {
           Padding(
             padding: EdgeInsets.only(
                 right: i == widget.length - 1 ? 0 : widget.spacing),
-            child: SizedBox(
-              width: widget.size,
-              height: widget.size,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _getColorForIndex(i),
-                ),
-              ),
-            ),
+            child: hasController &&
+                    hasInputAnimationController &&
+                    i == widget.currentLength - 1
+                ? AnimatedBuilder(
+                    animation: inputAnimationController!,
+                    builder: (context, _) {
+                      return InputInflateTransition(
+                        animation: inputAnimationController!,
+                        child: _IndicatorDot(
+                          size: widget.size,
+                          color: Color.lerp(
+                            _getColorForIndex(i),
+                            _getColorForIndex(i),
+                            inputAnimationController!.value,
+                          )!,
+                        ),
+                      );
+                    },
+                  )
+                : _IndicatorDot(
+                    size: widget.size,
+                    color: _getColorForIndex(i),
+                  ),
           ),
       ],
+    );
+  }
+}
+
+class _IndicatorDot extends StatelessWidget {
+  const _IndicatorDot({
+    required this.color,
+    required this.size,
+  });
+
+  final Color color;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color,
+        ),
+      ),
     );
   }
 }

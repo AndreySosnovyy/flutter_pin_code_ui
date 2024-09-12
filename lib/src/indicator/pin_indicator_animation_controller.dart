@@ -20,8 +20,7 @@ class PinIndicatorAnimationController
     _config = config;
     _configInitializationCompleter.complete();
     value = value.copyWith(
-      inputAnimationController:
-          PinAnimationControllerProvider.getControllerFor(
+      inputAnimationController: PinAnimationControllerProvider.getControllerFor(
         _config.inputAnimation!,
         vsync: vsync,
       ),
@@ -39,7 +38,8 @@ class PinIndicatorAnimationController
         _config.inputAnimation != null);
     assert(currentLength >= 0 && currentLength <= value.maxLength);
     value = value.copyWith(currentLength: currentLength);
-    throw UnimplementedError();
+    await value.inputAnimationController!.forward();
+    await value.inputAnimationController!.reverse();
   }
 
   Future<void> animateLoading() async {

@@ -29,17 +29,18 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
 
   Future<void> onPinEntered() async {
     assert(pinText.length == 4);
-    // if (pinText == '1111') {
-    //   await pinIndicatorAnimationController.animateSuccess();
-    // } else {
-    //   await pinIndicatorAnimationController.animateError();
-    // }
+    if (pinText == '1111') {
+      // await pinIndicatorAnimationController.animateSuccess();
+    } else {
+      // await pinIndicatorAnimationController.animateError();
+    }
     setState(() => pinText = '');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           children: [
@@ -56,8 +57,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
               onKeyTap: (key) async {
                 pinText += key;
                 setState(() {});
-                // await pinIndicatorAnimationController.animateInput(
-                //     currentLength: pinText.length);
+                await pinIndicatorAnimationController.animateInput(
+                    currentLength: pinText.length);
                 if (pinText.length == 4) await onPinEntered();
               },
               keysDefaultTextStyle: defaultTextStyle,

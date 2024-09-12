@@ -10,21 +10,33 @@ class PinAnimationControllerProvider {
       PinInputAnimation inputAnimation => switch (inputAnimation) {
           PinInputAnimation.inflate => AnimationController(
               vsync: vsync,
-              duration: const Duration(milliseconds: 240),
+              duration: const Duration(milliseconds: 102),
+              lowerBound: 1.0,
+              upperBound: 1.3,
             ),
         },
       PinLoadingAnimation loadingAnimation => switch (loadingAnimation) {
-          PinLoadingAnimation.jump => throw UnimplementedError(),
+          PinLoadingAnimation.jump ||
+          PinLoadingAnimation.jumpWithVibration =>
+            throw UnimplementedError(),
         },
       PinSuccessAnimation successAnimation => switch (successAnimation) {
-          PinSuccessAnimation.collapse => throw UnimplementedError(),
+          PinSuccessAnimation.collapse ||
+          PinSuccessAnimation.collapseWithVibration =>
+            throw UnimplementedError(),
         },
       PinErrorAnimation errorAnimation => switch (errorAnimation) {
-          PinErrorAnimation.shake => throw UnimplementedError(),
+          PinErrorAnimation.shake ||
+          PinErrorAnimation.shakeWithVibration =>
+            throw UnimplementedError(),
         },
       PinClearAnimation clearAnimation => switch (clearAnimation) {
-          PinClearAnimation.drop => throw UnimplementedError(),
-          PinClearAnimation.deflate => throw UnimplementedError(),
+          PinClearAnimation.drop ||
+          PinClearAnimation.dropWithVibration =>
+            throw UnimplementedError(),
+          PinClearAnimation.deflate ||
+          PinClearAnimation.deflateWithVibration =>
+            throw UnimplementedError(),
         },
       PinEraseAnimation eraseAnimation => switch (eraseAnimation) {
           PinEraseAnimation.deflate => throw UnimplementedError(),
@@ -39,17 +51,27 @@ class PinAnimationControllerProvider {
           PinInputAnimation.inflate => Curves.linear,
         },
       PinLoadingAnimation loadingAnimation => switch (loadingAnimation) {
-          PinLoadingAnimation.jump => throw UnimplementedError(),
+          PinLoadingAnimation.jump ||
+          PinLoadingAnimation.jumpWithVibration =>
+            throw UnimplementedError(),
         },
       PinSuccessAnimation successAnimation => switch (successAnimation) {
-          PinSuccessAnimation.collapse => throw UnimplementedError(),
+          PinSuccessAnimation.collapse ||
+          PinSuccessAnimation.collapseWithVibration =>
+            throw UnimplementedError(),
         },
       PinErrorAnimation errorAnimation => switch (errorAnimation) {
-          PinErrorAnimation.shake => throw UnimplementedError(),
+          PinErrorAnimation.shake ||
+          PinErrorAnimation.shakeWithVibration =>
+            throw UnimplementedError(),
         },
       PinClearAnimation clearAnimation => switch (clearAnimation) {
-          PinClearAnimation.drop => throw UnimplementedError(),
-          PinClearAnimation.deflate => throw UnimplementedError(),
+          PinClearAnimation.drop ||
+          PinClearAnimation.dropWithVibration =>
+            throw UnimplementedError(),
+          PinClearAnimation.deflate ||
+          PinClearAnimation.deflateWithVibration =>
+            throw UnimplementedError(),
         },
       PinEraseAnimation eraseAnimation => switch (eraseAnimation) {
           PinEraseAnimation.deflate => throw UnimplementedError(),

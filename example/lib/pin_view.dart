@@ -29,11 +29,11 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
 
   Future<void> onPinEntered() async {
     assert(pinText.length == 4);
-    if (pinText == '1111') {
-      await pinIndicatorAnimationController.animateSuccess();
-    } else {
-      await pinIndicatorAnimationController.animateError();
-    }
+    // if (pinText == '1111') {
+    //   await pinIndicatorAnimationController.animateSuccess();
+    // } else {
+    //   await pinIndicatorAnimationController.animateError();
+    // }
     setState(() => pinText = '');
   }
 
@@ -56,8 +56,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
               onKeyTap: (key) async {
                 pinText += key;
                 setState(() {});
-                await pinIndicatorAnimationController.animateInput(
-                    currentLength: pinText.length);
+                // await pinIndicatorAnimationController.animateInput(
+                //     currentLength: pinText.length);
                 if (pinText.length == 4) await onPinEntered();
               },
               keysDefaultTextStyle: defaultTextStyle,
@@ -66,6 +66,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
               keyDefaultDecoration: defaultDecoration,
               keyPressedDecoration: pressedDecoration,
               keyDisabledDecoration: disabledDecoration,
+              vibrationEnabled: true,
               leftExtraKeyChild: Center(
                 child: Text(
                   'Extra key',
@@ -82,8 +83,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                     : () async {
                         pinText = pinText.substring(0, pinText.length - 1);
                         setState(() {});
-                        await pinIndicatorAnimationController.animateErase(
-                            currentLength: pinText.length);
+                        // await pinIndicatorAnimationController.animateErase(
+                        //     currentLength: pinText.length);
                       },
                 child: pinText.isEmpty
                     // Display current biometrics type here

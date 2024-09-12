@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pin_ui/src/pinpad/pinpad_key.dart';
+import 'package:vibration/vibration.dart';
 
 class Pinpad extends StatelessWidget {
   const Pinpad({
@@ -17,6 +19,7 @@ class Pinpad extends StatelessWidget {
     this.keysDisabledTextStyle,
     this.keyHeight,
     this.keyWidth,
+    this.vibrationEnabled = false,
     super.key,
   });
 
@@ -34,6 +37,7 @@ class Pinpad extends StatelessWidget {
   final TextStyle? keysDisabledTextStyle;
   final double? keyWidth;
   final double? keyHeight;
+  final bool vibrationEnabled;
 
   BoxDecoration? get _getDecoration =>
       enabled ? keyDefaultDecoration : keyDisabledDecoration;
@@ -77,6 +81,8 @@ class Pinpad extends StatelessWidget {
   double _getKeyWidth(BuildContext context) =>
       keyWidth ?? _getMaxKeyTextWidth(context) * 3;
 
+  Future<void> vibrate() async => HapticFeedback.mediumImpact();
+
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
@@ -97,7 +103,10 @@ class Pinpad extends StatelessWidget {
                         (3 * i + j + 1).toString(),
                         defaultTextStyle: _getTextStyle(context),
                         pressedTextStyle: keysPressedTextStyle,
-                        onTap: () => onKeyTap((3 * i + j + 1).toString()),
+                        onTap: () {
+                          onKeyTap((3 * i + j + 1).toString());
+                          if (vibrationEnabled) vibrate();
+                        },
                         decoration: _getDecoration,
                         pressedDecoration: keyPressedDecoration,
                         width: _getKeyWidth(context),
@@ -120,7 +129,10 @@ class Pinpad extends StatelessWidget {
                 '0',
                 defaultTextStyle: _getTextStyle(context),
                 pressedTextStyle: keysPressedTextStyle,
-                onTap: () => onKeyTap('0'),
+                onTap: () {
+                  onKeyTap('0');
+                  if (vibrationEnabled) vibrate();
+                },
                 decoration: _getDecoration,
                 pressedDecoration: keyPressedDecoration,
                 width: _getKeyWidth(context),

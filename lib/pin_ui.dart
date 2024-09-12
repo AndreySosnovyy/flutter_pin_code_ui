@@ -1,6 +1,5 @@
 library pin_ui;
 
-// TODO(Sosnovyy): add input vibration
 // TODO(Sosnovyy): add animations vibration
 
 export 'src/indicator/animations.dart';

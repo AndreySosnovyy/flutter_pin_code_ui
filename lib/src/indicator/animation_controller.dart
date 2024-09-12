@@ -21,7 +21,29 @@ class PinIndicatorAnimationController
     _configInitializationCompleter.complete();
     value = value.copyWith(
       inputAnimationController: PinAnimationControllerProvider.getControllerFor(
-        _config.inputAnimation!,
+        _config.inputAnimation,
+        vsync: vsync,
+      ),
+      loadingAnimationController:
+          PinAnimationControllerProvider.getControllerFor(
+        _config.loadingAnimation,
+        vsync: vsync,
+      ),
+      successAnimationController:
+          PinAnimationControllerProvider.getControllerFor(
+        _config.successAnimation,
+        vsync: vsync,
+      ),
+      errorAnimationController: PinAnimationControllerProvider.getControllerFor(
+        _config.errorAnimation,
+        vsync: vsync,
+      ),
+      clearAnimationController: PinAnimationControllerProvider.getControllerFor(
+        _config.clearAnimation,
+        vsync: vsync,
+      ),
+      eraseAnimationController: PinAnimationControllerProvider.getControllerFor(
+        _config.eraseAnimation,
         vsync: vsync,
       ),
     );
@@ -34,8 +56,7 @@ class PinIndicatorAnimationController
 
   Future<void> animateInput({required int currentLength}) async {
     _verifyInitialized();
-    assert(value.inputAnimationController != null &&
-        _config.inputAnimation != null);
+    assert(value.inputAnimationController != null);
     assert(currentLength >= 0 && currentLength <= value.maxLength);
     value = value.copyWith(currentLength: currentLength);
     value.inputAnimationController!.reset();
@@ -54,8 +75,7 @@ class PinIndicatorAnimationController
 
   Future<void> animateLoading() async {
     _verifyInitialized();
-    assert(value.loadingAnimationController != null &&
-        _config.loadingAnimation != null);
+    assert(value.loadingAnimationController != null);
     throw UnimplementedError();
   }
 
@@ -64,8 +84,7 @@ class PinIndicatorAnimationController
 
   Future<void> animateSuccess() async {
     _verifyInitialized();
-    assert(value.successAnimationController != null &&
-        _config.successAnimation != null);
+    assert(value.successAnimationController != null);
     throw UnimplementedError();
   }
 
@@ -74,8 +93,7 @@ class PinIndicatorAnimationController
 
   Future<void> animateError() async {
     _verifyInitialized();
-    assert(value.errorAnimationController != null &&
-        _config.errorAnimation != null);
+    assert(value.errorAnimationController != null);
     throw UnimplementedError();
   }
 
@@ -84,8 +102,7 @@ class PinIndicatorAnimationController
 
   Future<void> animateClear() async {
     _verifyInitialized();
-    assert(value.clearAnimationController != null &&
-        _config.clearAnimation != null);
+    assert(value.clearAnimationController != null);
     throw UnimplementedError();
   }
 
@@ -94,8 +111,7 @@ class PinIndicatorAnimationController
 
   Future<void> animateErase({required int currentLength}) async {
     _verifyInitialized();
-    assert(value.eraseAnimationController != null &&
-        _config.eraseAnimation != null);
+    assert(value.eraseAnimationController != null);
     assert(currentLength >= 0 && currentLength <= value.maxLength);
     value = value.copyWith(currentLength: currentLength);
     throw UnimplementedError();

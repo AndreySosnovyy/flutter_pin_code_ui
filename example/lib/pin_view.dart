@@ -86,8 +86,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                     : () async {
                         pinText = pinText.substring(0, pinText.length - 1);
                         setState(() {});
-                        // await pinIndicatorAnimationController.animateErase(
-                        //     currentLength: pinText.length);
+                        await pinIndicatorAnimationController.animateErase(
+                            currentLength: pinText.length);
                       },
                 child: pinText.isEmpty
                     // Display current biometrics type here

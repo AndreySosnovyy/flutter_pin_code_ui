@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animation_controller_providers.dart';
 import 'package:pin_ui/src/indicator/animation_controller_value.dart';
+import 'package:pin_ui/src/indicator/animations.dart';
 import 'package:pin_ui/src/indicator/animations_config.dart';
+import 'package:pin_ui/src/indicator/transitions/erase_deflate_transition.dart';
 import 'package:pin_ui/src/indicator/transitions/input_inflate_transition.dart';
 import 'package:pin_ui/src/indicator/widgets/pin_indicator_dot.dart';
 
@@ -60,8 +62,6 @@ class _PinIndicatorState extends State<PinIndicator> {
     super.initState();
   }
 
-  bool get _hasController => widget.controller != null;
-
   bool get _hasInputAnimationController =>
       widget.controller?.value.inputAnimationController != null;
 
@@ -107,25 +107,31 @@ class _PinIndicatorState extends State<PinIndicator> {
           Padding(
             padding: EdgeInsets.only(
                 right: i == widget.length - 1 ? 0 : widget.spacing),
-            child: _hasController &&
-                    _hasInputAnimationController &&
-                    i == widget.currentLength - 1
-                ? AnimatedBuilder(
+            child: Builder(
+              builder: (BuildContext context) {
+                final dot = PinIndicatorDot(
+                  size: widget.size,
+                  color: _getColorForIndex(i),
+                );
+                if (_hasEraseAnimationController &&
+                    i == widget.currentLength - 1) {
+                  return switch (widget.controller!._config.eraseAnimation!) {
+                    PinEraseAnimation.deflate => EraseDeflateTransition(
+                        animation: _eraseAnimationController!,
+                        child: dot,
+                      ),
+                  };
+                }
+                if (_hasInputAnimationController &&
+                    i == widget.currentLength - 1) {
+                  return InputInflateTransition(
                     animation: _inputAnimationController!,
-                    builder: (context, _) {
-                      return InputInflateTransition(
-                        animation: _inputAnimationController!,
-                        child: PinIndicatorDot(
-                          size: widget.size,
-                          color: _getColorForIndex(i),
-                        ),
-                      );
-                    },
-                  )
-                : PinIndicatorDot(
-                    size: widget.size,
-                    color: _getColorForIndex(i),
-                  ),
+                    child: dot,
+                  );
+                }
+                return dot;
+              },
+            ),
           ),
       ],
     );

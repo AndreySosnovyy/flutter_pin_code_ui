@@ -43,6 +43,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
               currentLength: pinText.length,
               isError: false,
               isSuccess: false,
+              // size: 54,
             ),
             const SizedBox(height: 64),
             Pinpad(

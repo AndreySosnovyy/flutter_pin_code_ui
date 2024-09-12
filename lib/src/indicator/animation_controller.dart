@@ -38,8 +38,15 @@ class PinIndicatorAnimationController
         _config.inputAnimation != null);
     assert(currentLength >= 0 && currentLength <= value.maxLength);
     value = value.copyWith(currentLength: currentLength);
-    await value.inputAnimationController!.forward();
-    await value.inputAnimationController!.reverse();
+    value.inputAnimationController!.reset();
+    await value.inputAnimationController!.animateTo(
+      value.inputAnimationController!.upperBound,
+      curve: Curves.ease,
+    );
+    await value.inputAnimationController!.animateTo(
+      value.inputAnimationController!.lowerBound,
+      curve: Curves.easeIn,
+    );
   }
 
   bool get isAnimatingInput =>

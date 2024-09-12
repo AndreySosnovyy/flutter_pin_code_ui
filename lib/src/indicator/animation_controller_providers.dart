@@ -10,7 +10,7 @@ class PinAnimationControllerProvider {
       PinInputAnimation inputAnimation => switch (inputAnimation) {
           PinInputAnimation.inflate => AnimationController(
               vsync: vsync,
-              duration: const Duration(milliseconds: 102),
+              duration: const Duration(milliseconds: 100),
               lowerBound: 1.0,
               upperBound: 1.3,
             ),

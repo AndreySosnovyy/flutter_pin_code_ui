@@ -117,11 +117,7 @@ class _PinIndicatorState extends State<PinIndicator> {
                         animation: _inputAnimationController!,
                         child: PinIndicatorDot(
                           size: widget.size,
-                          color: Color.lerp(
-                            _getColorForIndex(i),
-                            _getColorForIndex(i),
-                            _inputAnimationController!.value,
-                          )!,
+                          color: _getColorForIndex(i),
                         ),
                       );
                     },

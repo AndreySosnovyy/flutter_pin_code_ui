@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pin_ui/pin_ui.dart';
 
+const String validPin = '1111';
+
 class PinView extends StatefulWidget {
   const PinView({super.key});
 
@@ -27,16 +29,6 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
       PinIndicatorAnimationController(vsync: this);
   String pinText = '';
 
-  Future<void> onPinEntered() async {
-    assert(pinText.length == 4);
-    if (pinText == '1111') {
-      // await pinIndicatorAnimationController.animateSuccess();
-    } else {
-      // await pinIndicatorAnimationController.animateError();
-    }
-    setState(() => pinText = '');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +51,12 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                 setState(() {});
                 await pinIndicatorAnimationController.animateInput(
                     currentLength: pinText.length);
-                if (pinText.length == 4) await onPinEntered();
+                if (pinText == validPin) {
+                  // await pinIndicatorAnimationController.animateSuccess();
+                } else if (pinText.length == validPin.length) {
+                  // await pinIndicatorAnimationController.animateError();
+                }
+                if (pinText.length == 4) setState(() => pinText = '');
               },
               keysDefaultTextStyle: defaultTextStyle,
               keysPressedTextStyle: pressedTextStyle,
@@ -98,5 +95,11 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    pinIndicatorAnimationController.dispose();
+    super.dispose();
   }
 }

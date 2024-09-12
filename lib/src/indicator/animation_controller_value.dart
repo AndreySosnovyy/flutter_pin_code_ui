@@ -1,7 +1,7 @@
 import 'package:flutter/animation.dart';
 
-class PinIndicatorAnimationValue {
-  PinIndicatorAnimationValue({
+class PinIndicatorAnimationControllerValue {
+  PinIndicatorAnimationControllerValue({
     required this.currentLength,
     required this.maxLength,
     this.inputAnimationController,
@@ -37,7 +37,7 @@ class PinIndicatorAnimationValue {
   /// Controller for animating one symbol erasing
   final AnimationController? eraseAnimationController;
 
-  PinIndicatorAnimationValue copyWith({
+  PinIndicatorAnimationControllerValue copyWith({
     int? currentLength,
     int? maxLength,
     AnimationController? inputAnimationController,
@@ -47,7 +47,7 @@ class PinIndicatorAnimationValue {
     AnimationController? clearAnimationController,
     AnimationController? eraseAnimationController,
   }) {
-    return PinIndicatorAnimationValue(
+    return PinIndicatorAnimationControllerValue(
       currentLength: currentLength ?? this.currentLength,
       maxLength: maxLength ?? this.maxLength,
       inputAnimationController:

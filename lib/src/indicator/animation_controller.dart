@@ -1,12 +1,12 @@
-part of 'pin_indicator.dart';
+part of 'widgets/pin_indicator.dart';
 
 class PinIndicatorAnimationController
-    extends ValueNotifier<PinIndicatorAnimationValue> {
+    extends ValueNotifier<PinIndicatorAnimationControllerValue> {
   PinIndicatorAnimationController({
     required this.vsync,
     int currentLength = 0,
     int maxLength = 4,
-  }) : super(PinIndicatorAnimationValue(
+  }) : super(PinIndicatorAnimationControllerValue(
           currentLength: currentLength,
           maxLength: maxLength,
         ));
@@ -77,5 +77,16 @@ class PinIndicatorAnimationController
     assert(currentLength >= 0 && currentLength <= value.maxLength);
     value = value.copyWith(currentLength: currentLength);
     throw UnimplementedError();
+  }
+
+  @override
+  void dispose() {
+    value.inputAnimationController?.dispose();
+    value.loadingAnimationController?.dispose();
+    value.successAnimationController?.dispose();
+    value.errorAnimationController?.dispose();
+    value.clearAnimationController?.dispose();
+    value.eraseAnimationController?.dispose();
+    super.dispose();
   }
 }

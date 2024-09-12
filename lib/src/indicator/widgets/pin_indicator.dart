@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animation_controller_providers.dart';
+import 'package:pin_ui/src/indicator/animation_controller_value.dart';
 import 'package:pin_ui/src/indicator/animations_config.dart';
-import 'package:pin_ui/src/indicator/pin_indicator_animation_value.dart';
 import 'package:pin_ui/src/indicator/transitions/input_inflate_transition.dart';
+import 'package:pin_ui/src/indicator/widgets/pin_indicator_dot.dart';
 
-part 'pin_indicator_animation_controller.dart';
+part '../animation_controller.dart';
 
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
@@ -114,7 +115,7 @@ class _PinIndicatorState extends State<PinIndicator> {
                     builder: (context, _) {
                       return InputInflateTransition(
                         animation: inputAnimationController!,
-                        child: _IndicatorDot(
+                        child: PinIndicatorDot(
                           size: widget.size,
                           color: Color.lerp(
                             _getColorForIndex(i),
@@ -125,36 +126,12 @@ class _PinIndicatorState extends State<PinIndicator> {
                       );
                     },
                   )
-                : _IndicatorDot(
+                : PinIndicatorDot(
                     size: widget.size,
                     color: _getColorForIndex(i),
                   ),
           ),
       ],
-    );
-  }
-}
-
-class _IndicatorDot extends StatelessWidget {
-  const _IndicatorDot({
-    required this.color,
-    required this.size,
-  });
-
-  final Color color;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: color,
-        ),
-      ),
     );
   }
 }

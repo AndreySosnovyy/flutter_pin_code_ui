@@ -1,29 +1,11 @@
-enum PinInputAnimation {
-  inflate,
-}
+enum PinInputAnimation { inflate }
 
-enum PinLoadingAnimation {
-  jump,
-  jumpWithVibration,
-}
+enum PinLoadingAnimation { jump }
 
-enum PinSuccessAnimation {
-  collapse,
-  collapseWithVibration,
-}
+enum PinSuccessAnimation { collapse }
 
-enum PinErrorAnimation {
-  shake,
-  shakeWithVibration,
-}
+enum PinErrorAnimation { shake }
 
-enum PinClearAnimation {
-  drop,
-  deflate,
-  dropWithVibration,
-  deflateWithVibration,
-}
+enum PinClearAnimation { drop, deflate }
 
-enum PinEraseAnimation {
-  deflate,
-}
+enum PinEraseAnimation { deflate }

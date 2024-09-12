@@ -1,12 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:pin_ui/src/indicator/animation_controller_providers.dart';
 import 'package:pin_ui/src/indicator/animation_controller_value.dart';
 import 'package:pin_ui/src/indicator/animations.dart';
 import 'package:pin_ui/src/indicator/animations_config.dart';
-import 'package:pin_ui/src/indicator/transitions/erase_deflate_transition.dart';
-import 'package:pin_ui/src/indicator/transitions/input_inflate_transition.dart';
 import 'package:pin_ui/src/indicator/widgets/pin_indicator_dot.dart';
 
 part '../animation_controller.dart';
@@ -113,21 +110,22 @@ class _PinIndicatorState extends State<PinIndicator> {
                   size: widget.size,
                   color: _getColorForIndex(i),
                 );
-                if (_hasEraseAnimationController &&
+                // if (_hasEraseAnimationController && i == widget.currentLength) {
+                //   return switch (widget.controller!._config.eraseAnimation!) {
+                //     PinEraseAnimation.deflate => ScaleTransition(
+                //         scale: _eraseAnimationController!,
+                //         child: dot,
+                //       ),
+                //   };
+                // }
+                if (_hasInputAnimationController &&
                     i == widget.currentLength - 1) {
-                  return switch (widget.controller!._config.eraseAnimation!) {
-                    PinEraseAnimation.deflate => EraseDeflateTransition(
-                        animation: _eraseAnimationController!,
+                  return switch (widget.controller!._config.inputAnimation!) {
+                    PinInputAnimation.inflate => ScaleTransition(
+                        scale: _inputAnimationController!,
                         child: dot,
                       ),
                   };
-                }
-                if (_hasInputAnimationController &&
-                    i == widget.currentLength - 1) {
-                  return InputInflateTransition(
-                    animation: _inputAnimationController!,
-                    child: dot,
-                  );
                 }
                 return dot;
               },

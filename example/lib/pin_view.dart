@@ -27,6 +27,16 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
       PinIndicatorAnimationController(vsync: this);
   String pinText = '';
 
+  Future<void> onPinEntered() async {
+    assert(pinText.length == 4);
+    if (pinText == '1111') {
+      await pinIndicatorAnimationController.animateSuccess();
+    } else {
+      await pinIndicatorAnimationController.animateError();
+    }
+    setState(() => pinText = '');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +58,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                 setState(() {});
                 await pinIndicatorAnimationController.animateInput(
                     currentLength: pinText.length);
+                if (pinText.length == 4) await onPinEntered();
               },
               keysDefaultTextStyle: defaultTextStyle,
               keysPressedTextStyle: pressedTextStyle,
@@ -61,25 +72,24 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
-              rightExtraKeyChild: pinText.isEmpty
-                  ? GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
+              rightExtraKeyChild: PinpadKey(
+                decoration: defaultDecoration,
+                pressedDecoration: pressedDecoration,
+                onTap: pinText.isEmpty
+                    ? () {
                         // Call your biometrics method here
-                      },
-                      // Display current biometrics type here
-                      child: const Icon(Icons.fingerprint_rounded, size: 32),
-                    )
-                  : GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () async {
+                      }
+                    : () async {
                         pinText = pinText.substring(0, pinText.length - 1);
                         setState(() {});
                         await pinIndicatorAnimationController.animateErase(
                             currentLength: pinText.length);
                       },
-                      child: const Icon(Icons.backspace_outlined, size: 24),
-                    ),
+                child: pinText.isEmpty
+                    // Display current biometrics type here
+                    ? const Icon(Icons.fingerprint_rounded, size: 32)
+                    : const Icon(Icons.backspace_outlined, size: 24),
+              ),
             ),
             const Spacer(),
           ],

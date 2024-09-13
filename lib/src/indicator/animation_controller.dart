@@ -7,12 +7,7 @@ class PinIndicatorAnimationController
 
   bool get isAnimating => value != null;
 
-  /// Returns true if current animation is interruptible.
-  /// Returns false if current animation is not interruptible.
-  /// Returns null if there is no current animation.
-  bool? get isAnimatingInterruptible => value?.isInterruptible;
-
-  void stopAnimating() => value = null;
+  bool get isAnimatingNonInterruptible => !(value?.isInterruptible ?? true);
 
   bool get isAnimatingInput => value?.type == PinAnimationTypes.input;
 
@@ -26,48 +21,55 @@ class PinIndicatorAnimationController
 
   bool get isAnimatingErase => value?.type == PinAnimationTypes.erase;
 
-  Future<void> _startAnimation(dynamic animation) async {
+  void stopAnimating() {
+    value = null;
+    notifyListeners();
+  }
+
+  Future<void> _startAnimating(dynamic animation) async {
     value = PinIndicatorAnimation.fromImpl(animation);
+    notifyListeners();
     await Future.delayed(value!.duration);
+    stopAnimating();
   }
 
   Future<void> animateInput({
     PinInputAnimation animation = PinInputAnimation.inflate,
   }) async {
-    await _startAnimation(animation);
+    await _startAnimating(animation);
   }
 
   Future<void> animateLoading({
     PinLoadingAnimation animation = PinLoadingAnimation.jump,
     bool vibration = false,
   }) async {
-    await _startAnimation(animation);
+    await _startAnimating(animation);
   }
 
   Future<void> animateSuccess({
     PinSuccessAnimation animation = PinSuccessAnimation.collapse,
     bool vibration = false,
   }) async {
-    await _startAnimation(animation);
+    await _startAnimating(animation);
   }
 
   Future<void> animateError({
     PinErrorAnimation animation = PinErrorAnimation.shake,
     bool vibration = false,
   }) async {
-    await _startAnimation(animation);
+    await _startAnimating(animation);
   }
 
   Future<void> animateClear({
     PinClearAnimation animation = PinClearAnimation.drop,
     bool vibration = false,
   }) async {
-    await _startAnimation(animation);
+    await _startAnimating(animation);
   }
 
   Future<void> animateErase({
     PinEraseAnimation animation = PinEraseAnimation.deflate,
   }) async {
-    await _startAnimation(animation);
+    await _startAnimating(animation);
   }
 }

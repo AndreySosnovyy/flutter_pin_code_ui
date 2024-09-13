@@ -9,7 +9,8 @@ class EraseDeflatePinIndicator extends StatefulWidget {
     required this.duration,
     required this.spacing,
     super.key,
-  });
+  })  : assert(currentPinLength >= 0),
+        assert(currentPinLength < length);
 
   final PinIndicatorItemBuilder builder;
   final int length;

@@ -9,7 +9,8 @@ class InputInflatePinIndicator extends StatefulWidget {
     required this.currentPinLength,
     required this.spacing,
     super.key,
-  });
+  })  : assert(currentPinLength > 0),
+        assert(currentPinLength <= length);
 
   final PinIndicatorItemBuilder builder;
   final int length;
@@ -18,7 +19,8 @@ class InputInflatePinIndicator extends StatefulWidget {
   final double spacing;
 
   @override
-  State<InputInflatePinIndicator> createState() => _InputInflatePinIndicatorState();
+  State<InputInflatePinIndicator> createState() =>
+      _InputInflatePinIndicatorState();
 }
 
 class _InputInflatePinIndicatorState extends State<InputInflatePinIndicator>

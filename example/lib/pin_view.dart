@@ -48,8 +48,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
               onKeyTap: (key) async {
                 if (pinText.length == validPin.length &&
                     pinIndicatorAnimationController.isAnimatingInput) return;
-                pinText += key;
-                setState(() {});
+                setState(() => pinText += key);
                 await pinIndicatorAnimationController.animateInput();
                 if (pinText == validPin) {
                   await pinIndicatorAnimationController.animateLoading();
@@ -63,8 +62,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                 }
               },
               enabled:
-                  !(pinIndicatorAnimationController.isAnimatingInterruptible ??
-                      false),
+                  !pinIndicatorAnimationController.isAnimatingNonInterruptible,
               keysDefaultTextStyle: defaultTextStyle,
               keysPressedTextStyle: pressedTextStyle,
               keysDisabledTextStyle: disabledTextStyle,
@@ -73,9 +71,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
               keyDisabledDecoration: disabledKeyDecoration,
               vibrationEnabled: true,
               leftExtraKeyChild: PinpadKey(
-                enabled:
-                    pinIndicatorAnimationController.isAnimatingInterruptible ??
-                        true,
+                enabled: !pinIndicatorAnimationController
+                    .isAnimatingNonInterruptible,
                 defaultDecoration: defaultKeyDecoration,
                 pressedDecoration: pressedKeyDecoration,
                 child: Text(
@@ -85,9 +82,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                 onTap: () {},
               ),
               rightExtraKeyChild: PinpadKey(
-                enabled:
-                    pinIndicatorAnimationController.isAnimatingInterruptible ??
-                        true,
+                enabled: !pinIndicatorAnimationController
+                    .isAnimatingNonInterruptible,
                 defaultDecoration: defaultKeyDecoration,
                 pressedDecoration: pressedKeyDecoration,
                 onTap: pinText.isEmpty

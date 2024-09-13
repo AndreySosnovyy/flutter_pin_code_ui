@@ -95,7 +95,6 @@ class _PinpadTextKeyState extends State<PinpadTextKey> {
 
   @override
   Widget build(BuildContext context) {
-    print('widget.enabled = ${widget.enabled}');
     return IgnorePointer(
       ignoring: !widget.enabled,
       child: GestureDetector(

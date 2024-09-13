@@ -18,7 +18,6 @@ const BoxDecoration _dotDefaultErrorDecoration =
 const BoxDecoration _dotDefaultInputDecoration =
     BoxDecoration(shape: BoxShape.circle, color: Colors.blue);
 
-// TODO(Sosnovyy): add builder constructor
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
     required this.length,
@@ -115,12 +114,10 @@ class _PinIndicatorDot extends StatelessWidget {
   const _PinIndicatorDot({
     required this.decoration,
     required this.size,
-    this.child,
   });
 
   final BoxDecoration decoration;
   final double size;
-  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +126,6 @@ class _PinIndicatorDot extends StatelessWidget {
       height: size,
       child: DecoratedBox(
         decoration: decoration,
-        child: child,
       ),
     );
   }

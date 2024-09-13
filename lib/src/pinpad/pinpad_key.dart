@@ -6,8 +6,9 @@ class PinpadKey extends StatefulWidget {
   const PinpadKey({
     required this.child,
     required this.onTap,
-    this.decoration,
+    this.defaultDecoration,
     this.pressedDecoration,
+    this.disabledDecoration,
     this.width,
     this.height,
     this.enabled = true,
@@ -16,8 +17,9 @@ class PinpadKey extends StatefulWidget {
 
   final Widget child;
   final VoidCallback onTap;
-  final BoxDecoration? decoration;
+  final BoxDecoration? defaultDecoration;
   final BoxDecoration? pressedDecoration;
+  final BoxDecoration? disabledDecoration;
   final double? width;
   final double? height;
   final bool enabled;
@@ -44,7 +46,11 @@ class _PinpadKeyState extends State<PinpadKey> {
           duration: const Duration(milliseconds: 120),
           width: widget.width,
           height: widget.height,
-          decoration: _isPressed ? widget.pressedDecoration : widget.decoration,
+          decoration: widget.enabled
+              ? _isPressed
+                  ? widget.pressedDecoration
+                  : widget.defaultDecoration
+              : widget.disabledDecoration,
           child: Center(child: widget.child),
         ),
       ),
@@ -58,8 +64,10 @@ class PinpadTextKey extends StatefulWidget {
     required this.onTap,
     this.defaultTextStyle,
     this.pressedTextStyle,
-    this.decoration,
+    this.disabledTextStyle,
+    this.defaultDecoration,
     this.pressedDecoration,
+    this.disabledDecoration,
     this.width,
     this.height,
     this.enabled = true,
@@ -69,9 +77,11 @@ class PinpadTextKey extends StatefulWidget {
   final String text;
   final TextStyle? defaultTextStyle;
   final TextStyle? pressedTextStyle;
+  final TextStyle? disabledTextStyle;
   final VoidCallback onTap;
-  final BoxDecoration? decoration;
+  final BoxDecoration? defaultDecoration;
   final BoxDecoration? pressedDecoration;
+  final BoxDecoration? disabledDecoration;
   final double? width;
   final double? height;
   final bool enabled;
@@ -85,6 +95,7 @@ class _PinpadTextKeyState extends State<PinpadTextKey> {
 
   @override
   Widget build(BuildContext context) {
+    print('widget.enabled = ${widget.enabled}');
     return IgnorePointer(
       ignoring: !widget.enabled,
       child: GestureDetector(
@@ -98,13 +109,19 @@ class _PinpadTextKeyState extends State<PinpadTextKey> {
           duration: const Duration(milliseconds: 120),
           width: widget.width,
           height: widget.height,
-          decoration: _isPressed ? widget.pressedDecoration : widget.decoration,
+          decoration: widget.enabled
+              ? _isPressed
+                  ? widget.pressedDecoration
+                  : widget.defaultDecoration
+              : widget.disabledDecoration,
           child: Center(
             child: Text(
               widget.text,
-              style: _isPressed
-                  ? widget.pressedTextStyle
-                  : widget.defaultTextStyle,
+              style: widget.enabled
+                  ? _isPressed
+                      ? widget.pressedTextStyle
+                      : widget.defaultTextStyle
+                  : widget.disabledTextStyle,
             ),
           ),
         ),

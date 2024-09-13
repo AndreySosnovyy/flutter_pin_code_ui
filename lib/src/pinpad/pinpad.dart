@@ -38,12 +38,8 @@ class Pinpad extends StatelessWidget {
   final double? keyHeight;
   final bool vibrationEnabled;
 
-  BoxDecoration? get _getDecoration =>
-      enabled ? keyDefaultDecoration : keyDisabledDecoration;
-
   TextStyle? _getTextStyle(BuildContext context) =>
-      (enabled ? keysDefaultTextStyle : keysDisabledTextStyle) ??
-      Theme.of(context).textTheme.titleLarge;
+      keysDefaultTextStyle ?? Theme.of(context).textTheme.titleLarge;
 
   double _getDefaultSpacing(BuildContext context) =>
       (MediaQuery.of(context).size.width - _getMaxKeyTextWidth(context) * 3) /
@@ -101,13 +97,16 @@ class Pinpad extends StatelessWidget {
                       child: PinpadTextKey(
                         (3 * i + j + 1).toString(),
                         defaultTextStyle: _getTextStyle(context),
+                        disabledTextStyle: keysDisabledTextStyle,
                         pressedTextStyle: keysPressedTextStyle,
                         onTap: () {
                           onKeyTap((3 * i + j + 1).toString());
                           if (vibrationEnabled) vibrate();
                         },
-                        decoration: _getDecoration,
+                        enabled: enabled,
+                        defaultDecoration: keyDefaultDecoration,
                         pressedDecoration: keyPressedDecoration,
+                        disabledDecoration: keyDisabledDecoration,
                         width: _getKeyWidth(context),
                         height: _getKeyHeight(context),
                       ),
@@ -127,12 +126,15 @@ class Pinpad extends StatelessWidget {
               PinpadTextKey(
                 '0',
                 defaultTextStyle: _getTextStyle(context),
+                disabledTextStyle: keysDisabledTextStyle,
                 pressedTextStyle: keysPressedTextStyle,
                 onTap: () {
                   onKeyTap('0');
                   if (vibrationEnabled) vibrate();
                 },
-                decoration: _getDecoration,
+                enabled: enabled,
+                defaultDecoration: keyDefaultDecoration,
+                disabledDecoration: keyDisabledDecoration,
                 pressedDecoration: keyPressedDecoration,
                 width: _getKeyWidth(context),
                 height: _getKeyHeight(context),

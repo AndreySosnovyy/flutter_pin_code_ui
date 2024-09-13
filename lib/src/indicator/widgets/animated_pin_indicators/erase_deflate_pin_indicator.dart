@@ -18,14 +18,15 @@ class EraseDeflatePinIndicator extends StatefulWidget {
   final double spacing;
 
   @override
-  State<EraseDeflatePinIndicator> createState() => _EraseDeflatePinIndicatorState();
+  State<EraseDeflatePinIndicator> createState() =>
+      _EraseDeflatePinIndicatorState();
 }
 
 class _EraseDeflatePinIndicatorState extends State<EraseDeflatePinIndicator>
     with SingleTickerProviderStateMixin {
   late final animation = AnimationController(
     vsync: this,
-    duration: Duration(milliseconds: widget.duration.inMilliseconds ~/ 2),
+    duration: widget.duration ~/ 2,
     lowerBound: 0.9,
     upperBound: 1.0,
     value: 1.0,

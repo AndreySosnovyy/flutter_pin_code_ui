@@ -25,7 +25,7 @@ class _InputInflatePinIndicatorState extends State<InputInflatePinIndicator>
     with SingleTickerProviderStateMixin {
   late final animation = AnimationController(
     vsync: this,
-    duration: Duration(milliseconds: widget.duration.inMilliseconds ~/ 2),
+    duration: widget.duration ~/ 2,
     lowerBound: 1.0,
     upperBound: 1.3,
   );

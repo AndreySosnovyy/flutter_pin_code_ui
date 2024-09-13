@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animations.dart';
 
@@ -7,10 +5,12 @@ class PinIndicatorAnimationController
     extends ValueNotifier<PinIndicatorAnimation?> {
   PinIndicatorAnimationController() : super(null);
 
-  // TODO(Sosnovyy): implement queue logic
-  final _animationsQueue = Queue();
-
   bool get isAnimating => value != null;
+
+  /// Returns true if current animation is interruptible.
+  /// Returns false if current animation is not interruptible.
+  /// Returns null if there is no current animation.
+  bool? get isAnimatingInterruptible => value?.isInterruptible;
 
   void stopAnimating() => value = null;
 

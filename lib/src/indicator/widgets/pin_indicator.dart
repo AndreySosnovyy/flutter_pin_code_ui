@@ -3,6 +3,7 @@ import 'package:pin_ui/src/indicator/animation_controller.dart';
 import 'package:pin_ui/src/indicator/animations.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_deflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_inflate_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading_jump_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
 const BoxDecoration _dotDefaultDefaultDecoration =
@@ -85,7 +86,13 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => dots[i],
               spacing: widget.spacing,
             ),
-          PinIndicatorLoadingJumpAnimation() => noAnimationPinIndicator,
+          PinIndicatorLoadingJumpAnimation() => LoadingJumpPinIndicator(
+              key: UniqueKey(),
+              length: widget.length,
+              duration: animation.duration,
+              builder: (i) => dots[i],
+              spacing: widget.spacing,
+            ),
           PinIndicatorSuccessCollapseAnimation() => noAnimationPinIndicator,
           PinIndicatorErrorShakeAnimation() => noAnimationPinIndicator,
           PinIndicatorClearDropAnimation() => noAnimationPinIndicator,
@@ -99,22 +106,6 @@ class _PinIndicatorState extends State<PinIndicator> {
             ),
           _ => noAnimationPinIndicator,
         };
-        // if (_hasLoadingAnimationController) {
-        //   return switch (widget.controller!._config.loadingAnimation!) {
-        //     PinLoadingAnimation.jump => AnimatedBuilder(
-        //       animation: _loadingAnimationController!,
-        //       child: dot,
-        //       builder: (context, child) {
-        //         final offset =
-        //             _loadingAnimationController!.value * 64;
-        //         return Transform.translate(
-        //           offset: Offset(0, -offset),
-        //           child: dot,
-        //         );
-        //       },
-        //     ),
-        //   };
-        // }
       },
     );
   }

@@ -11,13 +11,13 @@ class PinView extends StatefulWidget {
 }
 
 class _PinViewState extends State<PinView> with TickerProviderStateMixin {
-  late final defaultDecoration = const BoxDecoration(
+  late final defaultKeyDecoration = const BoxDecoration(
     shape: BoxShape.circle,
   );
-  late final pressedDecoration = defaultDecoration.copyWith(
+  late final pressedKeyDecoration = defaultKeyDecoration.copyWith(
     color: Colors.blue.withOpacity(0.1),
   );
-  late final disabledDecoration = defaultDecoration.copyWith();
+  late final disabledKeyDecoration = defaultKeyDecoration.copyWith();
 
   late final defaultTextStyle =
       Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 32);
@@ -62,22 +62,34 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                   setState(() => pinText = '');
                 }
               },
+              enabled:
+                  !(pinIndicatorAnimationController.isAnimatingInterruptible ??
+                      false),
               keysDefaultTextStyle: defaultTextStyle,
               keysPressedTextStyle: pressedTextStyle,
               keysDisabledTextStyle: disabledTextStyle,
-              keyDefaultDecoration: defaultDecoration,
-              keyPressedDecoration: pressedDecoration,
-              keyDisabledDecoration: disabledDecoration,
+              keyDefaultDecoration: defaultKeyDecoration,
+              keyPressedDecoration: pressedKeyDecoration,
+              keyDisabledDecoration: disabledKeyDecoration,
               vibrationEnabled: true,
-              leftExtraKeyChild: Center(
+              leftExtraKeyChild: PinpadKey(
+                enabled:
+                    pinIndicatorAnimationController.isAnimatingInterruptible ??
+                        true,
+                defaultDecoration: defaultKeyDecoration,
+                pressedDecoration: pressedKeyDecoration,
                 child: Text(
                   'Extra key',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
+                onTap: () {},
               ),
               rightExtraKeyChild: PinpadKey(
-                decoration: defaultDecoration,
-                pressedDecoration: pressedDecoration,
+                enabled:
+                    pinIndicatorAnimationController.isAnimatingInterruptible ??
+                        true,
+                defaultDecoration: defaultKeyDecoration,
+                pressedDecoration: pressedKeyDecoration,
                 onTap: pinText.isEmpty
                     ? () {
                         // Call your biometrics method here

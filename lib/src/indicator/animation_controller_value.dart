@@ -4,15 +4,13 @@ class PinIndicatorAnimationControllerValue {
   PinIndicatorAnimationControllerValue({
     required this.currentLength,
     required this.maxLength,
-    required this.vsync,
-  }) {
-    inputAnimationController = AnimationController(vsync: vsync);
-    loadingAnimationController = AnimationController(vsync: vsync);
-    successAnimationController = AnimationController(vsync: vsync);
-    errorAnimationController = AnimationController(vsync: vsync);
-    clearAnimationController = AnimationController(vsync: vsync);
-    eraseAnimationController = AnimationController(vsync: vsync);
-  }
+    this.inputAnimationController,
+    this.loadingAnimationController,
+    this.successAnimationController,
+    this.errorAnimationController,
+    this.clearAnimationController,
+    this.eraseAnimationController,
+  });
 
   /// Current length of input
   final int currentLength;
@@ -21,25 +19,23 @@ class PinIndicatorAnimationControllerValue {
   /// Defaults to 4.
   final int maxLength;
 
-  final TickerProvider vsync;
-
   /// Controller for animating one key input
-  late final AnimationController inputAnimationController;
+  final AnimationController? inputAnimationController;
 
   /// Controller for animating loading state
-  late final AnimationController loadingAnimationController;
+  final AnimationController? loadingAnimationController;
 
   /// Controller for animating valid pin
-  late final AnimationController successAnimationController;
+  final AnimationController? successAnimationController;
 
   /// Controller for animating invalid pin
-  late final AnimationController errorAnimationController;
+  final AnimationController? errorAnimationController;
 
   /// Controller for animating whole pin clearing
-  late final AnimationController clearAnimationController;
+  final AnimationController? clearAnimationController;
 
   /// Controller for animating one symbol erasing
-  late final AnimationController eraseAnimationController;
+  final AnimationController? eraseAnimationController;
 
   PinIndicatorAnimationControllerValue copyWith({
     int? currentLength,
@@ -52,9 +48,20 @@ class PinIndicatorAnimationControllerValue {
     AnimationController? eraseAnimationController,
   }) {
     return PinIndicatorAnimationControllerValue(
-      vsync: vsync,
       currentLength: currentLength ?? this.currentLength,
       maxLength: maxLength ?? this.maxLength,
+      inputAnimationController:
+      inputAnimationController ?? this.inputAnimationController,
+      loadingAnimationController:
+      loadingAnimationController ?? this.loadingAnimationController,
+      successAnimationController:
+      successAnimationController ?? this.successAnimationController,
+      errorAnimationController:
+      errorAnimationController ?? this.errorAnimationController,
+      clearAnimationController:
+      clearAnimationController ?? this.clearAnimationController,
+      eraseAnimationController:
+      eraseAnimationController ?? this.eraseAnimationController,
     );
   }
 }

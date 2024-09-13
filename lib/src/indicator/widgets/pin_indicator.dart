@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animation_controller_providers.dart';
@@ -61,6 +62,8 @@ class _PinIndicatorState extends State<PinIndicator> {
     super.initState();
   }
 
+  bool get _hasController => widget.controller != null;
+
   bool get _hasInputAnimationController =>
       widget.controller?.value.inputAnimationController != null;
 
@@ -99,48 +102,67 @@ class _PinIndicatorState extends State<PinIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    return PinIndicatorBuilder(
-      length: widget.length,
-      spacing: widget.spacing,
-      builder: (context, i) {
-        final dot = PinIndicatorDot(
-          size: widget.size,
-          color: _getColorForIndex(i),
+    return ValueListenableBuilder(
+      valueListenable:
+          widget.controller?.animationValueNotifier ?? ValueNotifier(null),
+      builder: (context, animation, child) {
+        return PinIndicatorBuilder(
+          length: widget.length,
+          spacing: widget.spacing,
+          builder: (context, i) {
+            final dot = PinIndicatorDot(
+              size: widget.size,
+              color: _getColorForIndex(i),
+            );
+            return switch (animation) {
+              PinInputInflateAnimation() => i == widget.currentLength - 1
+                  ? ScaleTransition(
+                      scale: _inputAnimationController!,
+                      child: dot,
+                    )
+                  : dot,
+              PinLoadingJumpAnimation() => dot,
+              PinSuccessCollapseAnimation() => dot,
+              PinErrorShakeAnimation() => dot,
+              PinClearDropAnimation() => dot,
+              PinEraseDeflateAnimation() => dot,
+              null => dot,
+            };
+            // if (_hasInputAnimationController &&
+            //     i == widget.currentLength - 1) {
+            //   return switch (widget.controller!._config.inputAnimation!) {
+            //     PinInputAnimation.inflate => ScaleTransition(
+            //         scale: _inputAnimationController!,
+            //         child: dot,
+            //       ),
+            //   };
+            // }
+            // if (_hasLoadingAnimationController) {
+            //   return switch (widget.controller!._config.loadingAnimation!) {
+            //     PinLoadingAnimation.jump => AnimatedBuilder(
+            //       animation: _loadingAnimationController!,
+            //       child: dot,
+            //       builder: (context, child) {
+            //         final offset =
+            //             _loadingAnimationController!.value * 64;
+            //         return Transform.translate(
+            //           offset: Offset(0, -offset),
+            //           child: dot,
+            //         );
+            //       },
+            //     ),
+            //   };
+            // }
+            // if (_hasEraseAnimationController && i == widget.currentLength) {
+            //   return switch (widget.controller!._config.eraseAnimation!) {
+            //     PinEraseAnimation.deflate => ScaleTransition(
+            //         scale: _eraseAnimationController!,
+            //         child: dot,
+            //       ),
+            //   };
+            // }
+          },
         );
-        // if (_hasInputAnimationController &&
-        //     i == widget.currentLength - 1) {
-        //   return switch (widget.controller!._config.inputAnimation!) {
-        //     PinInputAnimation.inflate => ScaleTransition(
-        //         scale: _inputAnimationController!,
-        //         child: dot,
-        //       ),
-        //   };
-        // }
-        // if (_hasLoadingAnimationController) {
-        //   return switch (widget.controller!._config.loadingAnimation!) {
-        //     PinLoadingAnimation.jump => AnimatedBuilder(
-        //       animation: _loadingAnimationController!,
-        //       child: dot,
-        //       builder: (context, child) {
-        //         final offset =
-        //             _loadingAnimationController!.value * 64;
-        //         return Transform.translate(
-        //           offset: Offset(0, -offset),
-        //           child: dot,
-        //         );
-        //       },
-        //     ),
-        //   };
-        // }
-        // if (_hasEraseAnimationController && i == widget.currentLength) {
-        //   return switch (widget.controller!._config.eraseAnimation!) {
-        //     PinEraseAnimation.deflate => ScaleTransition(
-        //         scale: _eraseAnimationController!,
-        //         child: dot,
-        //       ),
-        //   };
-        // }
-        return dot;
       },
     );
   }

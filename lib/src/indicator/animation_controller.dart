@@ -42,14 +42,22 @@ class PinIndicatorAnimationController
         'Controller has no listeners. Layout them before calling animate methods.');
   }
 
+  // TODO(Sosnovyy): implement queue logic
+  final _animationsQueue = Queue();
+
+  final animationValueNotifier = ValueNotifier<PinAnimation?>(null);
+
   Future<void> animateInput({
-    required int currentLength,
+    required int newLength,
+    PinInputAnimation animation = PinInputAnimation.inflate,
     bool vibration = false,
   }) async {
+    animationValueNotifier.value = PinAnimation.fromImpl(animation);
+
     _verifyInitialized();
     assert(value.inputAnimationController != null);
-    assert(currentLength >= 0 && currentLength <= value.maxLength);
-    value = value.copyWith(currentLength: currentLength);
+    assert(newLength >= 0 && newLength <= value.maxLength);
+    value = value.copyWith(currentLength: newLength);
     switch (_config.inputAnimation!) {
       case PinInputAnimation.inflate:
         value.inputAnimationController!.reset();
@@ -122,11 +130,11 @@ class PinIndicatorAnimationController
   bool get isAnimatingClear =>
       value.clearAnimationController?.isAnimating ?? false;
 
-  Future<void> animateErase({required int currentLength}) async {
+  Future<void> animateErase({required int newLength}) async {
     _verifyInitialized();
     assert(value.eraseAnimationController != null);
-    assert(currentLength >= 0 && currentLength <= value.maxLength);
-    value = value.copyWith(currentLength: currentLength);
+    assert(newLength >= 0 && newLength <= value.maxLength);
+    value = value.copyWith(currentLength: newLength);
     switch (_config.eraseAnimation!) {
       case PinEraseAnimation.deflate:
         value.eraseAnimationController!.reset();

@@ -33,7 +33,6 @@ class PinAnimationControllerProvider {
         },
       PinClearAnimation clearAnimation => switch (clearAnimation) {
           PinClearAnimation.drop => AnimationController(vsync: vsync),
-          PinClearAnimation.deflate => AnimationController(vsync: vsync),
         },
       PinEraseAnimation eraseAnimation => switch (eraseAnimation) {
           PinEraseAnimation.deflate => AnimationController(

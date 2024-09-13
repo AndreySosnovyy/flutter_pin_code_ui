@@ -43,7 +43,6 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
               currentLength: pinText.length,
               isError: false,
               isSuccess: false,
-              // size: 54,
             ),
             const SizedBox(height: 64),
             Pinpad(
@@ -53,7 +52,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                 pinText += key;
                 setState(() {});
                 await pinIndicatorAnimationController.animateInput(
-                    currentLength: pinText.length);
+                    newLength: pinText.length);
                 if (pinText == validPin) {
                   await pinIndicatorAnimationController.animateLoading();
                   // await pinIndicatorAnimationController.animateSuccess();
@@ -88,7 +87,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                         pinText = pinText.substring(0, pinText.length - 1);
                         setState(() {});
                         await pinIndicatorAnimationController.animateErase(
-                            currentLength: pinText.length);
+                            newLength: pinText.length);
                       },
                 child: pinText.isEmpty
                     // Display current biometrics type here

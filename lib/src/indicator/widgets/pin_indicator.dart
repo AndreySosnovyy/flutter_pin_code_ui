@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animation_controller.dart';
 import 'package:pin_ui/src/indicator/animations.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_builders/erase_deflate.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_builders/input_inflate.dart';
-import 'package:pin_ui/src/indicator/widgets/pin_indicator_builder.dart';
-import 'package:pin_ui/src/indicator/widgets/pin_indicator_dot.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_deflate_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_inflate_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
 const BoxDecoration _dotDefaultDefaultDecoration =
     BoxDecoration(shape: BoxShape.circle, color: Colors.black12);
@@ -18,6 +17,7 @@ const BoxDecoration _dotDefaultErrorDecoration =
 const BoxDecoration _dotDefaultInputDecoration =
     BoxDecoration(shape: BoxShape.circle, color: Colors.blue);
 
+// TODO(Sosnovyy): add builder constructor
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
     required this.length,
@@ -51,7 +51,7 @@ class PinIndicator extends StatefulWidget {
 }
 
 class _PinIndicatorState extends State<PinIndicator> {
-  BoxDecoration _getDecorationForIndex(int index) {
+  BoxDecoration _getDecorationForDotIndexed(int index) {
     if (widget.isSuccess) return widget.successDecoration;
     if (widget.isError) return widget.errorDecoration;
     if (index < widget.currentLength) return widget.inputDecoration;
@@ -63,52 +63,83 @@ class _PinIndicatorState extends State<PinIndicator> {
     return ValueListenableBuilder(
       valueListenable: widget.controller ?? ValueNotifier(null),
       builder: (context, animation, child) {
-        return PinIndicatorBuilder(
+        final dots = List.generate(
+          widget.length,
+          (i) => _PinIndicatorDot(
+            size: widget.size,
+            decoration: _getDecorationForDotIndexed(i),
+          ),
+        );
+        final noAnimationPinIndicator = NoAnimationPinIndicator(
           length: widget.length,
           spacing: widget.spacing,
-          builder: (context, i) {
-            final dot = PinIndicatorDot(
-              size: widget.size,
-              decoration: _getDecorationForIndex(i),
-            );
-            return switch (animation) {
-              PinInputInflateAnimation() => i == widget.currentLength - 1
-                  ? InputInflateAnimated(
-                      duration: animation.duration,
-                      child: dot,
-                    )
-                  : dot,
-              PinLoadingJumpAnimation() => dot,
-              PinSuccessCollapseAnimation() => dot,
-              PinErrorShakeAnimation() => dot,
-              PinClearDropAnimation() => dot,
-              PinEraseDeflateAnimation() => i == widget.currentLength
-                  ? EraseDeflateAnimated(
-                      duration: animation.duration,
-                      child: dot,
-                    )
-                  : dot,
-              _ => dot,
-            };
-            // if (_hasLoadingAnimationController) {
-            //   return switch (widget.controller!._config.loadingAnimation!) {
-            //     PinLoadingAnimation.jump => AnimatedBuilder(
-            //       animation: _loadingAnimationController!,
-            //       child: dot,
-            //       builder: (context, child) {
-            //         final offset =
-            //             _loadingAnimationController!.value * 64;
-            //         return Transform.translate(
-            //           offset: Offset(0, -offset),
-            //           child: dot,
-            //         );
-            //       },
-            //     ),
-            //   };
-            // }
-          },
+          builder: (i) => dots[i],
         );
+        if (animation == null) return noAnimationPinIndicator;
+        return switch (animation) {
+          PinIndicatorInputInflateAnimation() => InputInflatePinIndicator(
+              key: UniqueKey(),
+              length: widget.length,
+              currentPinLength: widget.currentLength,
+              duration: animation.duration,
+              builder: (i) => dots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorLoadingJumpAnimation() => noAnimationPinIndicator,
+          PinIndicatorSuccessCollapseAnimation() => noAnimationPinIndicator,
+          PinIndicatorErrorShakeAnimation() => noAnimationPinIndicator,
+          PinIndicatorClearDropAnimation() => noAnimationPinIndicator,
+          PinIndicatorEraseDeflateAnimation() => EraseDeflatePinIndicator(
+              key: UniqueKey(),
+              length: widget.length,
+              currentPinLength: widget.currentLength,
+              duration: animation.duration,
+              builder: (i) => dots[i],
+              spacing: widget.spacing,
+            ),
+          _ => noAnimationPinIndicator,
+        };
+        // if (_hasLoadingAnimationController) {
+        //   return switch (widget.controller!._config.loadingAnimation!) {
+        //     PinLoadingAnimation.jump => AnimatedBuilder(
+        //       animation: _loadingAnimationController!,
+        //       child: dot,
+        //       builder: (context, child) {
+        //         final offset =
+        //             _loadingAnimationController!.value * 64;
+        //         return Transform.translate(
+        //           offset: Offset(0, -offset),
+        //           child: dot,
+        //         );
+        //       },
+        //     ),
+        //   };
+        // }
       },
+    );
+  }
+}
+
+class _PinIndicatorDot extends StatelessWidget {
+  const _PinIndicatorDot({
+    required this.decoration,
+    required this.size,
+    this.child,
+  });
+
+  final BoxDecoration decoration;
+  final double size;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: DecoratedBox(
+        decoration: decoration,
+        child: child,
+      ),
     );
   }
 }

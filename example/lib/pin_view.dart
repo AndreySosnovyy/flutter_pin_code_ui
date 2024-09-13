@@ -53,9 +53,10 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                 await pinIndicatorAnimationController.animateInput();
                 if (pinText == validPin) {
                   await pinIndicatorAnimationController.animateLoading();
-                  // await pinIndicatorAnimationController.animateSuccess();
+                  await pinIndicatorAnimationController.animateSuccess();
                 } else if (pinText.length == validPin.length) {
-                  // await pinIndicatorAnimationController.animateError();
+                  await pinIndicatorAnimationController.animateError();
+                  await pinIndicatorAnimationController.animateClear();
                 }
                 if (pinText.length == validPin.length) {
                   setState(() => pinText = '');

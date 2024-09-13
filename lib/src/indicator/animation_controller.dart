@@ -3,7 +3,8 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animations.dart';
 
-class PinIndicatorAnimationController extends ValueNotifier<PinAnimation?> {
+class PinIndicatorAnimationController
+    extends ValueNotifier<PinIndicatorAnimation?> {
   PinIndicatorAnimationController() : super(null);
 
   // TODO(Sosnovyy): implement queue logic
@@ -26,7 +27,7 @@ class PinIndicatorAnimationController extends ValueNotifier<PinAnimation?> {
   bool get isAnimatingErase => value?.type == PinAnimationTypes.erase;
 
   Future<void> _startAnimation(dynamic animation) async {
-    value = PinAnimation.fromImpl(animation);
+    value = PinIndicatorAnimation.fromImpl(animation);
     await Future.delayed(value!.duration);
   }
 
@@ -40,15 +41,7 @@ class PinIndicatorAnimationController extends ValueNotifier<PinAnimation?> {
     PinLoadingAnimation animation = PinLoadingAnimation.jump,
     bool vibration = false,
   }) async {
-    // value.loadingAnimationController!.reset();
-    // await value.loadingAnimationController!.animateTo(
-    //   value.loadingAnimationController!.upperBound,
-    //   curve: Curves.easeOutCubic,
-    // );
-    // await value.loadingAnimationController!.animateTo(
-    //   value.loadingAnimationController!.lowerBound,
-    //   curve: Curves.easeOut,
-    // );
+    await _startAnimation(animation);
   }
 
   Future<void> animateSuccess({

@@ -1,20 +1,27 @@
 import 'package:flutter/cupertino.dart';
+import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
-class EraseDeflateAnimated extends StatefulWidget {
-  const EraseDeflateAnimated({
-    required this.child,
+class EraseDeflatePinIndicator extends StatefulWidget {
+  const EraseDeflatePinIndicator({
+    required this.builder,
+    required this.length,
+    required this.currentPinLength,
     required this.duration,
+    required this.spacing,
     super.key,
   });
 
+  final PinIndicatorItemBuilder builder;
+  final int length;
+  final int currentPinLength;
   final Duration duration;
-  final Widget child;
+  final double spacing;
 
   @override
-  State<EraseDeflateAnimated> createState() => _EraseDeflateAnimatedState();
+  State<EraseDeflatePinIndicator> createState() => _EraseDeflatePinIndicatorState();
 }
 
-class _EraseDeflateAnimatedState extends State<EraseDeflateAnimated>
+class _EraseDeflatePinIndicatorState extends State<EraseDeflatePinIndicator>
     with SingleTickerProviderStateMixin {
   late final animation = AnimationController(
     vsync: this,
@@ -33,15 +40,21 @@ class _EraseDeflateAnimatedState extends State<EraseDeflateAnimated>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
+    final animatedItem = AnimatedBuilder(
       animation: animation,
-      child: widget.child,
+      child: widget.builder(widget.currentPinLength),
       builder: (context, child) {
         return Transform.scale(
           scale: animation.value,
           child: child,
         );
       },
+    );
+    return NoAnimationPinIndicator(
+      spacing: widget.spacing,
+      builder: (i) =>
+          i == widget.currentPinLength ? animatedItem : widget.builder(i),
+      length: widget.length,
     );
   }
 

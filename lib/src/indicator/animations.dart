@@ -15,8 +15,8 @@ enum PinEraseAnimation { deflate }
 // TODO(Sosnovyy): add idle animation
 enum PinIdleAnimation { wave, pulse }
 
-sealed class PinAnimation {
-  const PinAnimation({
+sealed class PinIndicatorAnimation {
+  const PinIndicatorAnimation({
     required this.type,
     required this.duration,
     required this.isInterruptible,
@@ -32,33 +32,36 @@ sealed class PinAnimation {
   /// Whether the animation can be interrupted by the same animation type.
   final bool isInterruptible;
 
-  static PinAnimation? fromImpl(dynamic impl) {
+  static PinIndicatorAnimation? fromImpl(dynamic impl) {
     return switch (impl) {
       PinInputAnimation input => switch (input) {
-          PinInputAnimation.inflate => const PinInputInflateAnimation(),
+          PinInputAnimation.inflate =>
+            const PinIndicatorInputInflateAnimation(),
         },
       PinLoadingAnimation loading => switch (loading) {
-          PinLoadingAnimation.jump => const PinLoadingJumpAnimation(),
+          PinLoadingAnimation.jump => const PinIndicatorLoadingJumpAnimation(),
         },
       PinSuccessAnimation success => switch (success) {
-          PinSuccessAnimation.collapse => const PinSuccessCollapseAnimation(),
+          PinSuccessAnimation.collapse =>
+            const PinIndicatorSuccessCollapseAnimation(),
         },
       PinErrorAnimation error => switch (error) {
-          PinErrorAnimation.shake => const PinErrorShakeAnimation(),
+          PinErrorAnimation.shake => const PinIndicatorErrorShakeAnimation(),
         },
       PinClearAnimation clear => switch (clear) {
-          PinClearAnimation.drop => const PinClearDropAnimation(),
+          PinClearAnimation.drop => const PinIndicatorClearDropAnimation(),
         },
       PinEraseAnimation erase => switch (erase) {
-          PinEraseAnimation.deflate => const PinEraseDeflateAnimation(),
+          PinEraseAnimation.deflate =>
+            const PinIndicatorEraseDeflateAnimation(),
         },
       _ => null,
     };
   }
 }
 
-class PinInputInflateAnimation extends PinAnimation {
-  const PinInputInflateAnimation()
+class PinIndicatorInputInflateAnimation extends PinIndicatorAnimation {
+  const PinIndicatorInputInflateAnimation()
       : super(
           type: PinAnimationTypes.input,
           duration: const Duration(milliseconds: 200),
@@ -66,8 +69,8 @@ class PinInputInflateAnimation extends PinAnimation {
         );
 }
 
-class PinLoadingJumpAnimation extends PinAnimation {
-  const PinLoadingJumpAnimation()
+class PinIndicatorLoadingJumpAnimation extends PinIndicatorAnimation {
+  const PinIndicatorLoadingJumpAnimation()
       : super(
           type: PinAnimationTypes.loading,
           duration: const Duration(milliseconds: 1000),
@@ -75,8 +78,8 @@ class PinLoadingJumpAnimation extends PinAnimation {
         );
 }
 
-class PinSuccessCollapseAnimation extends PinAnimation {
-  const PinSuccessCollapseAnimation()
+class PinIndicatorSuccessCollapseAnimation extends PinIndicatorAnimation {
+  const PinIndicatorSuccessCollapseAnimation()
       : super(
           type: PinAnimationTypes.success,
           duration: const Duration(milliseconds: 1000),
@@ -84,8 +87,8 @@ class PinSuccessCollapseAnimation extends PinAnimation {
         );
 }
 
-class PinErrorShakeAnimation extends PinAnimation {
-  const PinErrorShakeAnimation()
+class PinIndicatorErrorShakeAnimation extends PinIndicatorAnimation {
+  const PinIndicatorErrorShakeAnimation()
       : super(
           type: PinAnimationTypes.error,
           duration: const Duration(milliseconds: 1000),
@@ -93,8 +96,8 @@ class PinErrorShakeAnimation extends PinAnimation {
         );
 }
 
-class PinClearDropAnimation extends PinAnimation {
-  const PinClearDropAnimation()
+class PinIndicatorClearDropAnimation extends PinIndicatorAnimation {
+  const PinIndicatorClearDropAnimation()
       : super(
           type: PinAnimationTypes.clear,
           duration: const Duration(milliseconds: 1000),
@@ -102,8 +105,8 @@ class PinClearDropAnimation extends PinAnimation {
         );
 }
 
-class PinEraseDeflateAnimation extends PinAnimation {
-  const PinEraseDeflateAnimation()
+class PinIndicatorEraseDeflateAnimation extends PinIndicatorAnimation {
+  const PinIndicatorEraseDeflateAnimation()
       : super(
           type: PinAnimationTypes.erase,
           duration: const Duration(milliseconds: 160),

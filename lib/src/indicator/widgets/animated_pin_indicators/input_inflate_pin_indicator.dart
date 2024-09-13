@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
-class InputInflateAnimated extends StatefulWidget {
-  const InputInflateAnimated({
-    required this.child,
+class InputInflatePinIndicator extends StatefulWidget {
+  const InputInflatePinIndicator({
+    required this.builder,
+    required this.length,
     required this.duration,
+    required this.currentPinLength,
+    required this.spacing,
     super.key,
   });
 
-  final Widget child;
+  final PinIndicatorItemBuilder builder;
+  final int length;
+  final int currentPinLength;
   final Duration duration;
+  final double spacing;
 
   @override
-  State<InputInflateAnimated> createState() => _InputInflateAnimatedState();
+  State<InputInflatePinIndicator> createState() => _InputInflatePinIndicatorState();
 }
 
-class _InputInflateAnimatedState extends State<InputInflateAnimated>
+class _InputInflatePinIndicatorState extends State<InputInflatePinIndicator>
     with SingleTickerProviderStateMixin {
   late final animation = AnimationController(
     vsync: this,
@@ -32,15 +39,21 @@ class _InputInflateAnimatedState extends State<InputInflateAnimated>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
+    final animatedItem = AnimatedBuilder(
       animation: animation,
-      child: widget.child,
+      child: widget.builder(widget.currentPinLength - 1),
       builder: (context, child) {
         return Transform.scale(
           scale: animation.value,
           child: child,
         );
       },
+    );
+    return NoAnimationPinIndicator(
+      spacing: widget.spacing,
+      builder: (i) =>
+          i == widget.currentPinLength - 1 ? animatedItem : widget.builder(i),
+      length: widget.length,
     );
   }
 

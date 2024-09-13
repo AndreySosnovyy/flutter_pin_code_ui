@@ -6,7 +6,18 @@ import 'package:pin_ui/src/indicator/widgets/animated_builders/input_inflate.dar
 import 'package:pin_ui/src/indicator/widgets/pin_indicator_builder.dart';
 import 'package:pin_ui/src/indicator/widgets/pin_indicator_dot.dart';
 
-// TODO(Sosnovyy): add decoration properties instead of colors
+const BoxDecoration _dotDefaultDefaultDecoration =
+    BoxDecoration(shape: BoxShape.circle, color: Colors.black12);
+
+const BoxDecoration _dotDefaultSuccessDecoration =
+    BoxDecoration(shape: BoxShape.circle, color: Colors.green);
+
+const BoxDecoration _dotDefaultErrorDecoration =
+    BoxDecoration(shape: BoxShape.circle, color: Colors.red);
+
+const BoxDecoration _dotDefaultInputDecoration =
+    BoxDecoration(shape: BoxShape.circle, color: Colors.blue);
+
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
     required this.length,
@@ -14,10 +25,10 @@ class PinIndicator extends StatefulWidget {
     required this.isError,
     required this.isSuccess,
     this.controller,
-    this.errorColor = Colors.red,
-    this.successColor = Colors.green,
-    this.inputColor = Colors.blue,
-    this.defaultColor = Colors.black12,
+    this.errorDecoration = _dotDefaultErrorDecoration,
+    this.successDecoration = _dotDefaultSuccessDecoration,
+    this.inputDecoration = _dotDefaultInputDecoration,
+    this.defaultDecoration = _dotDefaultDefaultDecoration,
     this.spacing = 24.0,
     this.size = 14.0,
     super.key,
@@ -28,10 +39,10 @@ class PinIndicator extends StatefulWidget {
   final int currentLength;
   final bool isError;
   final bool isSuccess;
-  final Color successColor;
-  final Color errorColor;
-  final Color defaultColor;
-  final Color inputColor;
+  final BoxDecoration successDecoration;
+  final BoxDecoration errorDecoration;
+  final BoxDecoration defaultDecoration;
+  final BoxDecoration inputDecoration;
   final double spacing;
   final double size;
 
@@ -40,11 +51,11 @@ class PinIndicator extends StatefulWidget {
 }
 
 class _PinIndicatorState extends State<PinIndicator> {
-  Color _getColorForIndex(int index) {
-    if (widget.isSuccess) return widget.successColor;
-    if (widget.isError) return widget.errorColor;
-    if (index < widget.currentLength) return widget.inputColor;
-    return widget.defaultColor;
+  BoxDecoration _getDecorationForIndex(int index) {
+    if (widget.isSuccess) return widget.successDecoration;
+    if (widget.isError) return widget.errorDecoration;
+    if (index < widget.currentLength) return widget.inputDecoration;
+    return widget.defaultDecoration;
   }
 
   @override
@@ -58,7 +69,7 @@ class _PinIndicatorState extends State<PinIndicator> {
           builder: (context, i) {
             final dot = PinIndicatorDot(
               size: widget.size,
-              color: _getColorForIndex(i),
+              decoration: _getDecorationForIndex(i),
             );
             return switch (animation) {
               PinInputInflateAnimation() => i == widget.currentLength - 1

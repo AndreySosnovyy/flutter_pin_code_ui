@@ -1,3 +1,5 @@
+enum PinAnimationTypes { input, loading, success, error, clear, erase }
+
 enum PinInputAnimation { inflate }
 
 enum PinLoadingAnimation { jump }
@@ -10,7 +12,8 @@ enum PinClearAnimation { drop }
 
 enum PinEraseAnimation { deflate }
 
-enum PinAnimationTypes { input, loading, success, error, clear, erase }
+// TODO(Sosnovyy): add idle animation
+enum PinIdleAnimation { wave, pulse }
 
 sealed class PinAnimation {
   const PinAnimation({

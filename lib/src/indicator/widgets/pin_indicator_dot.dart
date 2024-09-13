@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 
 class PinIndicatorDot extends StatelessWidget {
   const PinIndicatorDot({
-    required this.color,
+    required this.decoration,
     required this.size,
+    this.child,
     super.key,
   });
 
-  final Color color;
+  final BoxDecoration decoration;
   final double size;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +18,8 @@ class PinIndicatorDot extends StatelessWidget {
       width: size,
       height: size,
       child: DecoratedBox(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: color,
-        ),
+        decoration: decoration,
+        child: child,
       ),
     );
   }

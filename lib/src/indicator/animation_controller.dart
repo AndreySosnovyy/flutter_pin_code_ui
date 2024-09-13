@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animations.dart';
 
@@ -20,6 +22,9 @@ class PinIndicatorAnimationController
   bool get isAnimatingClear => value?.type == PinAnimationTypes.clear;
 
   bool get isAnimatingErase => value?.type == PinAnimationTypes.erase;
+
+  // TODO(Sosnovyy): implement queue instead of async calls
+  final animationsQueue = Queue();
 
   void stopAnimating() {
     value = null;

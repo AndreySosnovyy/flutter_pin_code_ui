@@ -18,7 +18,12 @@ class PinAnimationControllerProvider {
             ),
         },
       PinLoadingAnimation loadingAnimation => switch (loadingAnimation) {
-          PinLoadingAnimation.jump => AnimationController(vsync: vsync),
+          PinLoadingAnimation.jump => AnimationController(
+              vsync: vsync,
+              duration: const Duration(milliseconds: 420),
+              lowerBound: 0.0,
+              upperBound: 1.0,
+            ),
         },
       PinSuccessAnimation successAnimation => switch (successAnimation) {
           PinSuccessAnimation.collapse => AnimationController(vsync: vsync),

@@ -111,23 +111,39 @@ class _PinIndicatorState extends State<PinIndicator> {
                   size: widget.size,
                   color: _getColorForIndex(i),
                 );
-                if (_hasEraseAnimationController && i == widget.currentLength) {
-                  return switch (widget.controller!._config.eraseAnimation!) {
-                    PinEraseAnimation.deflate => ScaleTransition(
-                        scale: _eraseAnimationController!,
+                // if (_hasInputAnimationController &&
+                //     i == widget.currentLength - 1) {
+                //   return switch (widget.controller!._config.inputAnimation!) {
+                //     PinInputAnimation.inflate => ScaleTransition(
+                //         scale: _inputAnimationController!,
+                //         child: dot,
+                //       ),
+                //   };
+                // }
+                if (_hasLoadingAnimationController) {
+                  return switch (widget.controller!._config.loadingAnimation!) {
+                    PinLoadingAnimation.jump => AnimatedBuilder(
+                        animation: _loadingAnimationController!,
                         child: dot,
+                        builder: (context, child) {
+                          final offset =
+                              _loadingAnimationController!.value * 64;
+                          return Transform.translate(
+                            offset: Offset(0, -offset),
+                            child: dot,
+                          );
+                        },
                       ),
                   };
                 }
-                if (_hasInputAnimationController &&
-                    i == widget.currentLength - 1) {
-                  return switch (widget.controller!._config.inputAnimation!) {
-                    PinInputAnimation.inflate => ScaleTransition(
-                        scale: _inputAnimationController!,
-                        child: dot,
-                      ),
-                  };
-                }
+                // if (_hasEraseAnimationController && i == widget.currentLength) {
+                //   return switch (widget.controller!._config.eraseAnimation!) {
+                //     PinEraseAnimation.deflate => ScaleTransition(
+                //         scale: _eraseAnimationController!,
+                //         child: dot,
+                //       ),
+                //   };
+                // }
                 return dot;
               },
             ),

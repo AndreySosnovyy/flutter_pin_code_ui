@@ -43,7 +43,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
               currentLength: pinText.length,
               isError: false,
               isSuccess: false,
-              size: 54,
+              // size: 54,
             ),
             const SizedBox(height: 64),
             Pinpad(
@@ -55,6 +55,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                 await pinIndicatorAnimationController.animateInput(
                     currentLength: pinText.length);
                 if (pinText == validPin) {
+                  await pinIndicatorAnimationController.animateLoading();
                   // await pinIndicatorAnimationController.animateSuccess();
                 } else if (pinText.length == validPin.length) {
                   // await pinIndicatorAnimationController.animateError();

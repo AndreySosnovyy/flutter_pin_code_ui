@@ -52,8 +52,6 @@ class PinIndicatorAnimationController
     value = value.copyWith(currentLength: currentLength);
     switch (_config.inputAnimation!) {
       case PinInputAnimation.inflate:
-        value.inputAnimationController!.duration =
-            const Duration(milliseconds: 100);
         value.inputAnimationController!.reset();
         await value.inputAnimationController!.animateTo(
           value.inputAnimationController!.upperBound,
@@ -74,7 +72,18 @@ class PinIndicatorAnimationController
   }) async {
     _verifyInitialized();
     assert(value.loadingAnimationController != null);
-    throw UnimplementedError();
+    switch (_config.loadingAnimation!) {
+      case PinLoadingAnimation.jump:
+        value.loadingAnimationController!.reset();
+        await value.loadingAnimationController!.animateTo(
+          value.loadingAnimationController!.upperBound,
+          curve: Curves.easeOutCubic,
+        );
+        await value.loadingAnimationController!.animateTo(
+          value.loadingAnimationController!.lowerBound,
+          curve: Curves.easeOut,
+        );
+    }
   }
 
   bool get isAnimatingLoading =>
@@ -120,8 +129,6 @@ class PinIndicatorAnimationController
     value = value.copyWith(currentLength: currentLength);
     switch (_config.eraseAnimation!) {
       case PinEraseAnimation.deflate:
-        value.eraseAnimationController!.duration =
-            const Duration(milliseconds: 80);
         value.eraseAnimationController!.reset();
         value.eraseAnimationController!.value = 1.0;
         await value.eraseAnimationController!.animateBack(

@@ -1,166 +1,80 @@
-part of 'widgets/pin_indicator.dart';
+import 'dart:collection';
 
-class PinIndicatorAnimationController
-    extends ValueNotifier<PinIndicatorAnimationControllerValue> {
-  PinIndicatorAnimationController({
-    required TickerProvider vsync,
-    int currentLength = 0,
-    int maxLength = 4,
-  })  : _vsync = vsync,
-        super(PinIndicatorAnimationControllerValue(
-          currentLength: currentLength,
-          maxLength: maxLength,
-        ));
+import 'package:flutter/material.dart';
+import 'package:pin_ui/src/indicator/animations.dart';
 
-  late final PinIndicatorAnimationsConfig _config;
-  final TickerProvider _vsync;
-
-  final _configInitializationCompleter = Completer<void>();
-
-  void _setConfig(PinIndicatorAnimationsConfig config) {
-    _config = config;
-    final provider = PinAnimationControllerProvider(vsync: _vsync);
-    value = value.copyWith(
-      inputAnimationController:
-          provider.getControllerFor(_config.inputAnimation),
-      loadingAnimationController:
-          provider.getControllerFor(_config.loadingAnimation),
-      successAnimationController:
-          provider.getControllerFor(_config.successAnimation),
-      errorAnimationController:
-          provider.getControllerFor(_config.errorAnimation),
-      clearAnimationController:
-          provider.getControllerFor(_config.clearAnimation),
-      eraseAnimationController:
-          provider.getControllerFor(_config.eraseAnimation),
-    );
-    _configInitializationCompleter.complete();
-  }
-
-  void _verifyInitialized() {
-    assert(_configInitializationCompleter.isCompleted,
-        'Controller has no listeners. Layout them before calling animate methods.');
-  }
+class PinIndicatorAnimationController extends ValueNotifier<PinAnimation?> {
+  PinIndicatorAnimationController() : super(null);
 
   // TODO(Sosnovyy): implement queue logic
   final _animationsQueue = Queue();
 
-  final animationValueNotifier = ValueNotifier<PinAnimation?>(null);
+  bool get isAnimating => value != null;
+
+  void stopAnimating() => value = null;
+
+  bool get isAnimatingInput => value?.type == PinAnimationTypes.input;
+
+  bool get isAnimatingLoading => value?.type == PinAnimationTypes.loading;
+
+  bool get isAnimatingSuccess => value?.type == PinAnimationTypes.success;
+
+  bool get isAnimatingError => value?.type == PinAnimationTypes.error;
+
+  bool get isAnimatingClear => value?.type == PinAnimationTypes.clear;
+
+  bool get isAnimatingErase => value?.type == PinAnimationTypes.erase;
+
+  Future<void> _startAnimation(dynamic animation) async {
+    value = PinAnimation.fromImpl(animation);
+    await Future.delayed(value!.duration);
+  }
 
   Future<void> animateInput({
-    required int newLength,
     PinInputAnimation animation = PinInputAnimation.inflate,
-    bool vibration = false,
   }) async {
-    animationValueNotifier.value = PinAnimation.fromImpl(animation);
-
-    _verifyInitialized();
-    assert(value.inputAnimationController != null);
-    assert(newLength >= 0 && newLength <= value.maxLength);
-    value = value.copyWith(currentLength: newLength);
-    switch (_config.inputAnimation!) {
-      case PinInputAnimation.inflate:
-        value.inputAnimationController!.reset();
-        await value.inputAnimationController!.animateTo(
-          value.inputAnimationController!.upperBound,
-          curve: Curves.ease,
-        );
-        await value.inputAnimationController!.animateTo(
-          value.inputAnimationController!.lowerBound,
-          curve: Curves.easeIn,
-        );
-    }
+    await _startAnimation(animation);
   }
-
-  bool get isAnimatingInput =>
-      value.inputAnimationController?.isAnimating ?? false;
 
   Future<void> animateLoading({
+    PinLoadingAnimation animation = PinLoadingAnimation.jump,
     bool vibration = false,
   }) async {
-    _verifyInitialized();
-    assert(value.loadingAnimationController != null);
-    switch (_config.loadingAnimation!) {
-      case PinLoadingAnimation.jump:
-        value.loadingAnimationController!.reset();
-        await value.loadingAnimationController!.animateTo(
-          value.loadingAnimationController!.upperBound,
-          curve: Curves.easeOutCubic,
-        );
-        await value.loadingAnimationController!.animateTo(
-          value.loadingAnimationController!.lowerBound,
-          curve: Curves.easeOut,
-        );
-    }
+    // value.loadingAnimationController!.reset();
+    // await value.loadingAnimationController!.animateTo(
+    //   value.loadingAnimationController!.upperBound,
+    //   curve: Curves.easeOutCubic,
+    // );
+    // await value.loadingAnimationController!.animateTo(
+    //   value.loadingAnimationController!.lowerBound,
+    //   curve: Curves.easeOut,
+    // );
   }
-
-  bool get isAnimatingLoading =>
-      value.loadingAnimationController?.isAnimating ?? false;
 
   Future<void> animateSuccess({
+    PinSuccessAnimation animation = PinSuccessAnimation.collapse,
     bool vibration = false,
   }) async {
-    _verifyInitialized();
-    assert(value.successAnimationController != null);
-    throw UnimplementedError();
+    await _startAnimation(animation);
   }
-
-  bool get isAnimatingSuccess =>
-      value.successAnimationController?.isAnimating ?? false;
 
   Future<void> animateError({
+    PinErrorAnimation animation = PinErrorAnimation.shake,
     bool vibration = false,
   }) async {
-    _verifyInitialized();
-    assert(value.errorAnimationController != null);
-    throw UnimplementedError();
+    await _startAnimation(animation);
   }
-
-  bool get isAnimatingError =>
-      value.errorAnimationController?.isAnimating ?? false;
 
   Future<void> animateClear({
+    PinClearAnimation animation = PinClearAnimation.drop,
     bool vibration = false,
   }) async {
-    _verifyInitialized();
-    assert(value.clearAnimationController != null);
-    throw UnimplementedError();
+    await _startAnimation(animation);
   }
 
-  bool get isAnimatingClear =>
-      value.clearAnimationController?.isAnimating ?? false;
-
-  Future<void> animateErase({required int newLength}) async {
-    _verifyInitialized();
-    assert(value.eraseAnimationController != null);
-    assert(newLength >= 0 && newLength <= value.maxLength);
-    value = value.copyWith(currentLength: newLength);
-    switch (_config.eraseAnimation!) {
-      case PinEraseAnimation.deflate:
-        value.eraseAnimationController!.reset();
-        value.eraseAnimationController!.value = 1.0;
-        await value.eraseAnimationController!.animateBack(
-          value.eraseAnimationController!.lowerBound,
-          curve: Curves.easeOutQuint,
-        );
-        await value.eraseAnimationController!.animateTo(
-          value.eraseAnimationController!.upperBound,
-          curve: Curves.linear,
-        );
-    }
-  }
-
-  bool get isAnimatingErase =>
-      value.eraseAnimationController?.isAnimating ?? false;
-
-  @override
-  void dispose() {
-    value.inputAnimationController?.dispose();
-    value.loadingAnimationController?.dispose();
-    value.successAnimationController?.dispose();
-    value.errorAnimationController?.dispose();
-    value.clearAnimationController?.dispose();
-    value.eraseAnimationController?.dispose();
-    super.dispose();
+  Future<void> animateErase({
+    PinEraseAnimation animation = PinEraseAnimation.deflate,
+  }) async {
+    await _startAnimation(animation);
   }
 }

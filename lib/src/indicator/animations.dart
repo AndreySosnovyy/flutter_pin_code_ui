@@ -58,7 +58,7 @@ class PinInputInflateAnimation extends PinAnimation {
   const PinInputInflateAnimation()
       : super(
           type: PinAnimationTypes.input,
-          duration: const Duration(milliseconds: 100),
+          duration: const Duration(milliseconds: 200),
           isInterruptible: true,
         );
 }
@@ -67,7 +67,7 @@ class PinLoadingJumpAnimation extends PinAnimation {
   const PinLoadingJumpAnimation()
       : super(
           type: PinAnimationTypes.loading,
-          duration: const Duration(milliseconds: 420),
+          duration: const Duration(milliseconds: 1000),
           isInterruptible: false,
         );
 }
@@ -76,7 +76,7 @@ class PinSuccessCollapseAnimation extends PinAnimation {
   const PinSuccessCollapseAnimation()
       : super(
           type: PinAnimationTypes.success,
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 1000),
           isInterruptible: false,
         );
 }
@@ -85,7 +85,7 @@ class PinErrorShakeAnimation extends PinAnimation {
   const PinErrorShakeAnimation()
       : super(
           type: PinAnimationTypes.error,
-          duration: const Duration(milliseconds: 420),
+          duration: const Duration(milliseconds: 1000),
           isInterruptible: true,
         );
 }
@@ -94,7 +94,7 @@ class PinClearDropAnimation extends PinAnimation {
   const PinClearDropAnimation()
       : super(
           type: PinAnimationTypes.clear,
-          duration: const Duration(milliseconds: 120),
+          duration: const Duration(milliseconds: 1000),
           isInterruptible: true,
         );
 }
@@ -103,7 +103,7 @@ class PinEraseDeflateAnimation extends PinAnimation {
   const PinEraseDeflateAnimation()
       : super(
           type: PinAnimationTypes.erase,
-          duration: const Duration(milliseconds: 80),
+          duration: const Duration(milliseconds: 160),
           isInterruptible: true,
         );
 }

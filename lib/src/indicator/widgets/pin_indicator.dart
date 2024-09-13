@@ -1,23 +1,18 @@
-import 'dart:async';
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
-import 'package:pin_ui/src/indicator/animation_controller_providers.dart';
-import 'package:pin_ui/src/indicator/animation_controller_value.dart';
+import 'package:pin_ui/src/indicator/animation_controller.dart';
 import 'package:pin_ui/src/indicator/animations.dart';
-import 'package:pin_ui/src/indicator/animations_config.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_builders/erase_deflate.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_builders/input_inflate.dart';
 import 'package:pin_ui/src/indicator/widgets/pin_indicator_builder.dart';
 import 'package:pin_ui/src/indicator/widgets/pin_indicator_dot.dart';
 
-part '../animation_controller.dart';
-
+// TODO(Sosnovyy): add decoration properties instead of colors
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
     required this.length,
     required this.currentLength,
     required this.isError,
     required this.isSuccess,
-    this.animationsConfig,
     this.controller,
     this.errorColor = Colors.red,
     this.successColor = Colors.green,
@@ -29,7 +24,6 @@ class PinIndicator extends StatefulWidget {
   });
 
   final PinIndicatorAnimationController? controller;
-  final PinIndicatorAnimationsConfig? animationsConfig;
   final int length;
   final int currentLength;
   final bool isError;
@@ -54,57 +48,9 @@ class _PinIndicatorState extends State<PinIndicator> {
   }
 
   @override
-  void initState() {
-    if (widget.controller != null) {
-      widget.controller!._setConfig(
-          widget.animationsConfig ?? PinIndicatorAnimationsConfig.defaults());
-    }
-    super.initState();
-  }
-
-  bool get _hasController => widget.controller != null;
-
-  bool get _hasInputAnimationController =>
-      widget.controller?.value.inputAnimationController != null;
-
-  AnimationController? get _inputAnimationController =>
-      widget.controller?.value.inputAnimationController;
-
-  bool get _hasLoadingAnimationController =>
-      widget.controller?.value.loadingAnimationController != null;
-
-  AnimationController? get _loadingAnimationController =>
-      widget.controller?.value.loadingAnimationController;
-
-  bool get _hasSuccessAnimationController =>
-      widget.controller?.value.successAnimationController != null;
-
-  AnimationController? get _successAnimationController =>
-      widget.controller?.value.successAnimationController;
-
-  bool get _hasErrorAnimationController =>
-      widget.controller?.value.errorAnimationController != null;
-
-  AnimationController? get _errorAnimationController =>
-      widget.controller?.value.errorAnimationController;
-
-  bool get _hasClearAnimationController =>
-      widget.controller?.value.clearAnimationController != null;
-
-  AnimationController? get _clearAnimationController =>
-      widget.controller?.value.clearAnimationController;
-
-  bool get _hasEraseAnimationController =>
-      widget.controller?.value.eraseAnimationController != null;
-
-  AnimationController? get _eraseAnimationController =>
-      widget.controller?.value.eraseAnimationController;
-
-  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable:
-          widget.controller?.animationValueNotifier ?? ValueNotifier(null),
+      valueListenable: widget.controller ?? ValueNotifier(null),
       builder: (context, animation, child) {
         return PinIndicatorBuilder(
           length: widget.length,
@@ -116,8 +62,8 @@ class _PinIndicatorState extends State<PinIndicator> {
             );
             return switch (animation) {
               PinInputInflateAnimation() => i == widget.currentLength - 1
-                  ? ScaleTransition(
-                      scale: _inputAnimationController!,
+                  ? InputInflateAnimated(
+                      duration: animation.duration,
                       child: dot,
                     )
                   : dot,
@@ -125,18 +71,14 @@ class _PinIndicatorState extends State<PinIndicator> {
               PinSuccessCollapseAnimation() => dot,
               PinErrorShakeAnimation() => dot,
               PinClearDropAnimation() => dot,
-              PinEraseDeflateAnimation() => dot,
-              null => dot,
+              PinEraseDeflateAnimation() => i == widget.currentLength
+                  ? EraseDeflateAnimated(
+                      duration: animation.duration,
+                      child: dot,
+                    )
+                  : dot,
+              _ => dot,
             };
-            // if (_hasInputAnimationController &&
-            //     i == widget.currentLength - 1) {
-            //   return switch (widget.controller!._config.inputAnimation!) {
-            //     PinInputAnimation.inflate => ScaleTransition(
-            //         scale: _inputAnimationController!,
-            //         child: dot,
-            //       ),
-            //   };
-            // }
             // if (_hasLoadingAnimationController) {
             //   return switch (widget.controller!._config.loadingAnimation!) {
             //     PinLoadingAnimation.jump => AnimatedBuilder(
@@ -151,14 +93,6 @@ class _PinIndicatorState extends State<PinIndicator> {
             //         );
             //       },
             //     ),
-            //   };
-            // }
-            // if (_hasEraseAnimationController && i == widget.currentLength) {
-            //   return switch (widget.controller!._config.eraseAnimation!) {
-            //     PinEraseAnimation.deflate => ScaleTransition(
-            //         scale: _eraseAnimationController!,
-            //         child: dot,
-            //       ),
             //   };
             // }
           },

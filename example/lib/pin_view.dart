@@ -25,8 +25,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
   late final disabledTextStyle =
       defaultTextStyle.copyWith(color: Colors.black26);
 
-  late final pinIndicatorAnimationController =
-      PinIndicatorAnimationController(vsync: this);
+  final pinIndicatorAnimationController = PinIndicatorAnimationController();
   String pinText = '';
 
   @override
@@ -51,8 +50,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                     pinIndicatorAnimationController.isAnimatingInput) return;
                 pinText += key;
                 setState(() {});
-                await pinIndicatorAnimationController.animateInput(
-                    newLength: pinText.length);
+                await pinIndicatorAnimationController.animateInput();
                 if (pinText == validPin) {
                   await pinIndicatorAnimationController.animateLoading();
                   // await pinIndicatorAnimationController.animateSuccess();
@@ -86,8 +84,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                     : () async {
                         pinText = pinText.substring(0, pinText.length - 1);
                         setState(() {});
-                        await pinIndicatorAnimationController.animateErase(
-                            newLength: pinText.length);
+                        await pinIndicatorAnimationController.animateErase();
                       },
                 child: pinText.isEmpty
                     // Display current biometrics type here

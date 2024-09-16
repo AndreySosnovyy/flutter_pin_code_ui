@@ -26,11 +26,18 @@ class SuccessCollapsePinIndicator extends StatefulWidget {
 
 class _SuccessCollapsePinIndicatorState
     extends State<SuccessCollapsePinIndicator> with TickerProviderStateMixin {
-  late final animation = AnimationController(
+  late final offsetAnimation = AnimationController(
     vsync: this,
     value: 0.0,
     lowerBound: -0.4,
     upperBound: 1.0,
+  );
+
+  late final scaleAnimation = AnimationController(
+    vsync: this,
+    value: 0.0,
+    lowerBound: 0.9,
+    upperBound: 1.2,
   );
 
   // Array of speed values for animating each item's position of indicator
@@ -51,18 +58,34 @@ class _SuccessCollapsePinIndicatorState
   void initState() {
     initializeMultipliers();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await animation
-          .animateTo(
-        animation.lowerBound,
-        curve: Curves.easeOutSine,
-        duration: widget.duration * 0.3,
-      );
-      await Future.delayed(widget.duration * 0.06);
-      await animation.animateTo(
-        animation.upperBound,
-        curve: Curves.easeOutSine,
-        duration: widget.duration * 0.64,
-      );
+      final firstStageDuration = widget.duration * 0.3;
+      final pauseDuration = widget.duration * 0.06;
+      final secondStageDuration = widget.duration * 0.64;
+      await Future.wait([
+        offsetAnimation.animateTo(
+          offsetAnimation.lowerBound,
+          curve: Curves.easeOutSine,
+          duration: firstStageDuration,
+        ),
+        scaleAnimation.animateTo(
+          scaleAnimation.upperBound,
+          curve: Curves.easeOutSine,
+          duration: firstStageDuration,
+        ),
+      ]);
+      await Future.delayed(pauseDuration);
+      await Future.wait([
+        offsetAnimation.animateTo(
+          offsetAnimation.upperBound,
+          curve: Curves.easeOutSine,
+          duration: secondStageDuration,
+        ),
+        scaleAnimation.animateTo(
+          scaleAnimation.lowerBound,
+          curve: Curves.easeOutSine,
+          duration: secondStageDuration,
+        ),
+      ]);
     });
     super.initState();
   }
@@ -74,15 +97,25 @@ class _SuccessCollapsePinIndicatorState
       length: widget.length,
       builder: (i) {
         return AnimatedBuilder(
-          animation: animation,
+          animation: scaleAnimation,
           builder: (context, child) {
-            final direction = (i < widget.length / 2 ? 1 : -1);
-            final delta = widget.spacing;
-            final xOffset =
-                direction * animation.value * delta * speedMultipliers[i];
-            return Transform.translate(
-              offset: Offset(xOffset, 0),
-              child: widget.builder(i),
+            return AnimatedBuilder(
+              animation: offsetAnimation,
+              builder: (context, child) {
+                final direction = (i < widget.length / 2 ? 1 : -1);
+                final delta = widget.spacing;
+                final xOffset = direction *
+                    offsetAnimation.value *
+                    delta *
+                    speedMultipliers[i];
+                return Transform.scale(
+                  scale: scaleAnimation.value,
+                  child: Transform.translate(
+                    offset: Offset(xOffset, 0),
+                    child: widget.builder(i),
+                  ),
+                );
+              },
             );
           },
         );
@@ -92,7 +125,8 @@ class _SuccessCollapsePinIndicatorState
 
   @override
   void dispose() {
-    animation.dispose();
+    offsetAnimation.dispose();
+    scaleAnimation.dispose();
     super.dispose();
   }
 }

@@ -7,9 +7,13 @@ class PinIndicatorAnimationController
     extends ValueNotifier<PinIndicatorAnimation?> {
   PinIndicatorAnimationController() : super(null);
 
+  PinIndicatorAnimation? _nextValue;
+
   bool get isAnimating => value != null;
 
-  bool get isAnimatingNonInterruptible => !(value?.isInterruptible ?? true);
+  bool get isAnimatingNonInterruptible =>
+      !(value?.isInterruptible ?? true) ||
+      !(_nextValue?.isInterruptible ?? true);
 
   bool get isAnimatingInput => value?.type == PinAnimationTypes.input;
 
@@ -28,6 +32,7 @@ class PinIndicatorAnimationController
 
   void stopAnimating() {
     value = null;
+    _nextValue = null;
     notifyListeners();
   }
 
@@ -36,8 +41,9 @@ class PinIndicatorAnimationController
     Duration? delayBefore,
     Duration? delayAfter,
   }) async {
+    _nextValue = PinIndicatorAnimation.fromImpl(animation);
     if (delayBefore != null) await Future.delayed(delayBefore);
-    value = PinIndicatorAnimation.fromImpl(animation);
+    value = _nextValue;
     notifyListeners();
     await Future.delayed(value!.duration);
     if (delayAfter != null) await Future.delayed(delayAfter);

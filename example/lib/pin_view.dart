@@ -78,7 +78,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                         setState(() => isPinSuccess = true);
                         await pinIndicatorAnimationController.animateSuccess(
                           delayBeforeAnimation:
-                              const Duration(milliseconds: 420),
+                              const Duration(milliseconds: 480),
                           delayAfterAnimation:
                               const Duration(milliseconds: 1200),
                         );

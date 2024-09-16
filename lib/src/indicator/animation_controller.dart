@@ -33,14 +33,14 @@ class PinIndicatorAnimationController
 
   Future<void> _startAnimating(
     dynamic animation, {
-    Duration? durationBefore,
-    Duration? durationAfter,
+    Duration? delayBefore,
+    Duration? delayAfter,
   }) async {
+    if (delayBefore != null) await Future.delayed(delayBefore);
     value = PinIndicatorAnimation.fromImpl(animation);
     notifyListeners();
-    if (durationBefore != null) await Future.delayed(durationBefore);
     await Future.delayed(value!.duration);
-    if (durationAfter != null) await Future.delayed(durationAfter);
+    if (delayAfter != null) await Future.delayed(delayAfter);
     stopAnimating();
   }
 
@@ -57,15 +57,21 @@ class PinIndicatorAnimationController
     Duration delayAfterAnimation = Duration.zero,
   }) async {
     for (int i = 0; i < repeatCount; i++) {
-      await _startAnimating(animation, durationAfter: delayAfterAnimation);
+      await _startAnimating(animation, delayAfter: delayAfterAnimation);
     }
   }
 
   Future<void> animateSuccess({
     PinSuccessAnimation animation = PinSuccessAnimation.collapse,
     bool vibration = false,
+    Duration delayBeforeAnimation = Duration.zero,
+    Duration delayAfterAnimation = Duration.zero,
   }) async {
-    await _startAnimating(animation);
+    await _startAnimating(
+      animation,
+      delayBefore: delayBeforeAnimation,
+      delayAfter: delayAfterAnimation,
+    );
   }
 
   Future<void> animateError({
@@ -73,7 +79,7 @@ class PinIndicatorAnimationController
     bool vibration = false,
     Duration delayAfterAnimation = Duration.zero,
   }) async {
-    await _startAnimating(animation, durationAfter: delayAfterAnimation);
+    await _startAnimating(animation, delayAfter: delayAfterAnimation);
   }
 
   Future<void> animateClear({

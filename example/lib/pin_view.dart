@@ -72,16 +72,23 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       if (pinText == validPin) {
                         await pinIndicatorAnimationController.animateLoading(
                           repeatCount: 2,
-                          delayAfterAnimation: const Duration(milliseconds: 160),
+                          delayAfterAnimation:
+                              const Duration(milliseconds: 160),
                         );
                         setState(() => isPinSuccess = true);
-                        await pinIndicatorAnimationController.animateSuccess();
+                        await pinIndicatorAnimationController.animateSuccess(
+                          delayBeforeAnimation:
+                              const Duration(milliseconds: 420),
+                          delayAfterAnimation:
+                              const Duration(milliseconds: 1200),
+                        );
                         setState(() => isPinSuccess = false);
                       } else if (pinText.length == validPin.length) {
                         setState(() => isPinError = true);
                         await pinIndicatorAnimationController.animateError(
-                            delayAfterAnimation:
-                                const Duration(milliseconds: 240));
+                          delayAfterAnimation:
+                              const Duration(milliseconds: 240),
+                        );
                         await pinIndicatorAnimationController.animateClear();
                         setState(() => isPinError = false);
                       }
@@ -105,7 +112,11 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       pressedDecoration: pressedKeyDecoration,
                       child: Text(
                         'Extra key',
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: !pinIndicatorAnimationController
+                                    .isAnimatingNonInterruptible
+                                ? null
+                                : Colors.black26),
                       ),
                       onTap: () {},
                     ),
@@ -128,7 +139,14 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       child: pinText.isEmpty
                           // Display current biometrics type here
                           ? const Icon(Icons.fingerprint_rounded, size: 32)
-                          : const Icon(Icons.backspace_outlined, size: 24),
+                          : Icon(
+                              Icons.backspace_outlined,
+                              size: 24,
+                              color: !pinIndicatorAnimationController
+                                      .isAnimatingNonInterruptible
+                                  ? null
+                                  : Colors.black26,
+                            ),
                     ),
                   ),
                   const Spacer(),

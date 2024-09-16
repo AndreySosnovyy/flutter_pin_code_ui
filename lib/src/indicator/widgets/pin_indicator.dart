@@ -5,6 +5,7 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_defla
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error_shake_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_inflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading_jump_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success_collapse_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
 const BoxDecoration _dotDefaultDefaultDecoration =
@@ -93,7 +94,18 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => dots[i],
               spacing: widget.spacing,
             ),
-          PinIndicatorSuccessCollapseAnimation() => noAnimationPinIndicator,
+          PinIndicatorSuccessCollapseAnimation() => SuccessCollapsePinIndicator(
+              key: UniqueKey(),
+              length: widget.length,
+              duration: animation.duration,
+              builder: (i) => dots[i],
+              spacing: widget.spacing,
+              collapsedChild: const Icon(
+                Icons.check_circle_rounded,
+                color: Colors.green,
+                size: 24,
+              ),
+            ),
           PinIndicatorErrorShakeAnimation() => ErrorShakePinIndicator(
               key: UniqueKey(),
               length: widget.length,

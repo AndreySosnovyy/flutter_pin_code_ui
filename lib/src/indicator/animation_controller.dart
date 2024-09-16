@@ -54,9 +54,10 @@ class PinIndicatorAnimationController
     PinLoadingAnimation animation = PinLoadingAnimation.jump,
     bool vibration = false,
     int repeatCount = 1,
+    Duration delayAfterAnimation = Duration.zero,
   }) async {
     for (int i = 0; i < repeatCount; i++) {
-      await _startAnimating(animation);
+      await _startAnimating(animation, durationAfter: delayAfterAnimation);
     }
   }
 

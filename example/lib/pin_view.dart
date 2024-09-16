@@ -71,7 +71,9 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       await pinIndicatorAnimationController.animateInput();
                       if (pinText == validPin) {
                         await pinIndicatorAnimationController.animateLoading(
-                            repeatCount: 2);
+                          repeatCount: 2,
+                          delayAfterAnimation: const Duration(milliseconds: 160),
+                        );
                         setState(() => isPinSuccess = true);
                         await pinIndicatorAnimationController.animateSuccess();
                         setState(() => isPinSuccess = false);
@@ -80,7 +82,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                         await pinIndicatorAnimationController.animateError(
                             delayAfterAnimation:
                                 const Duration(milliseconds: 240));
-                        // await pinIndicatorAnimationController.animateClear();
+                        await pinIndicatorAnimationController.animateClear();
                         setState(() => isPinError = false);
                       }
                       if (pinText.length == validPin.length) {

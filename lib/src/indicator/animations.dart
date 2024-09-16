@@ -73,7 +73,7 @@ class PinIndicatorLoadingJumpAnimation extends PinIndicatorAnimation {
   const PinIndicatorLoadingJumpAnimation()
       : super(
           type: PinAnimationTypes.loading,
-          duration: const Duration(milliseconds: 1400),
+          duration: const Duration(milliseconds: 1200),
           isInterruptible: false,
         );
 }

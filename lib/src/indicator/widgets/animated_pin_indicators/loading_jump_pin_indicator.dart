@@ -27,8 +27,7 @@ class _LoadingJumpPinIndicatorState extends State<LoadingJumpPinIndicator>
     (i) => AnimationController(
       vsync: this,
       duration:
-          (widget.duration ~/ 2 - widget.duration ~/ 2 ~/ (widget.length - 1)) -
-              const Duration(milliseconds: 160),
+          (widget.duration ~/ 2 - widget.duration ~/ 2 ~/ (widget.length - 1)),
       lowerBound: 0.0,
       upperBound: 1.0,
     ),

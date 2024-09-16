@@ -91,7 +91,7 @@ class PinIndicatorErrorShakeAnimation extends PinIndicatorAnimation {
   const PinIndicatorErrorShakeAnimation()
       : super(
           type: PinAnimationTypes.error,
-          duration: const Duration(milliseconds: 1000),
+          duration: const Duration(milliseconds: 360),
           isInterruptible: true,
         );
 }

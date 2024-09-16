@@ -27,6 +27,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
 
   final pinIndicatorAnimationController = PinIndicatorAnimationController();
   String pinText = '';
+  bool isPinError = false;
+  bool isPinSuccess = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +45,16 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                     controller: pinIndicatorAnimationController,
                     length: validPin.length,
                     currentLength: pinText.length,
-                    isError: false,
-                    isSuccess: false,
+                    isError: isPinError,
+                    isSuccess: isPinSuccess,
                   ),
                   const SizedBox(height: 64),
                   Pinpad(
                     onKeyTap: (key) async {
+                      if (pinIndicatorAnimationController.isAnimatingError) {
+                        pinIndicatorAnimationController.stopAnimating();
+                        setState(() => isPinError = false);
+                      }
                       if (pinText.length == validPin.length &&
                               pinIndicatorAnimationController
                                   .isAnimatingInput ||
@@ -56,7 +62,6 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                               .isAnimatingNonInterruptible) {
                         return;
                       }
-
                       if (pinText.length == validPin.length) {
                         pinIndicatorAnimationController.stopAnimating();
                         pinText = '';
@@ -67,10 +72,16 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       if (pinText == validPin) {
                         await pinIndicatorAnimationController.animateLoading(
                             repeatCount: 2);
-                        // await pinIndicatorAnimationController.animateSuccess();
+                        setState(() => isPinSuccess = true);
+                        await pinIndicatorAnimationController.animateSuccess();
+                        setState(() => isPinSuccess = false);
                       } else if (pinText.length == validPin.length) {
-                        await pinIndicatorAnimationController.animateError();
-                        await pinIndicatorAnimationController.animateClear();
+                        setState(() => isPinError = true);
+                        await pinIndicatorAnimationController.animateError(
+                            delayAfterAnimation:
+                                const Duration(milliseconds: 240));
+                        // await pinIndicatorAnimationController.animateClear();
+                        setState(() => isPinError = false);
                       }
                       if (pinText.length == validPin.length) {
                         setState(() => pinText = '');

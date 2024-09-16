@@ -31,10 +31,16 @@ class PinIndicatorAnimationController
     notifyListeners();
   }
 
-  Future<void> _startAnimating(dynamic animation) async {
+  Future<void> _startAnimating(
+    dynamic animation, {
+    Duration? durationBefore,
+    Duration? durationAfter,
+  }) async {
     value = PinIndicatorAnimation.fromImpl(animation);
     notifyListeners();
+    if (durationBefore != null) await Future.delayed(durationBefore);
     await Future.delayed(value!.duration);
+    if (durationAfter != null) await Future.delayed(durationAfter);
     stopAnimating();
   }
 
@@ -64,8 +70,9 @@ class PinIndicatorAnimationController
   Future<void> animateError({
     PinErrorAnimation animation = PinErrorAnimation.shake,
     bool vibration = false,
+    Duration delayAfterAnimation = Duration.zero,
   }) async {
-    await _startAnimating(animation);
+    await _startAnimating(animation, durationAfter: delayAfterAnimation);
   }
 
   Future<void> animateClear({

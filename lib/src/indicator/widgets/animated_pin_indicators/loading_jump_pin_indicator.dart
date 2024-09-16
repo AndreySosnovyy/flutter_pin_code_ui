@@ -26,7 +26,9 @@ class _LoadingJumpPinIndicatorState extends State<LoadingJumpPinIndicator>
     widget.length,
     (i) => AnimationController(
       vsync: this,
-      duration: widget.duration ~/ 2,
+      duration:
+          (widget.duration ~/ 2 - widget.duration ~/ 2 ~/ (widget.length - 1)) -
+              const Duration(milliseconds: 160),
       lowerBound: 0.0,
       upperBound: 1.0,
     ),
@@ -35,9 +37,11 @@ class _LoadingJumpPinIndicatorState extends State<LoadingJumpPinIndicator>
   @override
   void initState() {
     for (int i = 0; i < widget.length; i++) {
-      Future.delayed(widget.duration ~/ widget.length).then((_) => animations[i]
-          .animateTo(animations[i].upperBound)
-          .then((_) => animations[i].animateTo(animations[i].lowerBound)));
+      final delay = widget.duration ~/ (widget.length * 2) * i;
+      Future.delayed(delay).then((_) => animations[i]
+          .animateTo(animations[i].upperBound, curve: Curves.easeOutSine)
+          .then((_) => animations[i]
+              .animateTo(animations[i].lowerBound, curve: Curves.bounceOut)));
     }
     super.initState();
   }
@@ -47,9 +51,17 @@ class _LoadingJumpPinIndicatorState extends State<LoadingJumpPinIndicator>
     return NoAnimationPinIndicator(
       spacing: widget.spacing,
       length: widget.length,
-      builder: (i) => Transform.translate(
-        offset: Offset(0, -animations[i].value * 64),
-      ),
+      builder: (i) {
+        return AnimatedBuilder(
+          animation: animations[i],
+          builder: (context, child) {
+            return Transform.translate(
+              offset: Offset(0, -animations[i].value * 48),
+              child: widget.builder(i),
+            );
+          },
+        );
+      },
     );
   }
 

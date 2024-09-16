@@ -47,8 +47,11 @@ class PinIndicatorAnimationController
   Future<void> animateLoading({
     PinLoadingAnimation animation = PinLoadingAnimation.jump,
     bool vibration = false,
+    int repeatCount = 1,
   }) async {
-    await _startAnimating(animation);
+    for (int i = 0; i < repeatCount; i++) {
+      await _startAnimating(animation);
+    }
   }
 
   Future<void> animateSuccess({

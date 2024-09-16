@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
+// TODO(Sosnovyy): make precise x offset calculation function
 class SuccessCollapsePinIndicator extends StatefulWidget {
   const SuccessCollapsePinIndicator({
     required this.builder,
     required this.length,
     required this.duration,
     required this.spacing,
-    this.collapsedChild,
+    required this.childSize,
+    required this.collapsedChild,
     super.key,
   });
 
@@ -16,8 +18,11 @@ class SuccessCollapsePinIndicator extends StatefulWidget {
   final Duration duration;
   final double spacing;
 
+  /// Size of indicator item
+  final double childSize;
+
   /// Widget that will be shown when indicator items is collapsed
-  final Widget? collapsedChild;
+  final Widget collapsedChild;
 
   @override
   State<SuccessCollapsePinIndicator> createState() =>
@@ -29,7 +34,7 @@ class _SuccessCollapsePinIndicatorState
   late final offsetAnimation = AnimationController(
     vsync: this,
     value: 0.0,
-    lowerBound: -0.4,
+    lowerBound: -0.3,
     upperBound: 1.0,
   );
 
@@ -38,6 +43,12 @@ class _SuccessCollapsePinIndicatorState
     value: 0.0,
     lowerBound: 0.9,
     upperBound: 1.2,
+  );
+
+  late final childAnimation = AnimationController(
+    vsync: this,
+    lowerBound: 0.0,
+    upperBound: 1.0,
   );
 
   // Array of speed values for animating each item's position of indicator
@@ -85,6 +96,11 @@ class _SuccessCollapsePinIndicatorState
           curve: Curves.easeOutSine,
           duration: secondStageDuration,
         ),
+        childAnimation.animateTo(
+          childAnimation.upperBound,
+          curve: Curves.easeOutCubic,
+          duration: secondStageDuration,
+        ),
       ]);
     });
     super.initState();
@@ -92,34 +108,52 @@ class _SuccessCollapsePinIndicatorState
 
   @override
   Widget build(BuildContext context) {
-    return NoAnimationPinIndicator(
-      spacing: widget.spacing,
-      length: widget.length,
-      builder: (i) {
-        return AnimatedBuilder(
-          animation: scaleAnimation,
-          builder: (context, child) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        NoAnimationPinIndicator(
+          spacing: widget.spacing,
+          length: widget.length,
+          builder: (i) {
             return AnimatedBuilder(
-              animation: offsetAnimation,
+              animation: scaleAnimation,
               builder: (context, child) {
-                final direction = (i < widget.length / 2 ? 1 : -1);
-                final delta = widget.spacing;
-                final xOffset = direction *
-                    offsetAnimation.value *
-                    delta *
-                    speedMultipliers[i];
-                return Transform.scale(
-                  scale: scaleAnimation.value,
-                  child: Transform.translate(
-                    offset: Offset(xOffset, 0),
-                    child: widget.builder(i),
-                  ),
+                return AnimatedBuilder(
+                  animation: offsetAnimation,
+                  builder: (context, child) {
+                    final direction = (i < widget.length / 2 ? 1 : -1);
+                    final delta = (widget.spacing + widget.childSize) * 0.76;
+                    final xOffset = direction *
+                        offsetAnimation.value *
+                        delta *
+                        speedMultipliers[i];
+                    return Transform.scale(
+                      scale: scaleAnimation.value,
+                      child: Transform.translate(
+                        offset: Offset(xOffset, 0),
+                        child: widget.builder(i),
+                      ),
+                    );
+                  },
                 );
               },
             );
           },
-        );
-      },
+        ),
+        widget.collapsedChild,
+        // AnimatedBuilder(
+        //   animation: childAnimation,
+        //   builder: (context, child) {
+        //     return Transform.scale(
+        //       scale: childAnimation.value,
+        //       child: Opacity(
+        //         opacity: childAnimation.value,
+        //         child: widget.collapsedChild,
+        //       ),
+        //     );
+        //   },
+        // ),
+      ],
     );
   }
 

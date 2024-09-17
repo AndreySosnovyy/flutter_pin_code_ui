@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animation_controller.dart';
 import 'package:pin_ui/src/indicator/animations.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_drop_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_fade_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_deflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error_shake_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_inflate_pin_indicator.dart';
@@ -135,8 +136,17 @@ class _PinIndicatorState extends State<PinIndicator> {
           PinIndicatorErrorShakeAnimation() => ErrorShakePinIndicator(
               key: UniqueKey(),
               length: widget.length,
+              childSize: widget.size,
               duration: animation.duration,
               builder: (i) => dots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorClearFadeAnimation() => ClearFadePinIndicator(
+              key: UniqueKey(),
+              length: widget.length,
+              duration: animation.duration,
+              builderOld: (i) => dots[i],
+              builderNew: (i) => defaultDots[i],
               spacing: widget.spacing,
             ),
           PinIndicatorClearDropAnimation() => ClearDropPinIndicator(

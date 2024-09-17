@@ -7,6 +7,7 @@ class ErrorShakePinIndicator extends StatefulWidget {
     required this.length,
     required this.duration,
     required this.spacing,
+    required this.childSize,
     super.key,
   });
 
@@ -14,6 +15,7 @@ class ErrorShakePinIndicator extends StatefulWidget {
   final int length;
   final Duration duration;
   final double spacing;
+  final double childSize;
 
   @override
   State<ErrorShakePinIndicator> createState() => _ErrorShakePinIndicatorState();
@@ -67,7 +69,7 @@ class _ErrorShakePinIndicatorState extends State<ErrorShakePinIndicator>
           animation: animation,
           builder: (context, child) {
             return Transform.translate(
-              offset: Offset(animation.value * 32, 0),
+              offset: Offset(animation.value * widget.childSize * 2.3, 0),
               child: widget.builder(i),
             );
           },

@@ -8,7 +8,7 @@ enum PinSuccessAnimation { collapse }
 
 enum PinErrorAnimation { shake }
 
-enum PinClearAnimation { drop }
+enum PinClearAnimation { drop, fade }
 
 enum PinEraseAnimation { deflate }
 
@@ -50,6 +50,7 @@ sealed class PinIndicatorAnimation {
         },
       PinClearAnimation clear => switch (clear) {
           PinClearAnimation.drop => const PinIndicatorClearDropAnimation(),
+          PinClearAnimation.fade => const PinIndicatorClearFadeAnimation(),
         },
       PinEraseAnimation erase => switch (erase) {
           PinEraseAnimation.deflate =>
@@ -104,6 +105,15 @@ class PinIndicatorClearDropAnimation extends PinIndicatorAnimation {
           duration: const Duration(milliseconds: 540),
           isInterruptible: true,
         );
+}
+
+class PinIndicatorClearFadeAnimation extends PinIndicatorAnimation {
+  const PinIndicatorClearFadeAnimation()
+      : super(
+    type: PinAnimationTypes.clear,
+    duration: const Duration(milliseconds: 420),
+    isInterruptible: true,
+  );
 }
 
 class PinIndicatorEraseDeflateAnimation extends PinIndicatorAnimation {

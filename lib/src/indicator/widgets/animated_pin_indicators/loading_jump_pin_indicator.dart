@@ -7,6 +7,7 @@ class LoadingJumpPinIndicator extends StatefulWidget {
     required this.length,
     required this.duration,
     required this.spacing,
+    required this.childSize,
     super.key,
   });
 
@@ -14,6 +15,7 @@ class LoadingJumpPinIndicator extends StatefulWidget {
   final int length;
   final Duration duration;
   final double spacing;
+  final double childSize;
 
   @override
   State<LoadingJumpPinIndicator> createState() =>
@@ -55,7 +57,7 @@ class _LoadingJumpPinIndicatorState extends State<LoadingJumpPinIndicator>
           animation: animations[i],
           builder: (context, child) {
             return Transform.translate(
-              offset: Offset(0, -animations[i].value * 48),
+              offset: Offset(0, -animations[i].value * widget.childSize * 3.4),
               child: widget.builder(i),
             );
           },

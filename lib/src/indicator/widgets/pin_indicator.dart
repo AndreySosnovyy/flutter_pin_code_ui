@@ -24,6 +24,7 @@ const BoxDecoration _dotDefaultErrorDecoration =
 const BoxDecoration _dotDefaultInputDecoration =
     BoxDecoration(shape: BoxShape.circle, color: Colors.blue);
 
+// TODO(Sosnovyy): fix 'AnimationController.animateTo() called after AnimationController.dispose()' when clicking fast input
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
     required this.length,
@@ -105,6 +106,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animation.duration,
               builder: (i) => dots[i],
               spacing: widget.spacing,
+              childSize: widget.size,
             ),
           PinIndicatorSuccessCollapseAnimation() => SuccessCollapsePinIndicator(
               key: UniqueKey(),

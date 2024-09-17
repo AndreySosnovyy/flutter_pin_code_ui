@@ -39,7 +39,7 @@ class _IdleWavePinIndicatorState extends State<IdleWavePinIndicator>
       Future.delayed(delay).then((_) => animations[i]
           .animateTo(animations[i].upperBound, curve: Curves.ease)
           .then((_) => animations[i]
-              .animateTo(animations[i].lowerBound, curve: Curves.ease)));
+              .animateTo(animations[i].lowerBound, curve: Curves.linear)));
     }
     super.initState();
   }

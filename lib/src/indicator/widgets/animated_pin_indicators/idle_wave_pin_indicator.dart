@@ -27,8 +27,8 @@ class _IdleWavePinIndicatorState extends State<IdleWavePinIndicator>
       vsync: this,
       duration:
           (widget.duration ~/ 2 - widget.duration ~/ 2 ~/ (widget.length - 1)),
-      lowerBound: 0.0,
-      upperBound: 1.0,
+      lowerBound: 1.0,
+      upperBound: 1.3,
     ),
   );
 
@@ -37,9 +37,9 @@ class _IdleWavePinIndicatorState extends State<IdleWavePinIndicator>
     for (int i = 0; i < widget.length; i++) {
       final delay = widget.duration ~/ (widget.length * 2) * i;
       Future.delayed(delay).then((_) => animations[i]
-          .animateTo(animations[i].upperBound, curve: Curves.easeOutSine)
+          .animateTo(animations[i].upperBound, curve: Curves.ease)
           .then((_) => animations[i]
-              .animateTo(animations[i].lowerBound, curve: Curves.bounceOut)));
+              .animateTo(animations[i].lowerBound, curve: Curves.ease)));
     }
     super.initState();
   }

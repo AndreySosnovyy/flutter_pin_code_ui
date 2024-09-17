@@ -27,6 +27,8 @@ class PinIndicatorAnimationController
 
   bool get isAnimatingErase => value?.type == PinAnimationTypes.erase;
 
+  bool get isAnimatingIdle => value?.type == PinAnimationTypes.idle;
+
   // TODO(Sosnovyy): implement queue instead of async calls
   final animationsQueue = Queue();
 
@@ -97,6 +99,14 @@ class PinIndicatorAnimationController
 
   Future<void> animateErase({
     PinEraseAnimation animation = PinEraseAnimation.deflate,
+    bool vibration = false,
+  }) async {
+    await _startAnimating(animation);
+  }
+
+  Future<void> animateIdle({
+    PinIdleAnimation animation = PinIdleAnimation.wave,
+    bool vibration = false,
   }) async {
     await _startAnimating(animation);
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pin_ui/pin_ui.dart';
 
@@ -30,6 +32,22 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
   bool isPinError = false;
   bool isPinSuccess = false;
 
+  Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+    restartIdleTimer();
+  }
+
+  void restartIdleTimer() {
+    if (timer != null && timer!.isActive) timer!.cancel();
+    timer = Timer.periodic(
+      const Duration(seconds: 10),
+      (_) => pinIndicatorAnimationController.animateIdle(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +69,10 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                   const SizedBox(height: 64),
                   Pinpad(
                     onKeyTap: (key) async {
+                      restartIdleTimer();
                       if (pinIndicatorAnimationController.isAnimatingError ||
-                          pinIndicatorAnimationController.isAnimatingClear) {
+                          pinIndicatorAnimationController.isAnimatingClear ||
+                          pinIndicatorAnimationController.isAnimatingIdle) {
                         pinIndicatorAnimationController.stopAnimating();
                         setState(() => isPinError = false);
                       }
@@ -121,6 +141,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                                 : Colors.black26),
                       ),
                       onTap: () async {
+                        restartIdleTimer();
                         if (pinText.isNotEmpty) {
                           await pinIndicatorAnimationController.animateClear();
                           setState(() => pinText = '');
@@ -135,9 +156,11 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       pressedDecoration: pressedKeyDecoration,
                       onTap: pinText.isEmpty
                           ? () {
+                              restartIdleTimer();
                               // Call your biometrics method here
                             }
                           : () async {
+                              restartIdleTimer();
                               pinText =
                                   pinText.substring(0, pinText.length - 1);
                               setState(() {});
@@ -168,6 +191,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
   @override
   void dispose() {
     pinIndicatorAnimationController.dispose();
+    timer?.cancel();
+    timer = null;
     super.dispose();
   }
 }

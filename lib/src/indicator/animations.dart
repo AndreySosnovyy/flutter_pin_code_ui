@@ -132,7 +132,7 @@ class PinIndicatorIdleWaveAnimation extends PinIndicatorAnimation {
   const PinIndicatorIdleWaveAnimation()
       : super(
           type: PinAnimationTypes.idle,
-          duration: const Duration(milliseconds: 720),
+          duration: const Duration(milliseconds: 1200),
           isInterruptible: true,
         );
 }

@@ -93,7 +93,6 @@ class _PinIndicatorState extends State<PinIndicator> {
         if (animation == null) return noAnimationPinIndicator;
         return switch (animation) {
           PinIndicatorInputInflateAnimation() => InputInflatePinIndicator(
-              key: UniqueKey(),
               length: widget.length,
               currentPinLength: widget.currentLength,
               duration: animation.duration,
@@ -101,7 +100,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               spacing: widget.spacing,
             ),
           PinIndicatorLoadingJumpAnimation() => LoadingJumpPinIndicator(
-              key: UniqueKey(),
+              key: ValueKey(animation.id),
               length: widget.length,
               duration: animation.duration,
               builder: (i) => dots[i],
@@ -109,7 +108,6 @@ class _PinIndicatorState extends State<PinIndicator> {
               childSize: widget.size,
             ),
           PinIndicatorSuccessCollapseAnimation() => SuccessCollapsePinIndicator(
-              key: UniqueKey(),
               length: widget.length,
               childSize: widget.size,
               duration: animation.duration,
@@ -137,7 +135,6 @@ class _PinIndicatorState extends State<PinIndicator> {
               ),
             ),
           PinIndicatorErrorShakeAnimation() => ErrorShakePinIndicator(
-              key: UniqueKey(),
               length: widget.length,
               childSize: widget.size,
               duration: animation.duration,
@@ -145,7 +142,6 @@ class _PinIndicatorState extends State<PinIndicator> {
               spacing: widget.spacing,
             ),
           PinIndicatorClearFadeAnimation() => ClearFadePinIndicator(
-              key: UniqueKey(),
               length: widget.length,
               duration: animation.duration,
               builderOld: (i) => dots[i],
@@ -153,7 +149,6 @@ class _PinIndicatorState extends State<PinIndicator> {
               spacing: widget.spacing,
             ),
           PinIndicatorClearDropAnimation() => ClearDropPinIndicator(
-              key: UniqueKey(),
               length: widget.length,
               duration: animation.duration,
               builderOld: (i) => dots[i],
@@ -162,7 +157,6 @@ class _PinIndicatorState extends State<PinIndicator> {
               childSize: widget.size,
             ),
           PinIndicatorEraseDeflateAnimation() => EraseDeflatePinIndicator(
-              key: UniqueKey(),
               length: widget.length,
               currentPinLength: widget.currentLength,
               duration: animation.duration,
@@ -170,7 +164,6 @@ class _PinIndicatorState extends State<PinIndicator> {
               spacing: widget.spacing,
             ),
           PinIndicatorIdleWaveAnimation() => IdleWavePinIndicator(
-              key: UniqueKey(),
               length: widget.length,
               duration: animation.duration,
               builder: (i) => dots[i],

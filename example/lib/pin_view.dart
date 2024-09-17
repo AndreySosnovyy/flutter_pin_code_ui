@@ -70,25 +70,24 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                   Pinpad(
                     onKeyTap: (key) async {
                       restartIdleTimer();
-                      if (pinIndicatorAnimationController.isAnimatingError ||
-                          pinIndicatorAnimationController.isAnimatingClear ||
-                          pinIndicatorAnimationController.isAnimatingIdle) {
+                      if (!pinIndicatorAnimationController
+                          .isAnimatingNonInterruptible) {
                         pinIndicatorAnimationController.stopAnimating();
                         setState(() => isPinError = false);
                       }
                       if (pinText.length == validPin.length &&
+                          (pinIndicatorAnimationController.isAnimatingInput ||
                               pinIndicatorAnimationController
-                                  .isAnimatingInput ||
-                          pinIndicatorAnimationController
-                              .isAnimatingNonInterruptible) {
+                                  .isAnimatingLoading)) {
                         return;
                       }
+                      if (pinIndicatorAnimationController
+                          .isAnimatingNonInterruptible) return;
                       if (pinText.length == validPin.length) {
                         pinIndicatorAnimationController.stopAnimating();
                         pinText = '';
                       }
-                      pinText += key;
-                      setState(() {});
+                      setState(() => pinText += key);
                       await pinIndicatorAnimationController.animateInput();
                       if (pinText == validPin) {
                         await pinIndicatorAnimationController.animateLoading(

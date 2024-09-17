@@ -45,6 +45,7 @@ sealed class PinIndicatorAnimation {
     required this.type,
     required this.duration,
     required this.isInterruptible,
+    this.id,
   });
 
   /// Type of the animation.
@@ -57,6 +58,10 @@ sealed class PinIndicatorAnimation {
   /// Whether the animation can be interrupted by the same animation type.
   final bool isInterruptible;
 
+  /// Unique id of the current animation.
+  /// Needed to create keys for repeatable animations.
+  final String? id;
+
   static PinIndicatorAnimation? fromImpl(PinAnimationImplementation impl) {
     return switch (impl) {
       PinInputAnimation input => switch (input) {
@@ -64,7 +69,8 @@ sealed class PinIndicatorAnimation {
             const PinIndicatorInputInflateAnimation(),
         },
       PinLoadingAnimation loading => switch (loading) {
-          PinLoadingAnimation.jump => const PinIndicatorLoadingJumpAnimation(),
+          PinLoadingAnimation.jump => PinIndicatorLoadingJumpAnimation(
+              id: DateTime.now().millisecondsSinceEpoch.hashCode.toString()),
         },
       PinSuccessAnimation success => switch (success) {
           PinSuccessAnimation.collapse =>
@@ -98,11 +104,12 @@ class PinIndicatorInputInflateAnimation extends PinIndicatorAnimation {
 }
 
 class PinIndicatorLoadingJumpAnimation extends PinIndicatorAnimation {
-  const PinIndicatorLoadingJumpAnimation()
+  const PinIndicatorLoadingJumpAnimation({required String id})
       : super(
           type: PinAnimationTypes.loading,
           duration: const Duration(milliseconds: 1200),
           isInterruptible: false,
+          id: id,
         );
 }
 
@@ -111,7 +118,6 @@ class PinIndicatorSuccessCollapseAnimation extends PinIndicatorAnimation {
       : super(
           type: PinAnimationTypes.success,
           duration: const Duration(milliseconds: 840),
-          // duration: const Duration(milliseconds: 4000),
           isInterruptible: false,
         );
 }

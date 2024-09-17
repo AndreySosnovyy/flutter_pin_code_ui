@@ -66,6 +66,7 @@ class PinIndicatorAnimationController
   }) async {
     for (int i = 0; i < repeatCount; i++) {
       await _startAnimating(animation, delayAfter: delayAfterAnimation);
+      stopAnimating();
     }
   }
 

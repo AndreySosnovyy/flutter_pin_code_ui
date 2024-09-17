@@ -6,6 +6,7 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_drop_
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_fade_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_deflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error_shake_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_wave_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_inflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading_jump_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success_collapse_pin_indicator.dart';
@@ -66,7 +67,7 @@ class _PinIndicatorState extends State<PinIndicator> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: widget.controller ?? ValueNotifier(null),
+      valueListenable: widget.controller ?? PinIndicatorAnimationController(),
       builder: (context, animation, child) {
         final dots = List.generate(
           widget.length,
@@ -166,7 +167,13 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => dots[i],
               spacing: widget.spacing,
             ),
-          _ => noAnimationPinIndicator,
+          PinIndicatorIdleWaveAnimation() => IdleWavePinIndicator(
+              key: UniqueKey(),
+              length: widget.length,
+              duration: animation.duration,
+              builder: (i) => dots[i],
+              spacing: widget.spacing,
+            ),
         };
       },
     );

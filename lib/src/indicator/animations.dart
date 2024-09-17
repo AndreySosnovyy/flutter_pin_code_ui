@@ -1,19 +1,20 @@
-enum PinAnimationTypes { input, loading, success, error, clear, erase }
+enum PinAnimationTypes { input, loading, success, error, clear, erase, idle }
 
-enum PinInputAnimation { inflate }
+sealed class PinAnimationImplementation {}
 
-enum PinLoadingAnimation { jump }
+enum PinInputAnimation implements PinAnimationImplementation { inflate }
 
-enum PinSuccessAnimation { collapse }
+enum PinLoadingAnimation implements PinAnimationImplementation { jump }
 
-enum PinErrorAnimation { shake }
+enum PinSuccessAnimation implements PinAnimationImplementation { collapse }
 
-enum PinClearAnimation { drop, fade }
+enum PinErrorAnimation implements PinAnimationImplementation { shake }
 
-enum PinEraseAnimation { deflate }
+enum PinClearAnimation implements PinAnimationImplementation { drop, fade }
 
-// TODO(Sosnovyy): add idle animation
-enum PinIdleAnimation { wave, pulse }
+enum PinEraseAnimation implements PinAnimationImplementation { deflate }
+
+enum PinIdleAnimation implements PinAnimationImplementation { wave }
 
 sealed class PinIndicatorAnimation {
   const PinIndicatorAnimation({
@@ -32,7 +33,7 @@ sealed class PinIndicatorAnimation {
   /// Whether the animation can be interrupted by the same animation type.
   final bool isInterruptible;
 
-  static PinIndicatorAnimation? fromImpl(dynamic impl) {
+  static PinIndicatorAnimation? fromImpl(PinAnimationImplementation impl) {
     return switch (impl) {
       PinInputAnimation input => switch (input) {
           PinInputAnimation.inflate =>
@@ -56,7 +57,9 @@ sealed class PinIndicatorAnimation {
           PinEraseAnimation.deflate =>
             const PinIndicatorEraseDeflateAnimation(),
         },
-      _ => null,
+      PinIdleAnimation idle => switch (idle) {
+          PinIdleAnimation.wave => const PinIndicatorIdleWaveAnimation(),
+        },
     };
   }
 }
@@ -110,10 +113,10 @@ class PinIndicatorClearDropAnimation extends PinIndicatorAnimation {
 class PinIndicatorClearFadeAnimation extends PinIndicatorAnimation {
   const PinIndicatorClearFadeAnimation()
       : super(
-    type: PinAnimationTypes.clear,
-    duration: const Duration(milliseconds: 420),
-    isInterruptible: true,
-  );
+          type: PinAnimationTypes.clear,
+          duration: const Duration(milliseconds: 420),
+          isInterruptible: true,
+        );
 }
 
 class PinIndicatorEraseDeflateAnimation extends PinIndicatorAnimation {
@@ -121,6 +124,15 @@ class PinIndicatorEraseDeflateAnimation extends PinIndicatorAnimation {
       : super(
           type: PinAnimationTypes.erase,
           duration: const Duration(milliseconds: 160),
+          isInterruptible: true,
+        );
+}
+
+class PinIndicatorIdleWaveAnimation extends PinIndicatorAnimation {
+  const PinIndicatorIdleWaveAnimation()
+      : super(
+          type: PinAnimationTypes.idle,
+          duration: const Duration(milliseconds: 720),
           isInterruptible: true,
         );
 }

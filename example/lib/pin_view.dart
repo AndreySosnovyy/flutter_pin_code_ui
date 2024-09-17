@@ -51,7 +51,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                   const SizedBox(height: 64),
                   Pinpad(
                     onKeyTap: (key) async {
-                      if (pinIndicatorAnimationController.isAnimatingError) {
+                      if (pinIndicatorAnimationController.isAnimatingError ||
+                          pinIndicatorAnimationController.isAnimatingClear) {
                         pinIndicatorAnimationController.stopAnimating();
                         setState(() => isPinError = false);
                       }
@@ -111,14 +112,20 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       defaultDecoration: defaultKeyDecoration,
                       pressedDecoration: pressedKeyDecoration,
                       child: Text(
-                        'Extra key',
+                        'Forgot',
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: !pinIndicatorAnimationController
                                     .isAnimatingNonInterruptible
                                 ? null
                                 : Colors.black26),
                       ),
-                      onTap: () {},
+                      onTap: () async {
+                        if (pinText.isNotEmpty) {
+                          await pinIndicatorAnimationController.animateClear();
+                          setState(() => pinText = '');
+                        }
+                        // Call your forgot pin flow logic
+                      },
                     ),
                     rightExtraKeyChild: PinpadKey(
                       enabled: !pinIndicatorAnimationController

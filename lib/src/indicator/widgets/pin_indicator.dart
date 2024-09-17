@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animation_controller.dart';
 import 'package:pin_ui/src/indicator/animations.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_drop_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_deflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error_shake_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_inflate_pin_indicator.dart';
@@ -73,11 +74,19 @@ class _PinIndicatorState extends State<PinIndicator> {
             decoration: _getDecorationForDotIndexed(i),
           ),
         );
+        final defaultDots = List.generate(
+          widget.length,
+          (i) => _PinIndicatorDot(
+            size: widget.size,
+            decoration: widget.defaultDecoration,
+          ),
+        );
         final noAnimationPinIndicator = NoAnimationPinIndicator(
           length: widget.length,
           spacing: widget.spacing,
           builder: (i) => dots[i],
         );
+
         if (animation == null) return noAnimationPinIndicator;
         return switch (animation) {
           PinIndicatorInputInflateAnimation() => InputInflatePinIndicator(
@@ -130,7 +139,15 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => dots[i],
               spacing: widget.spacing,
             ),
-          PinIndicatorClearDropAnimation() => noAnimationPinIndicator,
+          PinIndicatorClearDropAnimation() => ClearDropPinIndicator(
+              key: UniqueKey(),
+              length: widget.length,
+              duration: animation.duration,
+              builderOld: (i) => dots[i],
+              builderNew: (i) => defaultDots[i],
+              spacing: widget.spacing,
+              childSize: widget.size,
+            ),
           PinIndicatorEraseDeflateAnimation() => EraseDeflatePinIndicator(
               key: UniqueKey(),
               length: widget.length,

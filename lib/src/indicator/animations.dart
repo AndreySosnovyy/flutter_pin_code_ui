@@ -101,7 +101,7 @@ class PinIndicatorClearDropAnimation extends PinIndicatorAnimation {
   const PinIndicatorClearDropAnimation()
       : super(
           type: PinAnimationTypes.clear,
-          duration: const Duration(milliseconds: 1000),
+          duration: const Duration(milliseconds: 540),
           isInterruptible: true,
         );
 }

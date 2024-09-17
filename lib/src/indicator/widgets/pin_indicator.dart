@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animation_controller.dart';
 import 'package:pin_ui/src/indicator/animations.dart';
@@ -62,73 +63,70 @@ class _PinIndicatorState extends State<PinIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red,
-      child: ValueListenableBuilder(
-        valueListenable: widget.controller ?? ValueNotifier(null),
-        builder: (context, animation, child) {
-          final dots = List.generate(
-            widget.length,
-            (i) => _PinIndicatorDot(
-              size: widget.size,
-              decoration: _getDecorationForDotIndexed(i),
+    return ValueListenableBuilder(
+      valueListenable: widget.controller ?? ValueNotifier(null),
+      builder: (context, animation, child) {
+        final dots = List.generate(
+          widget.length,
+          (i) => _PinIndicatorDot(
+            size: widget.size,
+            decoration: _getDecorationForDotIndexed(i),
+          ),
+        );
+        final noAnimationPinIndicator = NoAnimationPinIndicator(
+          length: widget.length,
+          spacing: widget.spacing,
+          builder: (i) => dots[i],
+        );
+        if (animation == null) return noAnimationPinIndicator;
+        return switch (animation) {
+          PinIndicatorInputInflateAnimation() => InputInflatePinIndicator(
+              key: UniqueKey(),
+              length: widget.length,
+              currentPinLength: widget.currentLength,
+              duration: animation.duration,
+              builder: (i) => dots[i],
+              spacing: widget.spacing,
             ),
-          );
-          final noAnimationPinIndicator = NoAnimationPinIndicator(
-            length: widget.length,
-            spacing: widget.spacing,
-            builder: (i) => dots[i],
-          );
-          if (animation == null) return noAnimationPinIndicator;
-          return switch (animation) {
-            PinIndicatorInputInflateAnimation() => InputInflatePinIndicator(
-                key: UniqueKey(),
-                length: widget.length,
-                currentPinLength: widget.currentLength,
-                duration: animation.duration,
-                builder: (i) => dots[i],
-                spacing: widget.spacing,
+          PinIndicatorLoadingJumpAnimation() => LoadingJumpPinIndicator(
+              key: UniqueKey(),
+              length: widget.length,
+              duration: animation.duration,
+              builder: (i) => dots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorSuccessCollapseAnimation() => SuccessCollapsePinIndicator(
+              key: UniqueKey(),
+              length: widget.length,
+              childSize: widget.size,
+              duration: animation.duration,
+              builder: (i) => dots[i],
+              spacing: widget.spacing,
+              collapsedChild: const Icon(
+                CupertinoIcons.checkmark_alt_circle_fill,
+                color: Colors.green,
+                size: 42,
               ),
-            PinIndicatorLoadingJumpAnimation() => LoadingJumpPinIndicator(
-                key: UniqueKey(),
-                length: widget.length,
-                duration: animation.duration,
-                builder: (i) => dots[i],
-                spacing: widget.spacing,
-              ),
-            PinIndicatorSuccessCollapseAnimation() => SuccessCollapsePinIndicator(
-                key: UniqueKey(),
-                length: widget.length,
-                childSize: widget.size,
-                duration: animation.duration,
-                builder: (i) => dots[i],
-                spacing: widget.spacing,
-                collapsedChild: const Icon(
-                  Icons.check_circle_rounded,
-                  color: Colors.green,
-                  size: 42,
-                ),
-              ),
-            PinIndicatorErrorShakeAnimation() => ErrorShakePinIndicator(
-                key: UniqueKey(),
-                length: widget.length,
-                duration: animation.duration,
-                builder: (i) => dots[i],
-                spacing: widget.spacing,
-              ),
-            PinIndicatorClearDropAnimation() => noAnimationPinIndicator,
-            PinIndicatorEraseDeflateAnimation() => EraseDeflatePinIndicator(
-                key: UniqueKey(),
-                length: widget.length,
-                currentPinLength: widget.currentLength,
-                duration: animation.duration,
-                builder: (i) => dots[i],
-                spacing: widget.spacing,
-              ),
-            _ => noAnimationPinIndicator,
-          };
-        },
-      ),
+            ),
+          PinIndicatorErrorShakeAnimation() => ErrorShakePinIndicator(
+              key: UniqueKey(),
+              length: widget.length,
+              duration: animation.duration,
+              builder: (i) => dots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorClearDropAnimation() => noAnimationPinIndicator,
+          PinIndicatorEraseDeflateAnimation() => EraseDeflatePinIndicator(
+              key: UniqueKey(),
+              length: widget.length,
+              currentPinLength: widget.currentLength,
+              duration: animation.duration,
+              builder: (i) => dots[i],
+              spacing: widget.spacing,
+            ),
+          _ => noAnimationPinIndicator,
+        };
+      },
     );
   }
 }

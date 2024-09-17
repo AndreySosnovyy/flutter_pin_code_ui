@@ -82,8 +82,8 @@ class PinIndicatorSuccessCollapseAnimation extends PinIndicatorAnimation {
   const PinIndicatorSuccessCollapseAnimation()
       : super(
           type: PinAnimationTypes.success,
-          // duration: const Duration(milliseconds: 840),
-          duration: const Duration(milliseconds: 4000),
+          duration: const Duration(milliseconds: 840),
+          // duration: const Duration(milliseconds: 4000),
           isInterruptible: false,
         );
 }

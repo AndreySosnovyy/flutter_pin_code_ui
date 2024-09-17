@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
 // TODO(Sosnovyy): make precise x offset calculation function
@@ -37,14 +37,18 @@ class _SuccessCollapsePinIndicatorState
     lowerBound: -0.3,
     upperBound: 1.0,
   );
-
   late final scaleAnimation = AnimationController(
     vsync: this,
     value: 0.0,
     lowerBound: 0.9,
     upperBound: 1.2,
   );
-
+  late final opacityAnimation = AnimationController(
+    vsync: this,
+    value: 1.0,
+    lowerBound: 0.0,
+    upperBound: 1.0,
+  );
   late final childAnimation = AnimationController(
     vsync: this,
     lowerBound: 0.0,
@@ -96,9 +100,14 @@ class _SuccessCollapsePinIndicatorState
           curve: Curves.easeOutSine,
           duration: secondStageDuration,
         ),
+        opacityAnimation.animateTo(
+          opacityAnimation.lowerBound,
+          curve: Curves.easeInQuad,
+          duration: secondStageDuration,
+        ),
         childAnimation.animateTo(
           childAnimation.upperBound,
-          curve: Curves.easeOutCubic,
+          curve: Curves.easeOutCirc,
           duration: secondStageDuration,
         ),
       ]);
@@ -110,6 +119,7 @@ class _SuccessCollapsePinIndicatorState
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
+      clipBehavior: Clip.none,
       children: [
         NoAnimationPinIndicator(
           spacing: widget.spacing,
@@ -131,7 +141,10 @@ class _SuccessCollapsePinIndicatorState
                       scale: scaleAnimation.value,
                       child: Transform.translate(
                         offset: Offset(xOffset, 0),
-                        child: widget.builder(i),
+                        child: Opacity(
+                          opacity: opacityAnimation.value,
+                          child: widget.builder(i),
+                        ),
                       ),
                     );
                   },
@@ -140,19 +153,22 @@ class _SuccessCollapsePinIndicatorState
             );
           },
         ),
-        widget.collapsedChild,
-        // AnimatedBuilder(
-        //   animation: childAnimation,
-        //   builder: (context, child) {
-        //     return Transform.scale(
-        //       scale: childAnimation.value,
-        //       child: Opacity(
-        //         opacity: childAnimation.value,
-        //         child: widget.collapsedChild,
-        //       ),
-        //     );
-        //   },
-        // ),
+        Positioned(
+          // TODO(Sosnovyy): somehow make adaptive
+          top: -14,
+          child: AnimatedBuilder(
+            animation: childAnimation,
+            builder: (context, child) {
+              return Transform.scale(
+                scale: childAnimation.value,
+                child: Opacity(
+                  opacity: childAnimation.value,
+                  child: widget.collapsedChild,
+                ),
+              );
+            },
+          ),
+        ),
       ],
     );
   }
@@ -161,6 +177,8 @@ class _SuccessCollapsePinIndicatorState
   void dispose() {
     offsetAnimation.dispose();
     scaleAnimation.dispose();
+    opacityAnimation.dispose();
+    childAnimation.dispose();
     super.dispose();
   }
 }

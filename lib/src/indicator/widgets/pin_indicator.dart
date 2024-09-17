@@ -102,10 +102,25 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animation.duration,
               builder: (i) => dots[i],
               spacing: widget.spacing,
-              collapsedChild: const Icon(
-                CupertinoIcons.checkmark_alt_circle_fill,
-                color: Colors.green,
-                size: 42,
+              collapsedChild: Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: widget.size * 2.3,
+                    height: widget.size * 2.3,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    CupertinoIcons.checkmark_alt_circle_fill,
+                    color: Colors.green,
+                    size: widget.size * 3,
+                  ),
+                ],
               ),
             ),
           PinIndicatorErrorShakeAnimation() => ErrorShakePinIndicator(

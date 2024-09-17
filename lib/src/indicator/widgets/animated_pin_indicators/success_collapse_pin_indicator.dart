@@ -154,8 +154,7 @@ class _SuccessCollapsePinIndicatorState
           },
         ),
         Positioned(
-          // TODO(Sosnovyy): somehow make adaptive
-          top: -14,
+          top: -widget.childSize,
           child: AnimatedBuilder(
             animation: childAnimation,
             builder: (context, child) {

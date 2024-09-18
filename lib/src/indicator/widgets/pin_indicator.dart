@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animation_controller.dart';
-import 'package:pin_ui/src/indicator/animations.dart';
+import 'package:pin_ui/src/indicator/models/animation_data.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_drop_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_fade_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_deflate_pin_indicator.dart';
@@ -24,7 +24,6 @@ const BoxDecoration _dotDefaultErrorDecoration =
 const BoxDecoration _dotDefaultInputDecoration =
     BoxDecoration(shape: BoxShape.circle, color: Colors.blue);
 
-// TODO(Sosnovyy): fix 'AnimationController.animateTo() called after AnimationController.dispose()' when clicking fast input
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
     required this.length,
@@ -70,7 +69,7 @@ class _PinIndicatorState extends State<PinIndicator> {
     return ValueListenableBuilder(
       valueListenable: widget.controller ?? PinIndicatorAnimationController(),
       builder: (context, animation, child) {
-        final dots = List.generate(
+        final currentDots = List.generate(
           widget.length,
           (i) => _PinIndicatorDot(
             size: widget.size,
@@ -87,31 +86,35 @@ class _PinIndicatorState extends State<PinIndicator> {
         final noAnimationPinIndicator = NoAnimationPinIndicator(
           length: widget.length,
           spacing: widget.spacing,
-          builder: (i) => dots[i],
+          builder: (i) => currentDots[i],
         );
 
         if (animation == null) return noAnimationPinIndicator;
-        return switch (animation) {
-          PinIndicatorInputInflateAnimation() => InputInflatePinIndicator(
-              length: widget.length,
-              currentPinLength: widget.currentLength,
-              duration: animation.duration,
-              builder: (i) => dots[i],
-              spacing: widget.spacing,
-            ),
-          PinIndicatorLoadingJumpAnimation() => LoadingJumpPinIndicator(
+        return switch (animation.data) {
+          PinIndicatorNoAnimationData() => noAnimationPinIndicator,
+          PinIndicatorInputInflateAnimationData() => InputInflatePinIndicator(
               key: ValueKey(animation.id),
               length: widget.length,
-              duration: animation.duration,
-              builder: (i) => dots[i],
+              currentPinLength: widget.currentLength,
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorLoadingJumpAnimationData() => LoadingJumpPinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
               spacing: widget.spacing,
               childSize: widget.size,
             ),
-          PinIndicatorSuccessCollapseAnimation() => SuccessCollapsePinIndicator(
+          PinIndicatorSuccessCollapseAnimationData() =>
+            SuccessCollapsePinIndicator(
+              key: ValueKey(animation.id),
               length: widget.length,
               childSize: widget.size,
-              duration: animation.duration,
-              builder: (i) => dots[i],
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
               spacing: widget.spacing,
               collapsedChild: Stack(
                 alignment: Alignment.center,
@@ -134,39 +137,44 @@ class _PinIndicatorState extends State<PinIndicator> {
                 ],
               ),
             ),
-          PinIndicatorErrorShakeAnimation() => ErrorShakePinIndicator(
+          PinIndicatorErrorShakeAnimationData() => ErrorShakePinIndicator(
+              key: ValueKey(animation.id),
               length: widget.length,
               childSize: widget.size,
-              duration: animation.duration,
-              builder: (i) => dots[i],
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
               spacing: widget.spacing,
             ),
-          PinIndicatorClearFadeAnimation() => ClearFadePinIndicator(
+          PinIndicatorClearFadeAnimationData() => ClearFadePinIndicator(
+              key: ValueKey(animation.id),
               length: widget.length,
-              duration: animation.duration,
-              builderOld: (i) => dots[i],
+              duration: animation.data.duration,
+              builderOld: (i) => currentDots[i],
               builderNew: (i) => defaultDots[i],
               spacing: widget.spacing,
             ),
-          PinIndicatorClearDropAnimation() => ClearDropPinIndicator(
+          PinIndicatorClearDropAnimationData() => ClearDropPinIndicator(
+              key: ValueKey(animation.id),
               length: widget.length,
-              duration: animation.duration,
-              builderOld: (i) => dots[i],
+              duration: animation.data.duration,
+              builderOld: (i) => currentDots[i],
               builderNew: (i) => defaultDots[i],
               spacing: widget.spacing,
               childSize: widget.size,
             ),
-          PinIndicatorEraseDeflateAnimation() => EraseDeflatePinIndicator(
+          PinIndicatorEraseDeflateAnimationData() => EraseDeflatePinIndicator(
+              key: ValueKey(animation.id),
               length: widget.length,
               currentPinLength: widget.currentLength,
-              duration: animation.duration,
-              builder: (i) => dots[i],
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
               spacing: widget.spacing,
             ),
-          PinIndicatorIdleWaveAnimation() => IdleWavePinIndicator(
+          PinIndicatorIdleWaveAnimationData() => IdleWavePinIndicator(
+              key: ValueKey(animation.id),
               length: widget.length,
-              duration: animation.duration,
-              builder: (i) => dots[i],
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
               spacing: widget.spacing,
             ),
         };

@@ -1,114 +1,211 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:pin_ui/src/indicator/animations.dart';
+import 'package:pin_ui/src/indicator/models/animation.dart';
+import 'package:pin_ui/src/indicator/models/animation_data.dart';
+import 'package:pin_ui/src/indicator/models/implementations.dart';
+import 'package:pin_ui/src/indicator/utils/identifier_util.dart';
 
 class PinIndicatorAnimationController
     extends ValueNotifier<PinIndicatorAnimation?> {
   PinIndicatorAnimationController() : super(null);
 
-  PinIndicatorAnimation? _nextValue;
-
   bool get isAnimating => value != null;
 
   bool get isAnimatingNonInterruptible =>
-      !(value?.isInterruptible ?? true) ||
-      !(_nextValue?.isInterruptible ?? true);
+      !(value?.data.isInterruptible ?? true);
 
-  bool get isAnimatingInput => value?.type == PinAnimationTypes.input;
+  bool get isAnimatingInput => value?.data.type == PinAnimationTypes.input;
 
-  bool get isAnimatingLoading => value?.type == PinAnimationTypes.loading;
+  bool get isAnimatingLoading => value?.data.type == PinAnimationTypes.loading;
 
-  bool get isAnimatingSuccess => value?.type == PinAnimationTypes.success;
+  bool get isAnimatingSuccess => value?.data.type == PinAnimationTypes.success;
 
-  bool get isAnimatingError => value?.type == PinAnimationTypes.error;
+  bool get isAnimatingError => value?.data.type == PinAnimationTypes.error;
 
-  bool get isAnimatingClear => value?.type == PinAnimationTypes.clear;
+  bool get isAnimatingClear => value?.data.type == PinAnimationTypes.clear;
 
-  bool get isAnimatingErase => value?.type == PinAnimationTypes.erase;
+  bool get isAnimatingErase => value?.data.type == PinAnimationTypes.erase;
 
-  bool get isAnimatingIdle => value?.type == PinAnimationTypes.idle;
+  bool get isAnimatingIdle => value?.data.type == PinAnimationTypes.idle;
 
-  // TODO(Sosnovyy): implement queue instead of async calls
-  final animationsQueue = Queue();
+  final _animationsQueue = Queue<PinIndicatorAnimation>();
 
-  void stopAnimating() {
+  Timer? _animationTimer;
+
+  /// Call this method if you want to stop currently playing animation and
+  /// all of planned ones if any.
+  /// Method stops even non-interruptible animations from being played.
+  void stop() {
     value = null;
-    _nextValue = null;
     notifyListeners();
+    _animationsQueue.clear();
+    _animationTimer?.cancel();
+    _animationTimer = null;
   }
 
-  Future<void> _startAnimating(
-    dynamic animation, {
+  void _prepareAndStart(
+    PinAnimationImplementation impl, {
     Duration? delayBefore,
     Duration? delayAfter,
-  }) async {
-    _nextValue = PinIndicatorAnimation.fromImpl(animation);
-    if (delayBefore != null) await Future.delayed(delayBefore);
-    value = _nextValue;
-    notifyListeners();
-    await Future.delayed(value!.duration);
-    if (delayAfter != null) await Future.delayed(delayAfter);
-    stopAnimating();
-  }
-
-  Future<void> animateInput({
-    PinInputAnimation animation = PinInputAnimation.inflate,
-  }) async {
-    await _startAnimating(animation);
-  }
-
-  Future<void> animateLoading({
-    PinLoadingAnimation animation = PinLoadingAnimation.jump,
-    bool vibration = false,
-    int repeatCount = 1,
-    Duration delayAfterAnimation = Duration.zero,
-  }) async {
-    for (int i = 0; i < repeatCount; i++) {
-      await _startAnimating(animation, delayAfter: delayAfterAnimation);
-      stopAnimating();
+    VoidCallback? onComplete,
+  }) {
+    // Remove all interruptible animations from the queue if any
+    while (_animationsQueue.isNotEmpty &&
+        _animationsQueue.last.data.isInterruptible) {
+      _animationsQueue.removeLast();
     }
+
+    // Load new animation with delays into the queue
+    final data = PinIndicatorAnimationData.fromImpl(impl);
+    if (delayBefore != null) {
+      _animationsQueue.add(PinIndicatorAnimation(
+        id: IdentifierUtil.getUniqueIdentifier(),
+        data: PinIndicatorNoAnimationData(
+          duration: delayBefore,
+          isInterruptible: data.isInterruptible,
+        ),
+      ));
+    }
+    _animationsQueue.add(PinIndicatorAnimation(
+      id: IdentifierUtil.getUniqueIdentifier(),
+      data: data,
+      onComplete: delayAfter == null ? onComplete : null,
+    ));
+    if (delayAfter != null) {
+      _animationsQueue.add(PinIndicatorAnimation(
+        id: IdentifierUtil.getUniqueIdentifier(),
+        data: PinIndicatorNoAnimationData(
+          duration: delayAfter,
+          isInterruptible: data.isInterruptible,
+        ),
+        onComplete: onComplete,
+      ));
+    }
+
+    // Start animation there is no queue to wait for. Otherwise it will be
+    // started by timer after currently playing animation is over.
+    _animate();
   }
 
-  Future<void> animateSuccess({
-    PinSuccessAnimation animation = PinSuccessAnimation.collapse,
-    bool vibration = false,
-    Duration delayBeforeAnimation = Duration.zero,
-    Duration delayAfterAnimation = Duration.zero,
-  }) async {
-    await _startAnimating(
-      animation,
-      delayBefore: delayBeforeAnimation,
-      delayAfter: delayAfterAnimation,
+  void _animate() {
+    if (isAnimating) return;
+    if (_animationsQueue.isEmpty) return stop();
+    value = _animationsQueue.removeFirst();
+    notifyListeners();
+    _animationTimer = Timer(
+      value!.data.duration,
+      () {
+        value!.onComplete?.call();
+        value = null;
+        notifyListeners();
+        _animate();
+      },
     );
   }
 
-  Future<void> animateError({
+  void animateInput({
+    PinInputAnimation animation = PinInputAnimation.inflate,
+    bool vibration = false,
+    VoidCallback? onComplete,
+  }) {
+    _prepareAndStart(
+      animation,
+      onComplete: onComplete,
+    );
+  }
+
+  void animateLoading({
+    PinLoadingAnimation animation = PinLoadingAnimation.jump,
+    bool vibration = false,
+    int repeatCount = 1,
+    Duration? delayBeforeAnimation,
+    Duration? delayAfterAnimation,
+    VoidCallback? onComplete,
+  }) {
+    for (int i = 0; i < repeatCount; i++) {
+      _prepareAndStart(
+        animation,
+        delayBefore: delayBeforeAnimation,
+        delayAfter: delayAfterAnimation,
+        onComplete: onComplete,
+      );
+    }
+  }
+
+  void animateSuccess({
+    PinSuccessAnimation animation = PinSuccessAnimation.collapse,
+    bool vibration = false,
+    Duration? delayBeforeAnimation,
+    Duration? delayAfterAnimation,
+    VoidCallback? onComplete,
+  }) {
+    _prepareAndStart(
+      animation,
+      delayBefore: delayBeforeAnimation,
+      delayAfter: delayAfterAnimation,
+      onComplete: onComplete,
+    );
+  }
+
+  void animateError({
     PinErrorAnimation animation = PinErrorAnimation.shake,
     bool vibration = false,
-    Duration delayAfterAnimation = Duration.zero,
-  }) async {
-    await _startAnimating(animation, delayAfter: delayAfterAnimation);
+    Duration? delayBeforeAnimation,
+    Duration? delayAfterAnimation,
+    VoidCallback? onComplete,
+  }) {
+    _prepareAndStart(
+      animation,
+      delayBefore: delayBeforeAnimation,
+      delayAfter: delayAfterAnimation,
+      onComplete: onComplete,
+    );
   }
 
-  Future<void> animateClear({
+  void animateClear({
     PinClearAnimation animation = PinClearAnimation.drop,
     bool vibration = false,
-  }) async {
-    await _startAnimating(animation);
+    Duration? delayBeforeAnimation,
+    Duration? delayAfterAnimation,
+    VoidCallback? onComplete,
+  }) {
+    _prepareAndStart(
+      animation,
+      delayBefore: delayBeforeAnimation,
+      delayAfter: delayAfterAnimation,
+      onComplete: onComplete,
+    );
   }
 
-  Future<void> animateErase({
+  void animateErase({
     PinEraseAnimation animation = PinEraseAnimation.deflate,
     bool vibration = false,
-  }) async {
-    await _startAnimating(animation);
+    VoidCallback? onComplete,
+  }) {
+    _prepareAndStart(
+      animation,
+      onComplete: onComplete,
+    );
   }
 
-  Future<void> animateIdle({
+  void animateIdle({
     PinIdleAnimation animation = PinIdleAnimation.wave,
     bool vibration = false,
-  }) async {
-    await _startAnimating(animation);
+    VoidCallback? onComplete,
+  }) {
+    _prepareAndStart(
+      animation,
+      onComplete: onComplete,
+    );
+  }
+
+  @override
+  void dispose() {
+    stop();
+    _animationTimer?.cancel();
+    _animationTimer = null;
+    super.dispose();
   }
 }

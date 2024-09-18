@@ -72,7 +72,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       restartIdleTimer();
                       if (!pinIndicatorAnimationController
                           .isAnimatingNonInterruptible) {
-                        pinIndicatorAnimationController.stopAnimating();
+                        pinIndicatorAnimationController.stop();
                         setState(() => isPinError = false);
                       }
                       if (pinText.length == validPin.length &&
@@ -84,37 +84,43 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       if (pinIndicatorAnimationController
                           .isAnimatingNonInterruptible) return;
                       if (pinText.length == validPin.length) {
-                        pinIndicatorAnimationController.stopAnimating();
+                        pinIndicatorAnimationController.stop();
                         pinText = '';
                       }
                       setState(() => pinText += key);
-                      await pinIndicatorAnimationController.animateInput();
+                      pinIndicatorAnimationController.animateInput();
                       if (pinText == validPin) {
-                        await pinIndicatorAnimationController.animateLoading(
+                        pinIndicatorAnimationController.animateLoading(
                           repeatCount: 2,
                           delayAfterAnimation:
                               const Duration(milliseconds: 160),
+                          onComplete: () => setState(() => isPinSuccess = true),
                         );
-                        setState(() => isPinSuccess = true);
-                        await pinIndicatorAnimationController.animateSuccess(
+                        pinIndicatorAnimationController.animateSuccess(
                           delayBeforeAnimation:
                               const Duration(milliseconds: 480),
                           delayAfterAnimation:
                               const Duration(milliseconds: 1200),
+                          onComplete: () {
+                            pinText = '';
+                            isPinSuccess = false;
+                            setState(() {});
+                          },
                         );
-                        setState(() => isPinSuccess = false);
                       } else if (pinText.length == validPin.length) {
                         setState(() => isPinError = true);
-                        await pinIndicatorAnimationController.animateError(
+                        pinIndicatorAnimationController.animateError(
                           delayAfterAnimation:
                               const Duration(milliseconds: 400),
                         );
-                        await pinIndicatorAnimationController.animateClear(
-                            animation: PinClearAnimation.fade);
-                        setState(() => isPinError = false);
-                      }
-                      if (pinText.length == validPin.length) {
-                        setState(() => pinText = '');
+                        pinIndicatorAnimationController.animateClear(
+                          animation: PinClearAnimation.fade,
+                          onComplete: () {
+                            pinText = '';
+                            isPinError = false;
+                            setState(() {});
+                          },
+                        );
                       }
                     },
                     enabled: !pinIndicatorAnimationController
@@ -142,7 +148,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       onTap: () async {
                         restartIdleTimer();
                         if (pinText.isNotEmpty) {
-                          await pinIndicatorAnimationController.animateClear();
+                          pinIndicatorAnimationController.animateClear();
                           setState(() => pinText = '');
                         }
                         // Call your forgot pin flow logic
@@ -163,8 +169,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                               pinText =
                                   pinText.substring(0, pinText.length - 1);
                               setState(() {});
-                              await pinIndicatorAnimationController
-                                  .animateErase();
+                              pinIndicatorAnimationController.animateErase();
                             },
                       child: pinText.isEmpty
                           // Display current biometrics type here

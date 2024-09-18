@@ -33,10 +33,14 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
   );
   late final disabledKeyDecoration = defaultKeyDecoration.copyWith();
   late final defaultTextStyle =
-      Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 32);
+  Theme
+      .of(context)
+      .textTheme
+      .titleLarge!
+      .copyWith(fontSize: 32);
   late final pressedTextStyle = defaultTextStyle.copyWith(color: Colors.blue);
   late final disabledTextStyle =
-      defaultTextStyle.copyWith(color: Colors.black26);
+  defaultTextStyle.copyWith(color: Colors.black26);
 
   final pinIndicatorAnimationController = PinIndicatorAnimationController();
   Timer? timer;
@@ -55,7 +59,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
     if (timer != null && timer!.isActive) timer!.cancel();
     timer = Timer.periodic(
       const Duration(seconds: 10),
-      (_) => pinIndicatorAnimationController.animateIdle(),
+          (_) => pinIndicatorAnimationController.animateIdle(),
     );
   }
 
@@ -86,7 +90,6 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                         return;
                       } else {
                         pinIndicatorAnimationController.stop();
-                        setState(() => isPinError = false);
                       }
                       if (pinText.length < validPin.length) {
                         setState(() => pinText += key);
@@ -96,14 +99,14 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                         pinIndicatorAnimationController.animateLoading(
                           repeatCount: 2,
                           delayAfterAnimation:
-                              const Duration(milliseconds: 160),
+                          const Duration(milliseconds: 160),
                           onComplete: () => setState(() => isPinSuccess = true),
                         );
                         pinIndicatorAnimationController.animateSuccess(
                           delayBeforeAnimation:
-                              const Duration(milliseconds: 480),
+                          const Duration(milliseconds: 480),
                           delayAfterAnimation:
-                              const Duration(milliseconds: 1200),
+                          const Duration(milliseconds: 1200),
                           onComplete: () {
                             pinText = '';
                             isPinSuccess = false;
@@ -112,17 +115,22 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                         );
                       } else if (pinText.length == validPin.length) {
                         setState(() => isPinError = true);
+                        clearError() {
+                          setState(() {
+                            pinText = '';
+                            isPinError = false;
+                          });
+                        }
+
                         pinIndicatorAnimationController.animateError(
                           delayAfterAnimation:
-                              const Duration(milliseconds: 240),
+                          const Duration(milliseconds: 240),
+                          onInterrupt: clearError,
                         );
                         pinIndicatorAnimationController.animateClear(
                           animation: PinClearAnimation.fade,
-                          onComplete: () {
-                            pinText = '';
-                            isPinError = false;
-                            setState(() {});
-                          },
+                          onComplete: clearError,
+                          onInterrupt: clearError,
                         );
                       }
                     },
@@ -142,9 +150,13 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       pressedDecoration: pressedKeyDecoration,
                       child: Text(
                         'Forgot',
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(
                             color: !pinIndicatorAnimationController
-                                    .isAnimatingNonInterruptible
+                                .isAnimatingNonInterruptible
                                 ? null
                                 : Colors.black26),
                       ),
@@ -164,27 +176,27 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       pressedDecoration: pressedKeyDecoration,
                       onTap: pinText.isEmpty
                           ? () {
-                              restartIdleTimer();
-                              // Call your biometrics method here
-                            }
+                        restartIdleTimer();
+                        // Call your biometrics method here
+                      }
                           : () async {
-                              restartIdleTimer();
-                              pinText =
-                                  pinText.substring(0, pinText.length - 1);
-                              setState(() {});
-                              pinIndicatorAnimationController.animateErase();
-                            },
+                        restartIdleTimer();
+                        pinText =
+                            pinText.substring(0, pinText.length - 1);
+                        setState(() {});
+                        pinIndicatorAnimationController.animateErase();
+                      },
                       child: pinText.isEmpty
-                          // Display current biometrics type here
+                      // Display current biometrics type here
                           ? const Icon(Icons.fingerprint_rounded, size: 32)
                           : Icon(
-                              Icons.backspace_outlined,
-                              size: 24,
-                              color: !pinIndicatorAnimationController
-                                      .isAnimatingNonInterruptible
-                                  ? null
-                                  : Colors.black26,
-                            ),
+                        Icons.backspace_outlined,
+                        size: 24,
+                        color: !pinIndicatorAnimationController
+                            .isAnimatingNonInterruptible
+                            ? null
+                            : Colors.black26,
+                      ),
                     ),
                   ),
                   const Spacer(),

@@ -38,9 +38,12 @@ class PinIndicatorAnimationController
   /// all of planned ones if any.
   /// Method stops even non-interruptible animations from being played.
   void stop() {
+    value?.onInterrupt?.call();
+    while (_animationsQueue.isNotEmpty) {
+      _animationsQueue.removeFirst().onInterrupt?.call();
+    }
     value = null;
     notifyListeners();
-    _animationsQueue.clear();
     _animationTimer?.cancel();
     _animationTimer = null;
   }
@@ -50,6 +53,7 @@ class PinIndicatorAnimationController
     Duration? delayBefore,
     Duration? delayAfter,
     VoidCallback? onComplete,
+    VoidCallback? onInterrupt,
   }) {
     final data = PinIndicatorAnimationData.fromImpl(impl);
 
@@ -75,6 +79,7 @@ class PinIndicatorAnimationController
       id: IdentifierUtil.getUniqueIdentifier(),
       data: data,
       onComplete: delayAfter == null ? onComplete : null,
+      onInterrupt: onInterrupt,
     ));
     if (delayAfter != null) {
       _animationsQueue.add(PinIndicatorAnimation(
@@ -107,17 +112,18 @@ class PinIndicatorAnimationController
         _animate();
       },
     );
-    print('value = ${value}');
   }
 
   void animateInput({
     PinInputAnimation animation = PinInputAnimation.inflate,
     bool vibration = false,
     VoidCallback? onComplete,
+    VoidCallback? onInterrupt,
   }) {
     _prepareAndStart(
       animation,
       onComplete: onComplete,
+      onInterrupt: onInterrupt,
     );
   }
 
@@ -128,6 +134,7 @@ class PinIndicatorAnimationController
     Duration? delayBeforeAnimation,
     Duration? delayAfterAnimation,
     VoidCallback? onComplete,
+    VoidCallback? onInterrupt,
   }) {
     for (int i = 0; i < repeatCount; i++) {
       _prepareAndStart(
@@ -135,6 +142,7 @@ class PinIndicatorAnimationController
         delayBefore: delayBeforeAnimation,
         delayAfter: delayAfterAnimation,
         onComplete: i == repeatCount - 1 ? onComplete : null,
+        onInterrupt: onInterrupt,
       );
     }
   }
@@ -145,12 +153,14 @@ class PinIndicatorAnimationController
     Duration? delayBeforeAnimation,
     Duration? delayAfterAnimation,
     VoidCallback? onComplete,
+    VoidCallback? onInterrupt,
   }) {
     _prepareAndStart(
       animation,
       delayBefore: delayBeforeAnimation,
       delayAfter: delayAfterAnimation,
       onComplete: onComplete,
+      onInterrupt: onInterrupt,
     );
   }
 
@@ -160,12 +170,14 @@ class PinIndicatorAnimationController
     Duration? delayBeforeAnimation,
     Duration? delayAfterAnimation,
     VoidCallback? onComplete,
+    VoidCallback? onInterrupt,
   }) {
     _prepareAndStart(
       animation,
       delayBefore: delayBeforeAnimation,
       delayAfter: delayAfterAnimation,
       onComplete: onComplete,
+      onInterrupt: onInterrupt,
     );
   }
 
@@ -175,12 +187,14 @@ class PinIndicatorAnimationController
     Duration? delayBeforeAnimation,
     Duration? delayAfterAnimation,
     VoidCallback? onComplete,
+    VoidCallback? onInterrupt,
   }) {
     _prepareAndStart(
       animation,
       delayBefore: delayBeforeAnimation,
       delayAfter: delayAfterAnimation,
       onComplete: onComplete,
+      onInterrupt: onInterrupt,
     );
   }
 
@@ -188,10 +202,12 @@ class PinIndicatorAnimationController
     PinEraseAnimation animation = PinEraseAnimation.deflate,
     bool vibration = false,
     VoidCallback? onComplete,
+    VoidCallback? onInterrupt,
   }) {
     _prepareAndStart(
       animation,
       onComplete: onComplete,
+      onInterrupt: onInterrupt,
     );
   }
 
@@ -199,10 +215,12 @@ class PinIndicatorAnimationController
     PinIdleAnimation animation = PinIdleAnimation.wave,
     bool vibration = false,
     VoidCallback? onComplete,
+    VoidCallback? onInterrupt,
   }) {
     _prepareAndStart(
       animation,
       onComplete: onComplete,
+      onInterrupt: onInterrupt,
     );
   }
 

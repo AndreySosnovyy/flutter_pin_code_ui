@@ -64,7 +64,9 @@ class PinIndicatorAnimationController
       _animationsQueue.removeLast();
     }
 
-    // Load new animation with delays into the queue
+    // Load new animation with delays into the queue.
+    // Delay before will be handled as a separate animation.
+    // Delay after will be handled as a part of the animation itself.
     if (delayBefore != null) {
       _animationsQueue.add(PinIndicatorAnimation(
         id: IdentifierUtil.getUniqueIdentifier(),
@@ -78,20 +80,10 @@ class PinIndicatorAnimationController
     _animationsQueue.add(PinIndicatorAnimation(
       id: IdentifierUtil.getUniqueIdentifier(),
       data: data,
-      onComplete: delayAfter == null ? onComplete : null,
+      delayAfter: delayAfter,
+      onComplete: onComplete,
       onInterrupt: onInterrupt,
     ));
-    if (delayAfter != null) {
-      _animationsQueue.add(PinIndicatorAnimation(
-        id: IdentifierUtil.getUniqueIdentifier(),
-        data: PinIndicatorNoAnimationData(
-          duration: delayAfter,
-          isInterruptible: data.isInterruptible,
-          canInterrupt: data.canInterrupt,
-        ),
-        onComplete: onComplete,
-      ));
-    }
 
     // Start animation there is no queue to wait for. Otherwise it will be
     // started by timer after currently playing animation is over.
@@ -104,7 +96,7 @@ class PinIndicatorAnimationController
     value = _animationsQueue.removeFirst();
     notifyListeners();
     _animationTimer = Timer(
-      value!.data.duration,
+      value!.data.duration + (value!.delayAfter ?? Duration.zero),
       () {
         value!.onComplete?.call();
         value = null;

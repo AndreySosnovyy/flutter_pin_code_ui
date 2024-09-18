@@ -6,6 +6,7 @@ class PinIndicatorAnimation {
   const PinIndicatorAnimation({
     required this.id,
     required this.data,
+    this.delayAfter,
     this.onComplete,
     this.onInterrupt,
   });
@@ -15,6 +16,9 @@ class PinIndicatorAnimation {
 
   /// Animation general configuration
   final PinIndicatorAnimationData data;
+
+  /// Delay after the animation ends
+  final Duration? delayAfter;
 
   /// Called when the animation completes
   final VoidCallback? onComplete;
@@ -26,6 +30,7 @@ class PinIndicatorAnimation {
   String toString() => 'PinIndicatorAnimation('
       'id: $id, '
       'data: $data, '
+      'delayAfter: $delayAfter, '
       'onComplete: $onComplete, '
       'onInterrupt: $onInterrupt'
       ')';

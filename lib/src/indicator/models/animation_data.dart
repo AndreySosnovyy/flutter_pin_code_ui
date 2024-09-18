@@ -5,6 +5,7 @@ sealed class PinIndicatorAnimationData {
     required this.type,
     required this.duration,
     required this.isInterruptible,
+    required this.canInterrupt,
     this.vibrationPattern,
   });
 
@@ -17,6 +18,9 @@ sealed class PinIndicatorAnimationData {
 
   /// Whether the animation can be interrupted by the same animation type.
   final bool isInterruptible;
+
+  /// Whether the animation can interrupt other animation marked with isInterruptible
+  final bool canInterrupt;
 
   /// Vibration pattern.
   final List<int>? vibrationPattern;
@@ -67,6 +71,7 @@ class PinIndicatorNoAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorNoAnimationData({
     required super.duration,
     required super.isInterruptible,
+    required super.canInterrupt,
   }) : super(type: null);
 }
 
@@ -76,6 +81,7 @@ class PinIndicatorInputInflateAnimationData extends PinIndicatorAnimationData {
           type: PinAnimationTypes.input,
           duration: const Duration(milliseconds: 200),
           isInterruptible: true,
+          canInterrupt: true,
         );
 }
 
@@ -85,6 +91,7 @@ class PinIndicatorLoadingJumpAnimationData extends PinIndicatorAnimationData {
           type: PinAnimationTypes.loading,
           duration: const Duration(milliseconds: 1200),
           isInterruptible: false,
+          canInterrupt: false,
         );
 }
 
@@ -95,6 +102,7 @@ class PinIndicatorSuccessCollapseAnimationData
           type: PinAnimationTypes.success,
           duration: const Duration(milliseconds: 840),
           isInterruptible: false,
+          canInterrupt: false,
         );
 }
 
@@ -104,6 +112,7 @@ class PinIndicatorErrorShakeAnimationData extends PinIndicatorAnimationData {
           type: PinAnimationTypes.error,
           duration: const Duration(milliseconds: 360),
           isInterruptible: true,
+          canInterrupt: false,
         );
 }
 
@@ -113,6 +122,7 @@ class PinIndicatorClearDropAnimationData extends PinIndicatorAnimationData {
           type: PinAnimationTypes.clear,
           duration: const Duration(milliseconds: 540),
           isInterruptible: true,
+          canInterrupt: false,
         );
 }
 
@@ -122,6 +132,7 @@ class PinIndicatorClearFadeAnimationData extends PinIndicatorAnimationData {
           type: PinAnimationTypes.clear,
           duration: const Duration(milliseconds: 420),
           isInterruptible: true,
+          canInterrupt: false,
         );
 }
 
@@ -131,6 +142,7 @@ class PinIndicatorEraseDeflateAnimationData extends PinIndicatorAnimationData {
           type: PinAnimationTypes.erase,
           duration: const Duration(milliseconds: 160),
           isInterruptible: true,
+          canInterrupt: true,
         );
 }
 
@@ -140,5 +152,6 @@ class PinIndicatorIdleWaveAnimationData extends PinIndicatorAnimationData {
           type: PinAnimationTypes.idle,
           duration: const Duration(milliseconds: 1200),
           isInterruptible: true,
+          canInterrupt: false,
         );
 }

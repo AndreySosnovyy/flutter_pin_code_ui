@@ -51,20 +51,23 @@ class PinIndicatorAnimationController
     Duration? delayAfter,
     VoidCallback? onComplete,
   }) {
+    final data = PinIndicatorAnimationData.fromImpl(impl);
+
     // Remove all interruptible animations from the queue if any
     while (_animationsQueue.isNotEmpty &&
-        _animationsQueue.last.data.isInterruptible) {
+        _animationsQueue.last.data.isInterruptible &&
+        data.canInterrupt) {
       _animationsQueue.removeLast();
     }
 
     // Load new animation with delays into the queue
-    final data = PinIndicatorAnimationData.fromImpl(impl);
     if (delayBefore != null) {
       _animationsQueue.add(PinIndicatorAnimation(
         id: IdentifierUtil.getUniqueIdentifier(),
         data: PinIndicatorNoAnimationData(
           duration: delayBefore,
           isInterruptible: data.isInterruptible,
+          canInterrupt: data.canInterrupt,
         ),
       ));
     }
@@ -79,6 +82,7 @@ class PinIndicatorAnimationController
         data: PinIndicatorNoAnimationData(
           duration: delayAfter,
           isInterruptible: data.isInterruptible,
+          canInterrupt: data.canInterrupt,
         ),
         onComplete: onComplete,
       ));

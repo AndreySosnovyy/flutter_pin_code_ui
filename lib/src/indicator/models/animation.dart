@@ -17,4 +17,11 @@ class PinIndicatorAnimation {
 
   /// Called when the animation completes
   final VoidCallback? onComplete;
+
+  @override
+  String toString() => 'PinIndicatorAnimation('
+      'id: $id, '
+      'data: $data, '
+      'onComplete: $onComplete'
+      ')';
 }

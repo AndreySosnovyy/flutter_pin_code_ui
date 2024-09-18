@@ -129,7 +129,7 @@ class PinIndicatorAnimationController
         animation,
         delayBefore: delayBeforeAnimation,
         delayAfter: delayAfterAnimation,
-        onComplete: onComplete,
+        onComplete: i == repeatCount - 1 ? onComplete : null,
       );
     }
   }

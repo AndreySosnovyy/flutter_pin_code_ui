@@ -32,7 +32,6 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
     color: Colors.blue.withOpacity(0.1),
   );
   late final disabledKeyDecoration = defaultKeyDecoration.copyWith();
-
   late final defaultTextStyle =
       Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 32);
   late final pressedTextStyle = defaultTextStyle.copyWith(color: Colors.blue);
@@ -40,11 +39,10 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
       defaultTextStyle.copyWith(color: Colors.black26);
 
   final pinIndicatorAnimationController = PinIndicatorAnimationController();
+  Timer? timer;
   String pinText = '';
   bool isPinError = false;
   bool isPinSuccess = false;
-
-  Timer? timer;
 
   @override
   void initState() {
@@ -52,6 +50,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
     restartIdleTimer();
   }
 
+  // It will start idle animation if no action has been made in 10 seconds
   void restartIdleTimer() {
     if (timer != null && timer!.isActive) timer!.cancel();
     timer = Timer.periodic(
@@ -82,25 +81,17 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                   Pinpad(
                     onKeyTap: (key) async {
                       restartIdleTimer();
-                      if (!pinIndicatorAnimationController
+                      if (pinIndicatorAnimationController
                           .isAnimatingNonInterruptible) {
+                        return;
+                      } else {
                         pinIndicatorAnimationController.stop();
                         setState(() => isPinError = false);
                       }
-                      if (pinText.length == validPin.length &&
-                          (pinIndicatorAnimationController.isAnimatingInput ||
-                              pinIndicatorAnimationController
-                                  .isAnimatingLoading)) {
-                        return;
+                      if (pinText.length < validPin.length) {
+                        setState(() => pinText += key);
+                        pinIndicatorAnimationController.animateInput();
                       }
-                      if (pinIndicatorAnimationController
-                          .isAnimatingNonInterruptible) return;
-                      if (pinText.length == validPin.length) {
-                        pinIndicatorAnimationController.stop();
-                        pinText = '';
-                      }
-                      setState(() => pinText += key);
-                      pinIndicatorAnimationController.animateInput();
                       if (pinText == validPin) {
                         pinIndicatorAnimationController.animateLoading(
                           repeatCount: 2,

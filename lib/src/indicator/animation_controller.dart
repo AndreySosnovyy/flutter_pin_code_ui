@@ -107,6 +107,7 @@ class PinIndicatorAnimationController
         _animate();
       },
     );
+    print('value = ${value}');
   }
 
   void animateInput({

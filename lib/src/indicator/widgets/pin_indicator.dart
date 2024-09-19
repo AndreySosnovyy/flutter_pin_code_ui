@@ -16,20 +16,6 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success_col
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success_fill_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
-const BoxDecoration _dotDefaultDefaultDecoration =
-    BoxDecoration(shape: BoxShape.circle, color: Colors.black12);
-
-const BoxDecoration _dotDefaultSuccessDecoration =
-    BoxDecoration(shape: BoxShape.circle, color: Colors.green);
-
-const BoxDecoration _dotDefaultErrorDecoration =
-    BoxDecoration(shape: BoxShape.circle, color: Colors.red);
-
-const BoxDecoration _dotDefaultInputDecoration =
-    BoxDecoration(shape: BoxShape.circle, color: Colors.blue);
-
-// TODO(Sosnovyy): add minimum length
-// TODO(Sosnovyy): change defaultDecorations to nullable type
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
     required this.length,
@@ -37,24 +23,27 @@ class PinIndicator extends StatefulWidget {
     required this.isError,
     required this.isSuccess,
     this.controller,
-    this.errorDecoration = _dotDefaultErrorDecoration,
-    this.successDecoration = _dotDefaultSuccessDecoration,
-    this.inputDecoration = _dotDefaultInputDecoration,
-    this.defaultDecoration = _dotDefaultDefaultDecoration,
+    this.errorDecoration,
+    this.successDecoration,
+    this.inputDecoration,
+    this.defaultDecoration,
     this.spacing = 24.0,
     this.size = 14.0,
     super.key,
-  });
+  })  : assert(length >= currentLength),
+        assert(length > 3),
+        assert(spacing > 0),
+        assert(size > 0);
 
   final PinIndicatorAnimationController? controller;
   final int length;
   final int currentLength;
   final bool isError;
   final bool isSuccess;
-  final BoxDecoration successDecoration;
-  final BoxDecoration errorDecoration;
-  final BoxDecoration defaultDecoration;
-  final BoxDecoration inputDecoration;
+  final BoxDecoration? successDecoration;
+  final BoxDecoration? errorDecoration;
+  final BoxDecoration? defaultDecoration;
+  final BoxDecoration? inputDecoration;
   final double spacing;
   final double size;
 
@@ -63,11 +52,27 @@ class PinIndicator extends StatefulWidget {
 }
 
 class _PinIndicatorState extends State<PinIndicator> {
+  BoxDecoration get successDecoration =>
+      widget.successDecoration ??
+      const BoxDecoration(shape: BoxShape.circle, color: Colors.green);
+
+  BoxDecoration get errorDecoration =>
+      widget.errorDecoration ??
+      const BoxDecoration(shape: BoxShape.circle, color: Colors.red);
+
+  BoxDecoration get defaultDecoration =>
+      widget.defaultDecoration ??
+      const BoxDecoration(shape: BoxShape.circle, color: Colors.black12);
+
+  BoxDecoration get inputDecoration =>
+      widget.inputDecoration ??
+      const BoxDecoration(shape: BoxShape.circle, color: Colors.blue);
+
   BoxDecoration _getDecorationForDotIndexed(int index) {
-    if (widget.isSuccess) return widget.successDecoration;
-    if (widget.isError) return widget.errorDecoration;
-    if (index < widget.currentLength) return widget.inputDecoration;
-    return widget.defaultDecoration;
+    if (widget.isSuccess) return successDecoration;
+    if (widget.isError) return errorDecoration;
+    if (index < widget.currentLength) return inputDecoration;
+    return defaultDecoration;
   }
 
   @override
@@ -86,14 +91,14 @@ class _PinIndicatorState extends State<PinIndicator> {
           widget.length,
           (i) => _PinIndicatorDot(
             size: widget.size,
-            decoration: widget.defaultDecoration,
+            decoration: defaultDecoration,
           ),
         );
         final inputDots = List.generate(
           widget.length,
           (i) => _PinIndicatorDot(
             size: widget.size,
-            decoration: widget.inputDecoration,
+            decoration: inputDecoration,
           ),
         );
         final noAnimationPinIndicator = NoAnimationPinIndicator(

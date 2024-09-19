@@ -66,5 +66,5 @@ enum PinEraseAnimation implements PinAnimationImplementation {
 enum PinIdleAnimation implements PinAnimationImplementation {
   wave,
   pulse,
-  // flash,
+  flash,
 }

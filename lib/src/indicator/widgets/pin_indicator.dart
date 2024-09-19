@@ -8,6 +8,7 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_defla
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_fade_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_take_off_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error_shake_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_flash_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_pulse_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_wave_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_fade_pin_indicator.dart';
@@ -154,6 +155,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animation.data.duration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
+              // TODO(Sosnovyy): make configurable
               collapsedChild: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -242,6 +244,13 @@ class _PinIndicatorState extends State<PinIndicator> {
               spacing: widget.spacing,
             ),
           PinIndicatorIdlePulseAnimationData() => IdlePulsePinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorIdleFlashAnimationData() => IdleFlashPinIndicator(
               key: ValueKey(animation.id),
               length: widget.length,
               duration: animation.data.duration,

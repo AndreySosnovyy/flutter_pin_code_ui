@@ -55,9 +55,16 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
     if (timer != null && timer!.isActive) timer!.cancel();
     timer = Timer.periodic(
       const Duration(seconds: 10),
-      (_) => pinIndicatorAnimationController.animateIdle(),
+      (_) => pinIndicatorAnimationController.animateIdle(
+        animation: (List.from(PinIdleAnimation.values)..shuffle()).first,
+      ),
     );
   }
+
+  void clear() => setState(() {
+        pinText = '';
+        isPinError = false;
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -111,22 +118,15 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                         );
                       } else if (pinText.length == validPin.length) {
                         setState(() => isPinError = true);
-                        void clearError() {
-                          setState(() {
-                            pinText = '';
-                            isPinError = false;
-                          });
-                        }
-
                         pinIndicatorAnimationController.animateError(
                           delayAfterAnimation:
                               const Duration(milliseconds: 240),
-                          onInterrupt: clearError,
+                          onInterrupt: clear,
                         );
                         pinIndicatorAnimationController.animateClear(
                           animation: PinClearAnimation.fade,
-                          onComplete: clearError,
-                          onInterrupt: clearError,
+                          onComplete: clear,
+                          onInterrupt: clear,
                         );
                       }
                     },
@@ -158,7 +158,6 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                             pinIndicatorAnimationController.isAnimatingClear) {
                           return;
                         }
-                        void clear() => setState(() => pinText = '');
                         pinIndicatorAnimationController.animateClear(
                           onComplete: clear,
                           onInterrupt: clear,

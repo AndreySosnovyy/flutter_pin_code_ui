@@ -6,6 +6,7 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_drop_
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_fade_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_deflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error_shake_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_pulse_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_wave_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_inflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading_jump_pin_indicator.dart';
@@ -171,6 +172,13 @@ class _PinIndicatorState extends State<PinIndicator> {
               spacing: widget.spacing,
             ),
           PinIndicatorIdleWaveAnimationData() => IdleWavePinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorIdlePulseAnimationData() => IdlePulsePinIndicator(
               key: ValueKey(animation.id),
               length: widget.length,
               duration: animation.data.duration,

@@ -39,4 +39,4 @@ enum PinClearAnimation implements PinAnimationImplementation { drop, fade }
 
 enum PinEraseAnimation implements PinAnimationImplementation { deflate }
 
-enum PinIdleAnimation implements PinAnimationImplementation { wave }
+enum PinIdleAnimation implements PinAnimationImplementation { wave, pulse }

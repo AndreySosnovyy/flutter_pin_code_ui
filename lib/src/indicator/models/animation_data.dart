@@ -53,6 +53,7 @@ sealed class PinIndicatorAnimationData {
         },
       PinIdleAnimation idle => switch (idle) {
           PinIdleAnimation.wave => const PinIndicatorIdleWaveAnimationData(),
+          PinIdleAnimation.pulse => const PinIndicatorIdlePulseAnimationData(),
         },
     };
   }
@@ -148,6 +149,16 @@ class PinIndicatorEraseDeflateAnimationData extends PinIndicatorAnimationData {
 
 class PinIndicatorIdleWaveAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorIdleWaveAnimationData()
+      : super(
+          type: PinAnimationTypes.idle,
+          duration: const Duration(milliseconds: 1200),
+          isInterruptible: true,
+          canInterrupt: false,
+        );
+}
+
+class PinIndicatorIdlePulseAnimationData extends PinIndicatorAnimationData {
+  const PinIndicatorIdlePulseAnimationData()
       : super(
           type: PinAnimationTypes.idle,
           duration: const Duration(milliseconds: 1200),

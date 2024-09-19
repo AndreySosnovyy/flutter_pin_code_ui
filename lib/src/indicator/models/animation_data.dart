@@ -30,6 +30,7 @@ sealed class PinIndicatorAnimationData {
       PinInputAnimation input => switch (input) {
           PinInputAnimation.inflate =>
             const PinIndicatorInputInflateAnimationData(),
+          PinInputAnimation.fall => const PinIndicatorInputFallAnimationData(),
         },
       PinLoadingAnimation loading => switch (loading) {
           PinLoadingAnimation.jump =>
@@ -81,6 +82,17 @@ class PinIndicatorInputInflateAnimationData extends PinIndicatorAnimationData {
       : super(
           type: PinAnimationTypes.input,
           duration: const Duration(milliseconds: 200),
+          isInterruptible: true,
+          canInterrupt: true,
+        );
+}
+
+class PinIndicatorInputFallAnimationData extends PinIndicatorAnimationData {
+  const PinIndicatorInputFallAnimationData()
+      : super(
+          type: PinAnimationTypes.input,
+          duration: const Duration(milliseconds: 240),
+          // duration: const Duration(milliseconds: 2400),
           isInterruptible: true,
           canInterrupt: true,
         );

@@ -27,7 +27,7 @@ enum PinAnimationTypes { input, loading, success, error, clear, erase, idle }
 
 sealed class PinAnimationImplementation {}
 
-enum PinInputAnimation implements PinAnimationImplementation { inflate }
+enum PinInputAnimation implements PinAnimationImplementation { inflate, fall }
 
 enum PinLoadingAnimation implements PinAnimationImplementation { jump }
 

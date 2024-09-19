@@ -8,6 +8,7 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_defla
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error_shake_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_pulse_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_wave_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_fall_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_inflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading_jump_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success_collapse_pin_indicator.dart';
@@ -99,6 +100,15 @@ class _PinIndicatorState extends State<PinIndicator> {
               currentPinLength: widget.currentLength,
               duration: animation.data.duration,
               builder: (i) => currentDots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorInputFallAnimationData() => InputFallPinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              currentPinLength: widget.currentLength,
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
+              builderDefault: (i) => defaultDots[i],
               spacing: widget.spacing,
             ),
           PinIndicatorLoadingJumpAnimationData() => LoadingJumpPinIndicator(

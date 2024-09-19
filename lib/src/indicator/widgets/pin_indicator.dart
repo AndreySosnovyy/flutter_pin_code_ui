@@ -5,10 +5,12 @@ import 'package:pin_ui/src/indicator/models/animation_data.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_drop_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_fade_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_deflate_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_fade_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_take_off_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error_shake_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_pulse_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_wave_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_fade_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_fall_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_inflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading_jump_pin_indicator.dart';
@@ -127,6 +129,15 @@ class _PinIndicatorState extends State<PinIndicator> {
               builderDefault: (i) => defaultDots[i],
               spacing: widget.spacing,
             ),
+          PinIndicatorInputFadeAnimationData() => InputFadePinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              currentPinLength: widget.currentLength,
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
+              builderDefault: (i) => defaultDots[i],
+              spacing: widget.spacing,
+            ),
           PinIndicatorLoadingJumpAnimationData() => LoadingJumpPinIndicator(
               key: ValueKey(animation.id),
               length: widget.length,
@@ -206,6 +217,15 @@ class _PinIndicatorState extends State<PinIndicator> {
               spacing: widget.spacing,
             ),
           PinIndicatorEraseTakeOffAnimationData() => EraseTakeOffPinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              currentPinLength: widget.currentLength,
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
+              builderInput: (i) => inputDots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorEraseFadeAnimationData() => EraseFadePinIndicator(
               key: ValueKey(animation.id),
               length: widget.length,
               currentPinLength: widget.currentLength,

@@ -31,6 +31,7 @@ sealed class PinIndicatorAnimationData {
           PinInputAnimation.inflate =>
             const PinIndicatorInputInflateAnimationData(),
           PinInputAnimation.fall => const PinIndicatorInputFallAnimationData(),
+          PinInputAnimation.fade => const PinIndicatorInputFadeAnimationData(),
         },
       PinLoadingAnimation loading => switch (loading) {
           PinLoadingAnimation.jump =>
@@ -53,7 +54,9 @@ sealed class PinIndicatorAnimationData {
       PinEraseAnimation erase => switch (erase) {
           PinEraseAnimation.deflate =>
             const PinIndicatorEraseDeflateAnimationData(),
-          PinEraseAnimation.takeOff => PinIndicatorEraseTakeOffAnimationData(),
+          PinEraseAnimation.takeOff =>
+            const PinIndicatorEraseTakeOffAnimationData(),
+          PinEraseAnimation.fade => const PinIndicatorEraseFadeAnimationData(),
         },
       PinIdleAnimation idle => switch (idle) {
           PinIdleAnimation.wave => const PinIndicatorIdleWaveAnimationData(),
@@ -90,12 +93,21 @@ class PinIndicatorInputInflateAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+class PinIndicatorInputFadeAnimationData extends PinIndicatorAnimationData {
+  const PinIndicatorInputFadeAnimationData()
+      : super(
+          type: PinAnimationTypes.input,
+          duration: const Duration(milliseconds: 200),
+          isInterruptible: true,
+          canInterrupt: true,
+        );
+}
+
 class PinIndicatorInputFallAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorInputFallAnimationData()
       : super(
           type: PinAnimationTypes.input,
           duration: const Duration(milliseconds: 240),
-          // duration: const Duration(milliseconds: 2400),
           isInterruptible: true,
           canInterrupt: true,
         );
@@ -177,6 +189,16 @@ class PinIndicatorEraseTakeOffAnimationData extends PinIndicatorAnimationData {
       : super(
           type: PinAnimationTypes.erase,
           duration: const Duration(milliseconds: 180),
+          isInterruptible: true,
+          canInterrupt: true,
+        );
+}
+
+class PinIndicatorEraseFadeAnimationData extends PinIndicatorAnimationData {
+  const PinIndicatorEraseFadeAnimationData()
+      : super(
+          type: PinAnimationTypes.erase,
+          duration: const Duration(milliseconds: 160),
           isInterruptible: true,
           canInterrupt: true,
         );

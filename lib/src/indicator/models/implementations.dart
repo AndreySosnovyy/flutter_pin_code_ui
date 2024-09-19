@@ -30,19 +30,26 @@ sealed class PinAnimationImplementation {}
 enum PinInputAnimation implements PinAnimationImplementation {
   inflate,
   fall,
+  fade,
 }
 
 enum PinLoadingAnimation implements PinAnimationImplementation {
   jump,
+  // spin,
+  // travel,
 }
 
 enum PinSuccessAnimation implements PinAnimationImplementation {
   collapse,
   fill,
+  // kick,
 }
 
 enum PinErrorAnimation implements PinAnimationImplementation {
   shake,
+  // jiggle,
+  // brownian,
+  // blink,
 }
 
 enum PinClearAnimation implements PinAnimationImplementation {
@@ -52,10 +59,12 @@ enum PinClearAnimation implements PinAnimationImplementation {
 
 enum PinEraseAnimation implements PinAnimationImplementation {
   deflate,
-  takeOff
+  takeOff,
+  fade,
 }
 
 enum PinIdleAnimation implements PinAnimationImplementation {
   wave,
   pulse,
+  // flash,
 }

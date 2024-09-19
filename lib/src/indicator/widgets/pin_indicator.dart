@@ -5,6 +5,7 @@ import 'package:pin_ui/src/indicator/models/animation_data.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_drop_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_fade_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_deflate_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_take_off_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error_shake_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_pulse_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_wave_pin_indicator.dart';
@@ -83,6 +84,13 @@ class _PinIndicatorState extends State<PinIndicator> {
           (i) => _PinIndicatorDot(
             size: widget.size,
             decoration: widget.defaultDecoration,
+          ),
+        );
+        final inputDots = List.generate(
+          widget.length,
+              (i) => _PinIndicatorDot(
+            size: widget.size,
+            decoration: widget.inputDecoration,
           ),
         );
         final noAnimationPinIndicator = NoAnimationPinIndicator(
@@ -179,6 +187,15 @@ class _PinIndicatorState extends State<PinIndicator> {
               currentPinLength: widget.currentLength,
               duration: animation.data.duration,
               builder: (i) => currentDots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorEraseTakeOffAnimationData() => EraseTakeOffPinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              currentPinLength: widget.currentLength,
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
+              builderInput: (i) => inputDots[i],
               spacing: widget.spacing,
             ),
           PinIndicatorIdleWaveAnimationData() => IdleWavePinIndicator(

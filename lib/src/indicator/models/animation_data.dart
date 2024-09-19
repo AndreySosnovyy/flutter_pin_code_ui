@@ -51,6 +51,8 @@ sealed class PinIndicatorAnimationData {
       PinEraseAnimation erase => switch (erase) {
           PinEraseAnimation.deflate =>
             const PinIndicatorEraseDeflateAnimationData(),
+          PinEraseAnimation.takeOff =>
+            PinIndicatorEraseTakeOffAnimationData(),
         },
       PinIdleAnimation idle => switch (idle) {
           PinIdleAnimation.wave => const PinIndicatorIdleWaveAnimationData(),
@@ -154,6 +156,17 @@ class PinIndicatorEraseDeflateAnimationData extends PinIndicatorAnimationData {
       : super(
           type: PinAnimationTypes.erase,
           duration: const Duration(milliseconds: 160),
+          isInterruptible: true,
+          canInterrupt: true,
+        );
+}
+
+class PinIndicatorEraseTakeOffAnimationData
+    extends PinIndicatorAnimationData {
+  const PinIndicatorEraseTakeOffAnimationData()
+      : super(
+          type: PinAnimationTypes.erase,
+          duration: const Duration(milliseconds: 180),
           isInterruptible: true,
           canInterrupt: true,
         );

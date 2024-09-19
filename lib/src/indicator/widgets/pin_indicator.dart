@@ -28,6 +28,8 @@ const BoxDecoration _dotDefaultErrorDecoration =
 const BoxDecoration _dotDefaultInputDecoration =
     BoxDecoration(shape: BoxShape.circle, color: Colors.blue);
 
+// TODO(Sosnovyy): add minimum length
+// TODO(Sosnovyy): change defaultDecorations to nullable type
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
     required this.length,

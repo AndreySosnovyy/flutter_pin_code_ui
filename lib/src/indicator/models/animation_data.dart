@@ -16,12 +16,15 @@ sealed class PinIndicatorAnimationData {
   /// many animation controllers completion.
   final Duration duration;
 
+  // TODO(Sosnovyy): move to animation
   /// Whether the animation can be interrupted by the same animation type.
   final bool isInterruptible;
 
+  // TODO(Sosnovyy): move to animation
   /// Whether the animation can interrupt other animation marked with isInterruptible
   final bool canInterrupt;
 
+  // TODO(Sosnovyy): move to animation
   /// Vibration pattern.
   final List<int>? vibrationPattern;
 

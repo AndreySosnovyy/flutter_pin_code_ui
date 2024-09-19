@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math' as math;
+
 import 'package:flutter/cupertino.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
@@ -24,19 +27,26 @@ class SuccessFillPinIndicator extends StatefulWidget {
 
 class _SuccessFillPinIndicatorState extends State<SuccessFillPinIndicator>
     with TickerProviderStateMixin {
-  late final animation = AnimationController(
-    vsync: this,
-    duration: widget.duration,
-    lowerBound: 1.0,
-    upperBound: 72.0,
-  );
+  late final AnimationController animation;
+  final initializationCompleter = Completer<void>();
 
   @override
   void initState() {
-    animation.animateTo(
-      animation.upperBound,
-      curve: Curves.ease,
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final box = context.findRenderObject() as RenderBox;
+      final positionY = box.localToGlobal(Offset.zero).dy;
+      final screenHeight = MediaQuery.sizeOf(context).height;
+      final heightToFill = math.max(positionY, screenHeight - positionY);
+      final fillScale = heightToFill / widget.childSize * 2.2;
+      animation = AnimationController(
+        vsync: this,
+        duration: widget.duration,
+        lowerBound: 1.0,
+        upperBound: fillScale,
+      );
+      animation.animateTo(animation.upperBound, curve: Curves.ease);
+      setState(() => initializationCompleter.complete());
+    });
     super.initState();
   }
 
@@ -45,17 +55,19 @@ class _SuccessFillPinIndicatorState extends State<SuccessFillPinIndicator>
     return NoAnimationPinIndicator(
       spacing: widget.spacing,
       length: widget.length,
-      builder: (i) {
-        return AnimatedBuilder(
-          animation: animation,
-          builder: (context, child) {
-            return Transform.scale(
-              scale: animation.value,
-              child: widget.builder(i),
-            );
-          },
-        );
-      },
+      builder: !initializationCompleter.isCompleted
+          ? widget.builder
+          : (i) {
+              return AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: animation.value,
+                    child: widget.builder(i),
+                  );
+                },
+              );
+            },
     );
   }
 

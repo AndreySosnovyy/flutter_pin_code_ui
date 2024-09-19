@@ -106,6 +106,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                           onComplete: () => setState(() => isPinSuccess = true),
                         );
                         pinIndicatorAnimationController.animateSuccess(
+                          animation: PinSuccessAnimation.fill,
                           delayBeforeAnimation:
                               const Duration(milliseconds: 480),
                           delayAfterAnimation:
@@ -132,6 +133,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                     },
                     enabled: !pinIndicatorAnimationController
                         .isAnimatingNonInterruptible,
+                    isVisible:
+                        !pinIndicatorAnimationController.isAnimatingSuccess,
                     keysDefaultTextStyle: defaultTextStyle,
                     keysPressedTextStyle: pressedTextStyle,
                     keysDisabledTextStyle: disabledTextStyle,

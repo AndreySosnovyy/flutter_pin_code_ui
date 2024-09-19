@@ -39,6 +39,8 @@ sealed class PinIndicatorAnimationData {
       PinSuccessAnimation success => switch (success) {
           PinSuccessAnimation.collapse =>
             const PinIndicatorSuccessCollapseAnimationData(),
+          PinSuccessAnimation.fill =>
+            const PinIndicatorSuccessFillAnimationData(),
         },
       PinErrorAnimation error => switch (error) {
           PinErrorAnimation.shake =>
@@ -51,8 +53,7 @@ sealed class PinIndicatorAnimationData {
       PinEraseAnimation erase => switch (erase) {
           PinEraseAnimation.deflate =>
             const PinIndicatorEraseDeflateAnimationData(),
-          PinEraseAnimation.takeOff =>
-            PinIndicatorEraseTakeOffAnimationData(),
+          PinEraseAnimation.takeOff => PinIndicatorEraseTakeOffAnimationData(),
         },
       PinIdleAnimation idle => switch (idle) {
           PinIdleAnimation.wave => const PinIndicatorIdleWaveAnimationData(),
@@ -121,6 +122,16 @@ class PinIndicatorSuccessCollapseAnimationData
         );
 }
 
+class PinIndicatorSuccessFillAnimationData extends PinIndicatorAnimationData {
+  const PinIndicatorSuccessFillAnimationData()
+      : super(
+          type: PinAnimationTypes.success,
+          duration: const Duration(milliseconds: 1200),
+          isInterruptible: false,
+          canInterrupt: false,
+        );
+}
+
 class PinIndicatorErrorShakeAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorErrorShakeAnimationData()
       : super(
@@ -161,8 +172,7 @@ class PinIndicatorEraseDeflateAnimationData extends PinIndicatorAnimationData {
         );
 }
 
-class PinIndicatorEraseTakeOffAnimationData
-    extends PinIndicatorAnimationData {
+class PinIndicatorEraseTakeOffAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorEraseTakeOffAnimationData()
       : super(
           type: PinAnimationTypes.erase,

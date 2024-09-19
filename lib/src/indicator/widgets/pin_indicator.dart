@@ -13,6 +13,7 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_fall_
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_inflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading_jump_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success_collapse_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success_fill_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
 const BoxDecoration _dotDefaultDefaultDecoration =
@@ -88,7 +89,7 @@ class _PinIndicatorState extends State<PinIndicator> {
         );
         final inputDots = List.generate(
           widget.length,
-              (i) => _PinIndicatorDot(
+          (i) => _PinIndicatorDot(
             size: widget.size,
             decoration: widget.inputDecoration,
           ),
@@ -155,6 +156,14 @@ class _PinIndicatorState extends State<PinIndicator> {
                   ),
                 ],
               ),
+            ),
+          PinIndicatorSuccessFillAnimationData() => SuccessFillPinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              childSize: widget.size,
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
+              spacing: widget.spacing,
             ),
           PinIndicatorErrorShakeAnimationData() => ErrorShakePinIndicator(
               key: ValueKey(animation.id),

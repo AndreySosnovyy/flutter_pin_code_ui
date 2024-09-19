@@ -19,6 +19,7 @@ class Pinpad extends StatelessWidget {
     this.keyHeight,
     this.keyWidth,
     this.vibrationEnabled = false,
+    this.isVisible = true,
     super.key,
   });
 
@@ -37,6 +38,7 @@ class Pinpad extends StatelessWidget {
   final double? keyWidth;
   final double? keyHeight;
   final bool vibrationEnabled;
+  final bool isVisible;
 
   TextStyle? _getTextStyle(BuildContext context) =>
       keysDefaultTextStyle ?? Theme.of(context).textTheme.titleLarge;
@@ -80,74 +82,80 @@ class Pinpad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IgnorePointer(
-      ignoring: !enabled,
-      child: Column(
-        children: [
-          for (int i = 0; i < 3; i++)
-            Padding(
-              padding: EdgeInsets.only(bottom: _getVerticalSpacing(context)),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  for (int j = 0; j < 3; j++)
-                    Padding(
-                      padding: EdgeInsets.only(
-                          right: j == 2 ? 0 : _getHorizontalSpacing(context)),
-                      child: PinpadTextKey(
-                        (3 * i + j + 1).toString(),
-                        defaultTextStyle: _getTextStyle(context),
-                        disabledTextStyle: keysDisabledTextStyle,
-                        pressedTextStyle: keysPressedTextStyle,
-                        onTap: () {
-                          onKeyTap((3 * i + j + 1).toString());
-                          if (vibrationEnabled) vibrate();
-                        },
-                        enabled: enabled,
-                        defaultDecoration: keyDefaultDecoration,
-                        pressedDecoration: keyPressedDecoration,
-                        disabledDecoration: keyDisabledDecoration,
-                        width: _getKeyWidth(context),
-                        height: _getKeyHeight(context),
+    return Visibility(
+      maintainSize: true,
+      maintainAnimation: true,
+      maintainState: true,
+      visible: isVisible,
+      child: IgnorePointer(
+        ignoring: !enabled,
+        child: Column(
+          children: [
+            for (int i = 0; i < 3; i++)
+              Padding(
+                padding: EdgeInsets.only(bottom: _getVerticalSpacing(context)),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (int j = 0; j < 3; j++)
+                      Padding(
+                        padding: EdgeInsets.only(
+                            right: j == 2 ? 0 : _getHorizontalSpacing(context)),
+                        child: PinpadTextKey(
+                          (3 * i + j + 1).toString(),
+                          defaultTextStyle: _getTextStyle(context),
+                          disabledTextStyle: keysDisabledTextStyle,
+                          pressedTextStyle: keysPressedTextStyle,
+                          onTap: () {
+                            onKeyTap((3 * i + j + 1).toString());
+                            if (vibrationEnabled) vibrate();
+                          },
+                          enabled: enabled,
+                          defaultDecoration: keyDefaultDecoration,
+                          pressedDecoration: keyPressedDecoration,
+                          disabledDecoration: keyDisabledDecoration,
+                          width: _getKeyWidth(context),
+                          height: _getKeyHeight(context),
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: _getKeyWidth(context),
+                  height: _getKeyHeight(context),
+                  child: leftExtraKeyChild,
+                ),
+                SizedBox(width: _getHorizontalSpacing(context)),
+                PinpadTextKey(
+                  '0',
+                  defaultTextStyle: _getTextStyle(context),
+                  disabledTextStyle: keysDisabledTextStyle,
+                  pressedTextStyle: keysPressedTextStyle,
+                  onTap: () {
+                    onKeyTap('0');
+                    if (vibrationEnabled) vibrate();
+                  },
+                  enabled: enabled,
+                  defaultDecoration: keyDefaultDecoration,
+                  disabledDecoration: keyDisabledDecoration,
+                  pressedDecoration: keyPressedDecoration,
+                  width: _getKeyWidth(context),
+                  height: _getKeyHeight(context),
+                ),
+                SizedBox(width: _getHorizontalSpacing(context)),
+                SizedBox(
+                  width: _getKeyWidth(context),
+                  height: _getKeyHeight(context),
+                  child: rightExtraKeyChild,
+                ),
+              ],
             ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: _getKeyWidth(context),
-                height: _getKeyHeight(context),
-                child: leftExtraKeyChild,
-              ),
-              SizedBox(width: _getHorizontalSpacing(context)),
-              PinpadTextKey(
-                '0',
-                defaultTextStyle: _getTextStyle(context),
-                disabledTextStyle: keysDisabledTextStyle,
-                pressedTextStyle: keysPressedTextStyle,
-                onTap: () {
-                  onKeyTap('0');
-                  if (vibrationEnabled) vibrate();
-                },
-                enabled: enabled,
-                defaultDecoration: keyDefaultDecoration,
-                disabledDecoration: keyDisabledDecoration,
-                pressedDecoration: keyPressedDecoration,
-                width: _getKeyWidth(context),
-                height: _getKeyHeight(context),
-              ),
-              SizedBox(width: _getHorizontalSpacing(context)),
-              SizedBox(
-                width: _getKeyWidth(context),
-                height: _getKeyHeight(context),
-                child: rightExtraKeyChild,
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

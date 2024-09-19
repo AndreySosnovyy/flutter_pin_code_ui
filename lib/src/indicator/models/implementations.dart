@@ -38,6 +38,7 @@ enum PinLoadingAnimation implements PinAnimationImplementation {
 
 enum PinSuccessAnimation implements PinAnimationImplementation {
   collapse,
+  fill,
 }
 
 enum PinErrorAnimation implements PinAnimationImplementation {

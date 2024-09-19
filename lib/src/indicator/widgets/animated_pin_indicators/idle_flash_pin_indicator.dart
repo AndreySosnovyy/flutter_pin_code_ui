@@ -28,7 +28,7 @@ class _IdleFlashPinIndicatorState extends State<IdleFlashPinIndicator>
     (i) => AnimationController(
       vsync: this,
       lowerBound: 1.0,
-      upperBound: 1.4,
+      upperBound: 1.3,
     ),
   );
 

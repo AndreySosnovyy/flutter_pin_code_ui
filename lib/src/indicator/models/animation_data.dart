@@ -46,6 +46,8 @@ sealed class PinIndicatorAnimationData {
       PinErrorAnimation error => switch (error) {
           PinErrorAnimation.shake =>
             const PinIndicatorErrorShakeAnimationData(),
+          PinErrorAnimation.blink =>
+            const PinIndicatorErrorBlinkAnimationData(),
         },
       PinClearAnimation clear => switch (clear) {
           PinClearAnimation.drop => const PinIndicatorClearDropAnimationData(),
@@ -150,6 +152,16 @@ class PinIndicatorErrorShakeAnimationData extends PinIndicatorAnimationData {
       : super(
           type: PinAnimationTypes.error,
           duration: const Duration(milliseconds: 360),
+          isInterruptible: true,
+          canInterrupt: false,
+        );
+}
+
+class PinIndicatorErrorBlinkAnimationData extends PinIndicatorAnimationData {
+  const PinIndicatorErrorBlinkAnimationData()
+      : super(
+          type: PinAnimationTypes.error,
+          duration: const Duration(milliseconds: 1000),
           isInterruptible: true,
           canInterrupt: false,
         );

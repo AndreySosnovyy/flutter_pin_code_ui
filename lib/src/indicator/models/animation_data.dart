@@ -38,6 +38,10 @@ sealed class PinIndicatorAnimationData {
             const PinIndicatorLoadingJumpAnimationData(),
           PinLoadingAnimation.travel =>
             const PinIndicatorLoadingTravelAnimationData(),
+          PinLoadingAnimation.waveInflate =>
+            const PinIndicatorLoadingWaveInflateAnimationData(),
+          PinLoadingAnimation.waveDeflate =>
+            const PinIndicatorLoadingWaveDeflateAnimationData(),
         },
       PinSuccessAnimation success => switch (success) {
           PinSuccessAnimation.collapse =>
@@ -128,12 +132,33 @@ class PinIndicatorLoadingJumpAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+class PinIndicatorLoadingWaveInflateAnimationData
+    extends PinIndicatorAnimationData {
+  const PinIndicatorLoadingWaveInflateAnimationData()
+      : super(
+          type: PinAnimationTypes.loading,
+          duration: const Duration(milliseconds: 1200),
+          isInterruptible: false,
+          canInterrupt: false,
+        );
+}
+
+class PinIndicatorLoadingWaveDeflateAnimationData
+    extends PinIndicatorAnimationData {
+  const PinIndicatorLoadingWaveDeflateAnimationData()
+      : super(
+          type: PinAnimationTypes.loading,
+          duration: const Duration(milliseconds: 1200),
+          isInterruptible: false,
+          canInterrupt: false,
+        );
+}
+
 class PinIndicatorLoadingTravelAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorLoadingTravelAnimationData()
       : super(
           type: PinAnimationTypes.loading,
           duration: const Duration(milliseconds: 1600),
-          // duration: const Duration(milliseconds: 6000),
           isInterruptible: false,
           canInterrupt: false,
         );

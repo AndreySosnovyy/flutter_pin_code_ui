@@ -17,6 +17,8 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input/input
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input/input_inflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_jump_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_travel_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_wave_deflate_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_wave_inflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_collapse_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_fill_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
@@ -148,6 +150,22 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
               childSize: widget.size,
+            ),
+          PinIndicatorLoadingWaveInflateAnimationData() =>
+            LoadingWaveInflatePinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorLoadingWaveDeflateAnimationData() =>
+            LoadingWaveDeflatePinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
+              spacing: widget.spacing,
             ),
           PinIndicatorLoadingTravelAnimationData() => LoadingTravelPinIndicator(
               key: ValueKey(animation.id),

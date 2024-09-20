@@ -36,6 +36,8 @@ sealed class PinIndicatorAnimationData {
       PinLoadingAnimation loading => switch (loading) {
           PinLoadingAnimation.jump =>
             const PinIndicatorLoadingJumpAnimationData(),
+          PinLoadingAnimation.travel =>
+            const PinIndicatorLoadingTravelAnimationData(),
         },
       PinSuccessAnimation success => switch (success) {
           PinSuccessAnimation.collapse =>
@@ -121,6 +123,17 @@ class PinIndicatorLoadingJumpAnimationData extends PinIndicatorAnimationData {
       : super(
           type: PinAnimationTypes.loading,
           duration: const Duration(milliseconds: 1200),
+          isInterruptible: false,
+          canInterrupt: false,
+        );
+}
+
+class PinIndicatorLoadingTravelAnimationData extends PinIndicatorAnimationData {
+  const PinIndicatorLoadingTravelAnimationData()
+      : super(
+          type: PinAnimationTypes.loading,
+          // duration: const Duration(milliseconds: 1400),
+          duration: const Duration(milliseconds: 6000),
           isInterruptible: false,
           canInterrupt: false,
         );

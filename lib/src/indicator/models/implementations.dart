@@ -35,8 +35,9 @@ enum PinInputAnimation implements PinAnimationImplementation {
 
 enum PinLoadingAnimation implements PinAnimationImplementation {
   jump,
+  // wave,
   // spin,
-  // travel,
+  travel,
 }
 
 enum PinSuccessAnimation implements PinAnimationImplementation {

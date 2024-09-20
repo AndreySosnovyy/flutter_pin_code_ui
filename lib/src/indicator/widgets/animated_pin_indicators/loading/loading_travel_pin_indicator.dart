@@ -1,16 +1,14 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
-class SuccessFillPinIndicator extends StatefulWidget {
-  const SuccessFillPinIndicator({
+class LoadingTravelPinIndicator extends StatefulWidget {
+  const LoadingTravelPinIndicator({
     required this.builder,
     required this.length,
     required this.duration,
     required this.spacing,
-    required this.childSize,
     super.key,
   });
 
@@ -18,34 +16,45 @@ class SuccessFillPinIndicator extends StatefulWidget {
   final int length;
   final Duration duration;
   final double spacing;
-  final double childSize;
 
   @override
-  State<SuccessFillPinIndicator> createState() =>
-      _SuccessFillPinIndicatorState();
+  State<LoadingTravelPinIndicator> createState() =>
+      _LoadingTravelPinIndicatorState();
 }
 
-class _SuccessFillPinIndicatorState extends State<SuccessFillPinIndicator>
+class _LoadingTravelPinIndicatorState extends State<LoadingTravelPinIndicator>
     with TickerProviderStateMixin {
-  late final AnimationController animation;
+  late final AnimationController xOffsetAnimation;
   final initializationCompleter = Completer<void>();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final outDuration = widget.duration * 0.4;
+      final delay = widget.duration * 0.2;
+      final inDuration = widget.duration * 0.4;
       final box = context.findRenderObject() as RenderBox;
-      final positionY = box.localToGlobal(Offset.zero).dy;
-      final screenHeight = MediaQuery.sizeOf(context).height;
-      final heightToFill = math.max(positionY, screenHeight - positionY);
-      final fillScale = heightToFill / widget.childSize * 2.2;
-      animation = AnimationController(
+      final positionX = box.localToGlobal(Offset.zero).dx;
+      final screenWidth = MediaQuery.sizeOf(context).width;
+      xOffsetAnimation = AnimationController(
         vsync: this,
-        duration: widget.duration,
-        lowerBound: 1.0,
-        upperBound: fillScale,
+        value: 0.0,
+        lowerBound: -screenWidth,
+        upperBound: screenWidth,
       );
-      animation.animateTo(animation.upperBound, curve: Curves.ease);
       setState(() => initializationCompleter.complete());
+      await xOffsetAnimation.animateTo(
+        xOffsetAnimation.upperBound,
+        duration: outDuration,
+        curve: Curves.ease,
+      );
+      xOffsetAnimation.value = xOffsetAnimation.lowerBound;
+      await Future.delayed(delay);
+      await xOffsetAnimation.animateTo(
+        0,
+        duration: inDuration,
+        curve: Curves.ease,
+      );
     });
     super.initState();
   }
@@ -59,10 +68,10 @@ class _SuccessFillPinIndicatorState extends State<SuccessFillPinIndicator>
           ? widget.builder
           : (i) {
               return AnimatedBuilder(
-                animation: animation,
+                animation: xOffsetAnimation,
                 builder: (context, child) {
-                  return Transform.scale(
-                    scale: animation.value,
+                  return Transform.translate(
+                    offset: Offset(xOffsetAnimation.value, 0),
                     child: widget.builder(i),
                   );
                 },
@@ -73,7 +82,7 @@ class _SuccessFillPinIndicatorState extends State<SuccessFillPinIndicator>
 
   @override
   void dispose() {
-    animation.dispose();
+    xOffsetAnimation.dispose();
     super.dispose();
   }
 }

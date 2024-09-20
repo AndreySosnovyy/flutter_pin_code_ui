@@ -2,22 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animation_controller.dart';
 import 'package:pin_ui/src/indicator/models/animation_data.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_drop_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear_fade_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_deflate_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_fade_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase_take_off_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error_blink_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error_shake_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_flash_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_pulse_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle_wave_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_fade_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_fall_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input_inflate_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading_jump_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success_collapse_pin_indicator.dart';
-import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success_fill_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear/clear_drop_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/clear/clear_fade_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase/erase_deflate_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase/erase_fade_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase/erase_take_off_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error/error_blink_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error/error_shake_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle/idle_flash_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle/idle_pulse_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle/idle_wave_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input/input_fade_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input/input_fall_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input/input_inflate_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_jump_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_travel_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_collapse_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_fill_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
 class PinIndicator extends StatefulWidget {
@@ -147,6 +148,13 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
               childSize: widget.size,
+            ),
+          PinIndicatorLoadingTravelAnimationData() => LoadingTravelPinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              duration: animation.data.duration,
+              builder: (i) => currentDots[i],
+              spacing: widget.spacing,
             ),
           PinIndicatorSuccessCollapseAnimationData() =>
             SuccessCollapsePinIndicator(

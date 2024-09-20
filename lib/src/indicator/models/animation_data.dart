@@ -169,7 +169,8 @@ class PinIndicatorSuccessCollapseAnimationData
   const PinIndicatorSuccessCollapseAnimationData()
       : super(
           type: PinAnimationTypes.success,
-          duration: const Duration(milliseconds: 840),
+          duration: const Duration(milliseconds: 920),
+          // duration: const Duration(milliseconds: 6000),
           isInterruptible: false,
           canInterrupt: false,
         );

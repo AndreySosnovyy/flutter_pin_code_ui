@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
-// TODO(Sosnovyy): make precise x offset calculation function
 class SuccessCollapsePinIndicator extends StatefulWidget {
   const SuccessCollapsePinIndicator({
     required this.builder,
@@ -31,12 +32,33 @@ class SuccessCollapsePinIndicator extends StatefulWidget {
 
 class _SuccessCollapsePinIndicatorState
     extends State<SuccessCollapsePinIndicator> with TickerProviderStateMixin {
-  late final offsetAnimation = AnimationController(
-    vsync: this,
-    value: 0.0,
-    lowerBound: -0.3,
-    upperBound: 1.0,
+  late final centerIndex = widget.length ~/ 2;
+  late final distances = List<double>.generate(
+    widget.length,
+    (i) {
+      final index = getFirstHalfIndexFromGeneralIndex(i);
+      if (index == centerIndex && widget.length.isOdd) return 0;
+      if (widget.length.isEven) {
+        return widget.childSize / 2 +
+            (centerIndex - index - 1) * (widget.spacing + widget.childSize) +
+            widget.spacing / 2;
+      } else {
+        return (widget.childSize + widget.spacing) * (centerIndex - index);
+      }
+    },
   );
+
+  int getFirstHalfIndexFromGeneralIndex(int index) =>
+      index < centerIndex ? index : widget.length - 1 - index;
+
+  late final offsetAnimations = List.generate(
+      widget.length ~/ 2,
+      (i) => AnimationController(
+            vsync: this,
+            value: 0.0,
+            lowerBound: -0.3 * distances[i],
+            upperBound: distances[i],
+          ));
   late final scaleAnimation = AnimationController(
     vsync: this,
     value: 0.0,
@@ -46,7 +68,7 @@ class _SuccessCollapsePinIndicatorState
   late final opacityAnimation = AnimationController(
     vsync: this,
     value: 1.0,
-    lowerBound: 0.0,
+    lowerBound: 0.5,
     upperBound: 1.0,
   );
   late final childAnimation = AnimationController(
@@ -55,33 +77,19 @@ class _SuccessCollapsePinIndicatorState
     upperBound: 1.0,
   );
 
-  // Array of speed values for animating each item's position of indicator
-  final List<int> speedMultipliers = <int>[];
-
-  void initializeMultipliers() {
-    final centerIndex = widget.length ~/ 2;
-    final buffer = <int>[];
-    for (int i = 0; i < centerIndex; i++) {
-      buffer.add(centerIndex - i);
-    }
-    speedMultipliers.addAll(buffer);
-    if (widget.length.isOdd) speedMultipliers.add(0);
-    speedMultipliers.addAll(buffer.reversed);
-  }
-
   @override
   void initState() {
-    initializeMultipliers();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final firstStageDuration = widget.duration * 0.3;
       final pauseDuration = widget.duration * 0.06;
       final secondStageDuration = widget.duration * 0.64;
       await Future.wait([
-        offsetAnimation.animateTo(
-          offsetAnimation.lowerBound,
-          curve: Curves.easeOutSine,
-          duration: firstStageDuration,
-        ),
+        for (final offsetAnimation in offsetAnimations)
+          offsetAnimation.animateTo(
+            offsetAnimation.lowerBound,
+            curve: Curves.easeOutSine,
+            duration: firstStageDuration,
+          ),
         scaleAnimation.animateTo(
           scaleAnimation.upperBound,
           curve: Curves.easeOutSine,
@@ -90,11 +98,12 @@ class _SuccessCollapsePinIndicatorState
       ]);
       await Future.delayed(pauseDuration);
       await Future.wait([
-        offsetAnimation.animateTo(
-          offsetAnimation.upperBound,
-          curve: Curves.easeOutSine,
-          duration: secondStageDuration,
-        ),
+        for (final offsetAnimation in offsetAnimations)
+          offsetAnimation.animateTo(
+            offsetAnimation.upperBound,
+            curve: Curves.easeOutSine,
+            duration: secondStageDuration * 0.74,
+          ),
         scaleAnimation.animateTo(
           scaleAnimation.lowerBound,
           curve: Curves.easeOutSine,
@@ -115,6 +124,12 @@ class _SuccessCollapsePinIndicatorState
     super.initState();
   }
 
+  AnimationController? getOffsetAnimationForIndex(int index) {
+    index = getFirstHalfIndexFromGeneralIndex(index);
+    if (index > offsetAnimations.length - 1) return null;
+    return offsetAnimations[index];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -129,14 +144,12 @@ class _SuccessCollapsePinIndicatorState
               animation: scaleAnimation,
               builder: (context, child) {
                 return AnimatedBuilder(
-                  animation: offsetAnimation,
+                  animation: getOffsetAnimationForIndex(i) ??
+                      AnimationController(vsync: this),
                   builder: (context, child) {
-                    final direction = (i < widget.length / 2 ? 1 : -1);
-                    final delta = (widget.spacing + widget.childSize) * 0.76;
-                    final xOffset = direction *
-                        offsetAnimation.value *
-                        delta *
-                        speedMultipliers[i];
+                    final direction = i < centerIndex ? 1 : -1;
+                    final double xOffset =
+                        direction * (getOffsetAnimationForIndex(i)?.value ?? 0);
                     return Transform.scale(
                       scale: scaleAnimation.value,
                       child: Transform.translate(
@@ -174,7 +187,9 @@ class _SuccessCollapsePinIndicatorState
 
   @override
   void dispose() {
-    offsetAnimation.dispose();
+    for (final animation in offsetAnimations) {
+      animation.dispose();
+    }
     scaleAnimation.dispose();
     opacityAnimation.dispose();
     childAnimation.dispose();

@@ -9,6 +9,7 @@ class LoadingTravelPinIndicator extends StatefulWidget {
     required this.length,
     required this.duration,
     required this.spacing,
+    required this.childSize,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class LoadingTravelPinIndicator extends StatefulWidget {
   final int length;
   final Duration duration;
   final double spacing;
+  final double childSize;
 
   @override
   State<LoadingTravelPinIndicator> createState() =>
@@ -25,36 +27,59 @@ class LoadingTravelPinIndicator extends StatefulWidget {
 class _LoadingTravelPinIndicatorState extends State<LoadingTravelPinIndicator>
     with TickerProviderStateMixin {
   late final AnimationController xOffsetAnimation;
+  late final AnimationController scaleAnimation;
   final initializationCompleter = Completer<void>();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final outDuration = widget.duration * 0.4;
-      final delay = widget.duration * 0.2;
-      final inDuration = widget.duration * 0.4;
       final box = context.findRenderObject() as RenderBox;
       final positionX = box.localToGlobal(Offset.zero).dx;
-      final screenWidth = MediaQuery.sizeOf(context).width;
+      final indicatorLength = box.size.width;
+      final offset = indicatorLength + positionX;
       xOffsetAnimation = AnimationController(
         vsync: this,
         value: 0.0,
-        lowerBound: -screenWidth,
-        upperBound: screenWidth,
+        lowerBound: -offset,
+        upperBound: offset,
+      );
+      scaleAnimation = AnimationController(
+        vsync: this,
+        value: 1.0,
+        lowerBound: 0.8,
+        upperBound: 1.0,
       );
       setState(() => initializationCompleter.complete());
-      await xOffsetAnimation.animateTo(
-        xOffsetAnimation.upperBound,
-        duration: outDuration,
-        curve: Curves.ease,
-      );
+      final delay = widget.duration * 0.3;
+      final firstStageDuration = (widget.duration - delay) ~/ 2;
+      final secondStageDuration = widget.duration - delay - firstStageDuration;
+
+      await Future.wait([
+        xOffsetAnimation.animateTo(
+          xOffsetAnimation.upperBound,
+          duration: firstStageDuration,
+          curve: Curves.easeIn,
+        ),
+        scaleAnimation.animateTo(
+          scaleAnimation.lowerBound,
+          duration: firstStageDuration,
+          curve: Curves.easeIn,
+        ),
+      ]);
       xOffsetAnimation.value = xOffsetAnimation.lowerBound;
       await Future.delayed(delay);
-      await xOffsetAnimation.animateTo(
-        0,
-        duration: inDuration,
-        curve: Curves.ease,
-      );
+      await Future.wait([
+        xOffsetAnimation.animateTo(
+          0,
+          duration: secondStageDuration,
+          curve: Curves.easeOut,
+        ),
+        scaleAnimation.animateTo(
+          scaleAnimation.upperBound,
+          duration: secondStageDuration,
+          curve: Curves.easeOut,
+        ),
+      ]);
     });
     super.initState();
   }
@@ -72,7 +97,10 @@ class _LoadingTravelPinIndicatorState extends State<LoadingTravelPinIndicator>
                 builder: (context, child) {
                   return Transform.translate(
                     offset: Offset(xOffsetAnimation.value, 0),
-                    child: widget.builder(i),
+                    child: Transform.scale(
+                      scale: scaleAnimation.value,
+                      child: widget.builder(i),
+                    ),
                   );
                 },
               );

@@ -155,6 +155,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animation.data.duration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
+              childSize: widget.size,
             ),
           PinIndicatorSuccessCollapseAnimationData() =>
             SuccessCollapsePinIndicator(

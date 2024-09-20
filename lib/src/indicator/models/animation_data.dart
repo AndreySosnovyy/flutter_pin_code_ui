@@ -132,8 +132,8 @@ class PinIndicatorLoadingTravelAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorLoadingTravelAnimationData()
       : super(
           type: PinAnimationTypes.loading,
-          // duration: const Duration(milliseconds: 1400),
-          duration: const Duration(milliseconds: 6000),
+          duration: const Duration(milliseconds: 1600),
+          // duration: const Duration(milliseconds: 6000),
           isInterruptible: false,
           canInterrupt: false,
         );

@@ -8,6 +8,7 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase/erase
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase/erase_fade_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/erase/erase_take_off_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error/error_blink_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error/error_jiggle_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/error/error_shake_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle/idle_flash_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle/idle_pulse_pin_indicator.dart';
@@ -232,6 +233,13 @@ class _PinIndicatorState extends State<PinIndicator> {
               spacing: widget.spacing,
             ),
           PinIndicatorErrorBlinkAnimationData() => ErrorBlinkPinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              duration: animation.data.duration * animation.durationMultiplier,
+              builder: (i) => currentDots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorErrorJiggleAnimationData() => ErrorJigglePinIndicator(
               key: ValueKey(animation.id),
               length: widget.length,
               duration: animation.data.duration * animation.durationMultiplier,

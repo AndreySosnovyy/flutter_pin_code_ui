@@ -54,6 +54,7 @@ class PinIndicatorAnimationController
     Duration? delayAfter,
     VoidCallback? onComplete,
     VoidCallback? onInterrupt,
+    double animationSpeed = 1.0,
   }) {
     final data = PinIndicatorAnimationData.fromImpl(impl);
 
@@ -80,6 +81,7 @@ class PinIndicatorAnimationController
     _animationsQueue.add(PinIndicatorAnimation(
       id: IdentifierUtil.getUniqueIdentifier(),
       data: data,
+      durationMultiplier: 1 / animationSpeed,
       delayAfter: delayAfter,
       onComplete: onComplete,
       onInterrupt: onInterrupt,
@@ -96,7 +98,8 @@ class PinIndicatorAnimationController
     value = _animationsQueue.removeFirst();
     notifyListeners();
     _animationTimer = Timer(
-      value!.data.duration + (value!.delayAfter ?? Duration.zero),
+      value!.data.duration * value!.durationMultiplier +
+          (value!.delayAfter ?? Duration.zero),
       () {
         value!.onComplete?.call();
         value = null;
@@ -111,11 +114,13 @@ class PinIndicatorAnimationController
     bool vibration = false,
     VoidCallback? onComplete,
     VoidCallback? onInterrupt,
+    double animationSpeed = 1.0,
   }) {
     _prepareAndStart(
       animation,
       onComplete: onComplete,
       onInterrupt: onInterrupt,
+      animationSpeed: animationSpeed,
     );
   }
 
@@ -127,6 +132,7 @@ class PinIndicatorAnimationController
     Duration? delayAfterAnimation,
     VoidCallback? onComplete,
     VoidCallback? onInterrupt,
+    double animationSpeed = 1.0,
   }) {
     for (int i = 0; i < repeatCount; i++) {
       _prepareAndStart(
@@ -135,6 +141,7 @@ class PinIndicatorAnimationController
         delayAfter: delayAfterAnimation,
         onComplete: i == repeatCount - 1 ? onComplete : null,
         onInterrupt: onInterrupt,
+        animationSpeed: animationSpeed,
       );
     }
   }
@@ -146,6 +153,7 @@ class PinIndicatorAnimationController
     Duration? delayAfterAnimation,
     VoidCallback? onComplete,
     VoidCallback? onInterrupt,
+    double animationSpeed = 1.0,
   }) {
     _prepareAndStart(
       animation,
@@ -153,6 +161,7 @@ class PinIndicatorAnimationController
       delayAfter: delayAfterAnimation,
       onComplete: onComplete,
       onInterrupt: onInterrupt,
+      animationSpeed: animationSpeed,
     );
   }
 
@@ -163,6 +172,7 @@ class PinIndicatorAnimationController
     Duration? delayAfterAnimation,
     VoidCallback? onComplete,
     VoidCallback? onInterrupt,
+    double animationSpeed = 1.0,
   }) {
     _prepareAndStart(
       animation,
@@ -170,6 +180,7 @@ class PinIndicatorAnimationController
       delayAfter: delayAfterAnimation,
       onComplete: onComplete,
       onInterrupt: onInterrupt,
+      animationSpeed: animationSpeed,
     );
   }
 
@@ -180,6 +191,7 @@ class PinIndicatorAnimationController
     Duration? delayAfterAnimation,
     VoidCallback? onComplete,
     VoidCallback? onInterrupt,
+    double animationSpeed = 1.0,
   }) {
     _prepareAndStart(
       animation,
@@ -187,6 +199,7 @@ class PinIndicatorAnimationController
       delayAfter: delayAfterAnimation,
       onComplete: onComplete,
       onInterrupt: onInterrupt,
+      animationSpeed: animationSpeed,
     );
   }
 
@@ -195,11 +208,13 @@ class PinIndicatorAnimationController
     bool vibration = false,
     VoidCallback? onComplete,
     VoidCallback? onInterrupt,
+    double animationSpeed = 1.0,
   }) {
     _prepareAndStart(
       animation,
       onComplete: onComplete,
       onInterrupt: onInterrupt,
+      animationSpeed: animationSpeed,
     );
   }
 
@@ -208,11 +223,13 @@ class PinIndicatorAnimationController
     bool vibration = false,
     VoidCallback? onComplete,
     VoidCallback? onInterrupt,
+    double animationSpeed = 1.0,
   }) {
     _prepareAndStart(
       animation,
       onComplete: onComplete,
       onInterrupt: onInterrupt,
+      animationSpeed: animationSpeed,
     );
   }
 

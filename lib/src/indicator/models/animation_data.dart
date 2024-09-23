@@ -48,6 +48,8 @@ sealed class PinIndicatorAnimationData {
             const PinIndicatorSuccessCollapseAnimationData(),
           PinSuccessAnimation.fill =>
             const PinIndicatorSuccessFillAnimationData(),
+          PinSuccessAnimation.fillLast =>
+            const PinIndicatorSuccessFillLastAnimationData(),
         },
       PinErrorAnimation error => switch (error) {
           PinErrorAnimation.shake =>
@@ -178,6 +180,17 @@ class PinIndicatorSuccessCollapseAnimationData
 
 class PinIndicatorSuccessFillAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorSuccessFillAnimationData()
+      : super(
+          type: PinAnimationTypes.success,
+          duration: const Duration(milliseconds: 1200),
+          isInterruptible: false,
+          canInterrupt: false,
+        );
+}
+
+class PinIndicatorSuccessFillLastAnimationData
+    extends PinIndicatorAnimationData {
+  const PinIndicatorSuccessFillLastAnimationData()
       : super(
           type: PinAnimationTypes.success,
           duration: const Duration(milliseconds: 1200),

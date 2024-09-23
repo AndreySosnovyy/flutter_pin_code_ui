@@ -1,16 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
-class SuccessCollapsePinIndicator extends StatefulWidget {
-  const SuccessCollapsePinIndicator({
+class LoadingCollapsePinIndicator extends StatefulWidget {
+  const LoadingCollapsePinIndicator({
     required this.builder,
     required this.length,
     required this.duration,
     required this.spacing,
     required this.childSize,
-    required this.collapsedChild,
+    required this.loadingIndicator,
     super.key,
   });
 
@@ -23,15 +21,15 @@ class SuccessCollapsePinIndicator extends StatefulWidget {
   final double childSize;
 
   /// Widget that will be shown when indicator items are collapsed
-  final Widget collapsedChild;
+  final Widget loadingIndicator;
 
   @override
-  State<SuccessCollapsePinIndicator> createState() =>
-      _SuccessCollapsePinIndicatorState();
+  State<LoadingCollapsePinIndicator> createState() =>
+      _LoadingCollapsePinIndicatorState();
 }
 
-class _SuccessCollapsePinIndicatorState
-    extends State<SuccessCollapsePinIndicator> with TickerProviderStateMixin {
+class _LoadingCollapsePinIndicatorState
+    extends State<LoadingCollapsePinIndicator> with TickerProviderStateMixin {
   late final centerIndex = widget.length ~/ 2;
   late final distances = List<double>.generate(
     widget.length,
@@ -55,8 +53,7 @@ class _SuccessCollapsePinIndicatorState
     widget.length ~/ 2,
     (i) => AnimationController(
       vsync: this,
-      value: 0.0,
-      lowerBound: -0.3 * distances[i],
+      lowerBound: 0.0,
       upperBound: distances[i],
     ),
   );
@@ -69,7 +66,7 @@ class _SuccessCollapsePinIndicatorState
   late final opacityAnimation = AnimationController(
     vsync: this,
     value: 1.0,
-    lowerBound: 0.5,
+    lowerBound: 0.0,
     upperBound: 1.0,
   );
   late final childAnimation = AnimationController(
@@ -81,46 +78,29 @@ class _SuccessCollapsePinIndicatorState
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final firstStageDuration = widget.duration * 0.3;
-      final pauseDuration = widget.duration * 0.06;
-      final secondStageDuration = widget.duration * 0.64;
-      await Future.wait([
-        for (final offsetAnimation in offsetAnimations)
-          offsetAnimation.animateTo(
-            offsetAnimation.lowerBound,
-            curve: Curves.easeOutSine,
-            duration: firstStageDuration,
-          ),
-        scaleAnimation.animateTo(
-          scaleAnimation.upperBound,
+      for (final offsetAnimation in offsetAnimations) {
+        offsetAnimation.animateTo(
+          offsetAnimation.upperBound,
           curve: Curves.easeOutSine,
-          duration: firstStageDuration,
-        ),
-      ]);
-      await Future.delayed(pauseDuration);
-      await Future.wait([
-        for (final offsetAnimation in offsetAnimations)
-          offsetAnimation.animateTo(
-            offsetAnimation.upperBound,
-            curve: Curves.easeOutSine,
-            duration: secondStageDuration * 0.74,
-          ),
-        scaleAnimation.animateTo(
-          scaleAnimation.lowerBound,
-          curve: Curves.easeOutSine,
-          duration: secondStageDuration,
-        ),
-        opacityAnimation.animateTo(
-          opacityAnimation.lowerBound,
-          curve: Curves.easeInQuad,
-          duration: secondStageDuration,
-        ),
-        childAnimation.animateTo(
-          childAnimation.upperBound,
-          curve: Curves.easeOutCirc,
-          duration: secondStageDuration,
-        ),
-      ]);
+          duration: widget.duration,
+        );
+      }
+      scaleAnimation.animateTo(
+        scaleAnimation.lowerBound,
+        curve: Curves.easeOutSine,
+        duration: widget.duration,
+      );
+      opacityAnimation.animateTo(
+        opacityAnimation.lowerBound,
+        curve: Curves.easeOut,
+        duration: widget.duration,
+      );
+      await Future.delayed(widget.duration ~/ 2);
+      childAnimation.animateTo(
+        childAnimation.upperBound,
+        curve: Curves.easeOutCirc,
+        duration: widget.duration,
+      );
     });
     super.initState();
   }
@@ -176,7 +156,7 @@ class _SuccessCollapsePinIndicatorState
                 scale: childAnimation.value,
                 child: Opacity(
                   opacity: childAnimation.value,
-                  child: widget.collapsedChild,
+                  child: widget.loadingIndicator,
                 ),
               );
             },

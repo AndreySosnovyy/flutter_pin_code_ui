@@ -16,6 +16,7 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/idle/idle_w
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input/input_fade_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input/input_fall_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/input/input_inflate_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_collapse_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_jump_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_travel_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_wave_deflate_pin_indicator.dart';
@@ -25,6 +26,7 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/suc
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_fill_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
+// TODO(Sosnovyy): make child widgets configurable
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
     required this.length,
@@ -177,6 +179,21 @@ class _PinIndicatorState extends State<PinIndicator> {
               spacing: widget.spacing,
               childSize: widget.size,
             ),
+          PinIndicatorLoadingCollapseAnimationData() =>
+            LoadingCollapsePinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              childSize: widget.size,
+              duration: animation.data.duration * animation.durationMultiplier,
+              builder: (i) => currentDots[i],
+              spacing: widget.spacing,
+              loadingIndicator: Container(
+                width: widget.size,
+                height: widget.size,
+                margin: EdgeInsets.only(top: widget.size),
+                child: CupertinoActivityIndicator(radius: widget.size),
+              ),
+            ),
           PinIndicatorSuccessCollapseAnimationData() =>
             SuccessCollapsePinIndicator(
               key: ValueKey(animation.id),
@@ -185,7 +202,6 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animation.data.duration * animation.durationMultiplier,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              // TODO(Sosnovyy): make configurable
               collapsedChild: Stack(
                 alignment: Alignment.center,
                 children: [

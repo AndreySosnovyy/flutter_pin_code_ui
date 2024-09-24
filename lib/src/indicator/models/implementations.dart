@@ -51,7 +51,7 @@ enum PinSuccessAnimation implements PinAnimationImplementation {
 enum PinErrorAnimation implements PinAnimationImplementation {
   shake,
   jiggle,
-  // brownian,
+  brownian,
   blink,
 }
 

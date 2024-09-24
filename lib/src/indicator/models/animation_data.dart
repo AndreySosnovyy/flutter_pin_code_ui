@@ -60,6 +60,8 @@ sealed class PinIndicatorAnimationData {
             const PinIndicatorErrorBlinkAnimationData(),
           PinErrorAnimation.jiggle =>
             const PinIndicatorErrorJiggleAnimationData(),
+          PinErrorAnimation.brownian =>
+            const PinIndicatorErrorBrownianAnimationData(),
         },
       PinClearAnimation clear => switch (clear) {
           PinClearAnimation.drop => const PinIndicatorClearDropAnimationData(),
@@ -229,6 +231,16 @@ class PinIndicatorErrorJiggleAnimationData extends PinIndicatorAnimationData {
       : super(
           type: PinAnimationTypes.error,
           duration: const Duration(milliseconds: 960),
+          isInterruptible: true,
+          canInterrupt: false,
+        );
+}
+
+class PinIndicatorErrorBrownianAnimationData extends PinIndicatorAnimationData {
+  const PinIndicatorErrorBrownianAnimationData()
+      : super(
+          type: PinAnimationTypes.error,
+          duration: const Duration(milliseconds: 540),
           isInterruptible: true,
           canInterrupt: false,
         );

@@ -101,6 +101,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       }
                       if (pinText == validPin) {
                         pinIndicatorAnimationController.animateLoading(
+                          repeatCount: 2,
                           delayAfterAnimation:
                               const Duration(milliseconds: 160),
                           onComplete: () => setState(() => isPinSuccess = true),

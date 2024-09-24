@@ -56,6 +56,8 @@ class PinIndicatorAnimationController
     VoidCallback? onInterrupt,
     double animationSpeed = 1.0,
   }) {
+    assert(animationSpeed > 0.1);
+    assert(animationSpeed < 10);
     final data = PinIndicatorAnimationData.fromImpl(impl);
 
     // Remove all interruptible animations from the queue if any

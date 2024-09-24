@@ -37,7 +37,7 @@ class _SuccessFillLastPinIndicatorState
       final positionY = box.localToGlobal(Offset.zero).dy;
       final screenHeight = MediaQuery.sizeOf(context).height;
       final heightToFill = math.max(positionY, screenHeight - positionY);
-      final fillScale = heightToFill / widget.childSize * 2.2;
+      final fillScale = heightToFill / widget.childSize * 2.3;
       animation = AnimationController(
         vsync: this,
         duration: widget.duration,

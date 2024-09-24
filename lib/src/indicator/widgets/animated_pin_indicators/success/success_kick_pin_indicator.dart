@@ -40,8 +40,8 @@ class _SuccessKickPinIndicatorState extends State<SuccessKickPinIndicator>
       final box = context.findRenderObject() as RenderBox;
       final positionX = box.localToGlobal(Offset.zero).dx;
       final indicatorLength = box.size.width;
-      final screeWidth = MediaQuery.of(context).size.width;
-      final offset = screeWidth - positionX - indicatorLength;
+      final screenWidth = MediaQuery.of(context).size.width;
+      final offset = screenWidth - positionX - indicatorLength;
       xOffsetAnimations = List<AnimationController>.generate(
         widget.length,
         (i) => AnimationController(

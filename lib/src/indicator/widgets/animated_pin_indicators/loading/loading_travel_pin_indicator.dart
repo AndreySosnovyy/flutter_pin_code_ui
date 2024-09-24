@@ -111,6 +111,7 @@ class _LoadingTravelPinIndicatorState extends State<LoadingTravelPinIndicator>
   @override
   void dispose() {
     xOffsetAnimation.dispose();
+    scaleAnimation.dispose();
     super.dispose();
   }
 }

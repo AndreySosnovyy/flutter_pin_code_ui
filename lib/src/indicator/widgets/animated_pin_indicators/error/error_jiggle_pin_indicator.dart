@@ -109,6 +109,7 @@ class _ErrorJigglePinIndicatorState extends State<ErrorJigglePinIndicator>
   @override
   void dispose() {
     scaleAnimation.dispose();
+    angleAnimation.dispose();
     super.dispose();
   }
 }

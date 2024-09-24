@@ -45,7 +45,7 @@ enum PinSuccessAnimation implements PinAnimationImplementation {
   collapse,
   fill,
   fillLast,
-  // kick,
+  kick,
 }
 
 enum PinErrorAnimation implements PinAnimationImplementation {

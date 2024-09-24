@@ -25,6 +25,7 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loa
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_collapse_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_fill_last_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_fill_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_kick_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
 // TODO(Sosnovyy): make child widgets configurable
@@ -234,6 +235,14 @@ class _PinIndicatorState extends State<PinIndicator> {
             ),
           PinIndicatorSuccessFillLastAnimationData() =>
             SuccessFillLastPinIndicator(
+              key: ValueKey(animation.id),
+              length: widget.length,
+              childSize: widget.size,
+              duration: animation.data.duration * animation.durationMultiplier,
+              builder: (i) => currentDots[i],
+              spacing: widget.spacing,
+            ),
+          PinIndicatorSuccessKickAnimationData() => SuccessKickPinIndicator(
               key: ValueKey(animation.id),
               length: widget.length,
               childSize: widget.size,

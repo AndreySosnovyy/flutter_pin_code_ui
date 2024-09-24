@@ -20,8 +20,7 @@ class NoAnimationPinIndicator extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(length, builder)
-          .map((e) => [e, SizedBox(width: spacing)])
-          .expand((pair) => pair)
+          .expand((e) => [e, SizedBox(width: spacing)])
           .toList()
         ..removeLast(),
     );

@@ -20,7 +20,7 @@ class IdlePulsePinIndicator extends StatefulWidget {
 }
 
 class _IdlePulsePinIndicatorState extends State<IdlePulsePinIndicator>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late final animation = AnimationController(
     vsync: this,
     lowerBound: 1.0,

@@ -25,7 +25,7 @@ class InputFadePinIndicator extends StatefulWidget {
 }
 
 class _InputFadePinIndicatorState extends State<InputFadePinIndicator>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late final animation = AnimationController(
     vsync: this,
     duration: widget.duration,

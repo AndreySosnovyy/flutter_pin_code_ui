@@ -25,7 +25,7 @@ class EraseFadePinIndicator extends StatefulWidget {
 }
 
 class _EraseFadePinIndicatorState extends State<EraseFadePinIndicator>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late final animation = AnimationController(
     vsync: this,
     duration: widget.duration,

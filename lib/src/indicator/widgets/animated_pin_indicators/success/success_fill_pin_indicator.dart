@@ -26,7 +26,7 @@ class SuccessFillPinIndicator extends StatefulWidget {
 }
 
 class _SuccessFillPinIndicatorState extends State<SuccessFillPinIndicator>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late final AnimationController animation;
   final initializationCompleter = Completer<void>();
 

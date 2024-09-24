@@ -22,7 +22,7 @@ class ClearFadePinIndicator extends StatefulWidget {
 }
 
 class _ClearFadePinIndicatorState extends State<ClearFadePinIndicator>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late final animation = AnimationController(
     vsync: this,
     value: 1.0,

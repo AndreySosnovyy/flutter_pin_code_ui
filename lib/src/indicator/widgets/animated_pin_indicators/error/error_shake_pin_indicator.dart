@@ -22,7 +22,7 @@ class ErrorShakePinIndicator extends StatefulWidget {
 }
 
 class _ErrorShakePinIndicatorState extends State<ErrorShakePinIndicator>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late final animation = AnimationController(
     vsync: this,
     value: 0.0,

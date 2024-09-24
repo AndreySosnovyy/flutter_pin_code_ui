@@ -24,7 +24,7 @@ class ClearDropPinIndicator extends StatefulWidget {
 }
 
 class _ClearDropPinIndicatorState extends State<ClearDropPinIndicator>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late final animation = AnimationController(
     vsync: this,
     lowerBound: 0.0,

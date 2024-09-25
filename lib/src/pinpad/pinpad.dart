@@ -78,7 +78,7 @@ class Pinpad extends StatelessWidget {
   double _getKeyWidth(BuildContext context) =>
       keyWidth ?? _getMaxKeyTextWidth(context) * 3;
 
-  Future<void> vibrate() async => HapticFeedback.mediumImpact();
+  Future<void> vibrate() async => HapticFeedback.lightImpact();
 
   @override
   Widget build(BuildContext context) {

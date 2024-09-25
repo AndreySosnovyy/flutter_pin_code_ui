@@ -88,38 +88,38 @@ class _PinIndicatorState extends State<PinIndicator> {
     return defaultDecoration;
   }
 
+  late final defaultDots = List.generate(
+    widget.length,
+    (i) => _PinIndicatorDot(
+      size: widget.size,
+      decoration: defaultDecoration,
+    ),
+  );
+  late final inputDots = List.generate(
+    widget.length,
+    (i) => _PinIndicatorDot(
+      size: widget.size,
+      decoration: inputDecoration,
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
+    final currentDots = List.generate(
+      widget.length,
+      (i) => _PinIndicatorDot(
+        size: widget.size,
+        decoration: _getDecorationForDotIndexed(i),
+      ),
+    );
+    final noAnimationPinIndicator = NoAnimationPinIndicator(
+      length: widget.length,
+      spacing: widget.spacing,
+      builder: (i) => currentDots[i],
+    );
     return ValueListenableBuilder(
       valueListenable: widget.controller ?? PinIndicatorAnimationController(),
       builder: (context, animation, child) {
-        final currentDots = List.generate(
-          widget.length,
-          (i) => _PinIndicatorDot(
-            size: widget.size,
-            decoration: _getDecorationForDotIndexed(i),
-          ),
-        );
-        final defaultDots = List.generate(
-          widget.length,
-          (i) => _PinIndicatorDot(
-            size: widget.size,
-            decoration: defaultDecoration,
-          ),
-        );
-        final inputDots = List.generate(
-          widget.length,
-          (i) => _PinIndicatorDot(
-            size: widget.size,
-            decoration: inputDecoration,
-          ),
-        );
-        final noAnimationPinIndicator = NoAnimationPinIndicator(
-          length: widget.length,
-          spacing: widget.spacing,
-          builder: (i) => currentDots[i],
-        );
-
         if (animation == null) return noAnimationPinIndicator;
         return switch (animation.data) {
           PinIndicatorNoAnimationData() => noAnimationPinIndicator,

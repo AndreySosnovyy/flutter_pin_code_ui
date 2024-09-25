@@ -18,6 +18,7 @@ class App extends StatelessWidget {
 const String validPin = '1111';
 
 // TODO(Sosnovyy): fix error state after fast tap on erase button
+// TODO(Sosnovyy): fix idle call after dispose
 class PinView extends StatefulWidget {
   const PinView({super.key});
 
@@ -26,21 +27,9 @@ class PinView extends StatefulWidget {
 }
 
 class _PinViewState extends State<PinView> with TickerProviderStateMixin {
-  late final defaultKeyDecoration = const BoxDecoration(
-    shape: BoxShape.circle,
-  );
-  late final pressedKeyDecoration = defaultKeyDecoration.copyWith(
-    color: Colors.blue.withOpacity(0.1),
-  );
-  late final disabledKeyDecoration = defaultKeyDecoration.copyWith();
-  late final defaultTextStyle =
-      Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 32);
-  late final pressedTextStyle = defaultTextStyle.copyWith(color: Colors.blue);
-  late final disabledTextStyle =
-      defaultTextStyle.copyWith(color: Colors.black26);
-
   final pinIndicatorAnimationController = PinIndicatorAnimationController();
   Timer? timer;
+  // Current entered pin code
   String pinText = '';
   bool isPinError = false;
   bool isPinSuccess = false;
@@ -87,7 +76,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                   ),
                   const SizedBox(height: 64),
                   Pinpad(
-                    onKeyTap: (key) async {
+                    onKeyTap: (key) {
                       restartIdleTimer();
                       if (pinIndicatorAnimationController
                           .isAnimatingNonInterruptible) {
@@ -133,18 +122,10 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                     },
                     enabled: !pinIndicatorAnimationController
                         .isAnimatingNonInterruptible,
-                    keysDefaultTextStyle: defaultTextStyle,
-                    keysPressedTextStyle: pressedTextStyle,
-                    keysDisabledTextStyle: disabledTextStyle,
-                    keyDefaultDecoration: defaultKeyDecoration,
-                    keyPressedDecoration: pressedKeyDecoration,
-                    keyDisabledDecoration: disabledKeyDecoration,
-                    vibrationEnabled: true,
+                    vibrationEnabled: false,
                     leftExtraKeyChild: PinpadKey(
                       enabled: !pinIndicatorAnimationController
                           .isAnimatingNonInterruptible,
-                      defaultDecoration: defaultKeyDecoration,
-                      pressedDecoration: pressedKeyDecoration,
                       child: Text(
                         'Forgot',
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -153,7 +134,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                                 ? null
                                 : Colors.black26),
                       ),
-                      onTap: () async {
+                      onTap: () {
                         restartIdleTimer();
                         if (pinText.isEmpty ||
                             pinIndicatorAnimationController.isAnimatingClear ||
@@ -170,14 +151,12 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                     rightExtraKeyChild: PinpadKey(
                       enabled: !pinIndicatorAnimationController
                           .isAnimatingNonInterruptible,
-                      defaultDecoration: defaultKeyDecoration,
-                      pressedDecoration: pressedKeyDecoration,
                       onTap: pinText.isEmpty
                           ? () {
                               restartIdleTimer();
                               // Call your biometrics method here
                             }
-                          : () async {
+                          : () {
                               restartIdleTimer();
                               pinText =
                                   pinText.substring(0, pinText.length - 1);
@@ -185,7 +164,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                               pinIndicatorAnimationController.animateErase();
                             },
                       child: pinText.isEmpty
-                          // Display current biometrics type here
+                          // Display your current biometrics type icon here
                           ? const Icon(Icons.fingerprint_rounded, size: 32)
                           : Icon(
                               Icons.backspace_outlined,

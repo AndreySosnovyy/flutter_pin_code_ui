@@ -30,7 +30,19 @@ class Pinpad extends StatelessWidget {
   final double? verticalSpacing;
   final double? horizontalSpacing;
   final bool enabled;
+
+  /// Widget that will be displayed on the right side of zero key button.
+  ///
+  /// {@template pinpad.extraKeyChild}
+  /// This widget is independent from other Pinpad in terms of visual appearance
+  /// and only controlled from outside. In case you want to decorate it, use
+  /// DecoratedBox widget when you layout this extra child.
+  /// {@endtemplate}
   final Widget? rightExtraKeyChild;
+
+  /// Widget that will be displayed on the left side of zero key button.
+  ///
+  /// {@macro pinpad.extraKeyChild}
   final Widget? leftExtraKeyChild;
   final TextStyle? keysDefaultTextStyle;
   final TextStyle? keysPressedTextStyle;
@@ -40,8 +52,25 @@ class Pinpad extends StatelessWidget {
   final bool vibrationEnabled;
   final bool isVisible;
 
-  TextStyle? _getTextStyle(BuildContext context) =>
-      keysDefaultTextStyle ?? Theme.of(context).textTheme.titleLarge;
+  BoxDecoration _getDefaultDecoration(BuildContext context) =>
+      keyDefaultDecoration ?? const BoxDecoration(shape: BoxShape.circle);
+
+  BoxDecoration _getPressedDecoration(BuildContext context) =>
+      keyPressedDecoration ??
+      _getDefaultDecoration(context).copyWith(
+        color: Colors.blue.withOpacity(0.1),
+      );
+
+  TextStyle _getDefaultTextStyle(BuildContext context) =>
+      keysDefaultTextStyle ??
+      Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 32);
+
+  TextStyle _getDisabledTextStyle(BuildContext context) =>
+      keysDisabledTextStyle ??
+      _getDefaultTextStyle(context).copyWith(color: Colors.black26);
+
+  TextStyle _getPressedTextStyle(BuildContext context) =>
+      keysPressedTextStyle ?? _getDefaultTextStyle(context);
 
   double _getDefaultSpacing(BuildContext context) =>
       (MediaQuery.of(context).size.width - _getMaxKeyTextWidth(context) * 3) /
@@ -56,7 +85,7 @@ class Pinpad extends StatelessWidget {
       _getDefaultSpacing(context) / 2 - 0.4 * _getKeyHeight(context);
 
   Size _getKeyTextSize(BuildContext context, String keyText) => (TextPainter(
-        text: TextSpan(text: keyText, style: _getTextStyle(context)),
+        text: TextSpan(text: keyText, style: _getDefaultTextStyle(context)),
         maxLines: 1,
         textDirection: TextDirection.ltr,
       )..layout(minWidth: 0, maxWidth: double.infinity))
@@ -103,17 +132,17 @@ class Pinpad extends StatelessWidget {
                             right: j == 2 ? 0 : _getHorizontalSpacing(context)),
                         child: PinpadTextKey(
                           (3 * i + j + 1).toString(),
-                          defaultTextStyle: _getTextStyle(context),
-                          disabledTextStyle: keysDisabledTextStyle,
-                          pressedTextStyle: keysPressedTextStyle,
+                          defaultTextStyle: _getDefaultTextStyle(context),
+                          disabledTextStyle: _getDisabledTextStyle(context),
+                          pressedTextStyle: _getPressedTextStyle(context),
                           onTap: () {
                             onKeyTap((3 * i + j + 1).toString());
                             if (vibrationEnabled) vibrate();
                           },
                           enabled: enabled,
-                          defaultDecoration: keyDefaultDecoration,
-                          pressedDecoration: keyPressedDecoration,
-                          disabledDecoration: keyDisabledDecoration,
+                          defaultDecoration: _getDefaultDecoration(context),
+                          pressedDecoration: _getPressedDecoration(context),
+                          disabledDecoration: _getDefaultDecoration(context),
                           width: _getKeyWidth(context),
                           height: _getKeyHeight(context),
                         ),
@@ -132,17 +161,17 @@ class Pinpad extends StatelessWidget {
                 SizedBox(width: _getHorizontalSpacing(context)),
                 PinpadTextKey(
                   '0',
-                  defaultTextStyle: _getTextStyle(context),
-                  disabledTextStyle: keysDisabledTextStyle,
-                  pressedTextStyle: keysPressedTextStyle,
+                  defaultTextStyle: _getDefaultTextStyle(context),
+                  disabledTextStyle: _getDisabledTextStyle(context),
+                  pressedTextStyle: _getPressedTextStyle(context),
                   onTap: () {
                     onKeyTap('0');
                     if (vibrationEnabled) vibrate();
                   },
                   enabled: enabled,
-                  defaultDecoration: keyDefaultDecoration,
-                  disabledDecoration: keyDisabledDecoration,
-                  pressedDecoration: keyPressedDecoration,
+                  defaultDecoration: _getDefaultDecoration(context),
+                  disabledDecoration: _getDefaultDecoration(context),
+                  pressedDecoration: _getPressedDecoration(context),
                   width: _getKeyWidth(context),
                   height: _getKeyHeight(context),
                 ),

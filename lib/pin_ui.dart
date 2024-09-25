@@ -13,3 +13,4 @@ export 'src/indicator/models/implementations.dart'
 export 'src/indicator/widgets/pin_indicator.dart';
 export 'src/pinpad/pinpad.dart';
 export 'src/pinpad/pinpad_key.dart';
+export 'src/pinpad/models/extra_key.dart';

@@ -29,6 +29,7 @@ class PinView extends StatefulWidget {
 class _PinViewState extends State<PinView> with TickerProviderStateMixin {
   final pinIndicatorAnimationController = PinIndicatorAnimationController();
   Timer? timer;
+
   // Current entered pin code
   String pinText = '';
   bool isPinError = false;
@@ -123,9 +124,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                     enabled: !pinIndicatorAnimationController
                         .isAnimatingNonInterruptible,
                     vibrationEnabled: false,
-                    leftExtraKeyChild: PinpadKey(
-                      enabled: !pinIndicatorAnimationController
-                          .isAnimatingNonInterruptible,
+                    leftExtraKeyChild: PinpadExtraKey(
                       child: Text(
                         'Forgot',
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -148,9 +147,18 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                         // Call your forgot pin flow logic
                       },
                     ),
-                    rightExtraKeyChild: PinpadKey(
-                      enabled: !pinIndicatorAnimationController
-                          .isAnimatingNonInterruptible,
+                    rightExtraKeyChild: PinpadExtraKey(
+                      child: pinText.isEmpty
+                          // Display your current biometrics type icon here
+                          ? const Icon(Icons.fingerprint_rounded, size: 32)
+                          : Icon(
+                              Icons.backspace_outlined,
+                              size: 24,
+                              color: !pinIndicatorAnimationController
+                                      .isAnimatingNonInterruptible
+                                  ? null
+                                  : Colors.black26,
+                            ),
                       onTap: pinText.isEmpty
                           ? () {
                               restartIdleTimer();
@@ -163,17 +171,6 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                               setState(() {});
                               pinIndicatorAnimationController.animateErase();
                             },
-                      child: pinText.isEmpty
-                          // Display your current biometrics type icon here
-                          ? const Icon(Icons.fingerprint_rounded, size: 32)
-                          : Icon(
-                              Icons.backspace_outlined,
-                              size: 24,
-                              color: !pinIndicatorAnimationController
-                                      .isAnimatingNonInterruptible
-                                  ? null
-                                  : Colors.black26,
-                            ),
                     ),
                   ),
                   const Spacer(),

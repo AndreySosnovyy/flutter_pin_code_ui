@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pin_ui/src/pinpad/models/extra_key.dart';
 import 'package:pin_ui/src/pinpad/pinpad_key.dart';
 
 class Pinpad extends StatelessWidget {
@@ -31,19 +32,11 @@ class Pinpad extends StatelessWidget {
   final double? horizontalSpacing;
   final bool enabled;
 
-  /// Widget that will be displayed on the right side of zero key button.
-  ///
-  /// {@template pinpad.extraKeyChild}
-  /// This widget is independent from other Pinpad in terms of visual appearance
-  /// and only controlled from outside. In case you want to decorate it, use
-  /// DecoratedBox widget when you layout this extra child.
-  /// {@endtemplate}
-  final Widget? rightExtraKeyChild;
+  /// Data for widget that will be displayed on the right side of zero key button.
+  final PinpadExtraKey? rightExtraKeyChild;
 
-  /// Widget that will be displayed on the left side of zero key button.
-  ///
-  /// {@macro pinpad.extraKeyChild}
-  final Widget? leftExtraKeyChild;
+  /// Data for widget that will be displayed on the left side of zero key button.
+  final PinpadExtraKey? leftExtraKeyChild;
   final TextStyle? keysDefaultTextStyle;
   final TextStyle? keysPressedTextStyle;
   final TextStyle? keysDisabledTextStyle;
@@ -60,6 +53,9 @@ class Pinpad extends StatelessWidget {
       _getDefaultDecoration(context).copyWith(
         color: Colors.blue.withOpacity(0.1),
       );
+
+  BoxDecoration _getDisabledDecoration(BuildContext context) =>
+      keyDisabledDecoration ?? _getDefaultDecoration(context);
 
   TextStyle _getDefaultTextStyle(BuildContext context) =>
       keysDefaultTextStyle ??
@@ -153,11 +149,21 @@ class Pinpad extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
-                  width: _getKeyWidth(context),
-                  height: _getKeyHeight(context),
-                  child: leftExtraKeyChild,
-                ),
+                leftExtraKeyChild != null
+                    ? PinpadKey(
+                        width: _getKeyWidth(context),
+                        height: _getKeyHeight(context),
+                        defaultDecoration: _getDefaultDecoration(context),
+                        pressedDecoration: _getPressedDecoration(context),
+                        disabledDecoration: _getDisabledDecoration(context),
+                        enabled: enabled,
+                        onTap: leftExtraKeyChild!.onTap,
+                        child: leftExtraKeyChild!.child,
+                      )
+                    : SizedBox(
+                        width: _getKeyWidth(context),
+                        height: _getKeyHeight(context),
+                      ),
                 SizedBox(width: _getHorizontalSpacing(context)),
                 PinpadTextKey(
                   '0',
@@ -170,17 +176,27 @@ class Pinpad extends StatelessWidget {
                   },
                   enabled: enabled,
                   defaultDecoration: _getDefaultDecoration(context),
-                  disabledDecoration: _getDefaultDecoration(context),
+                  disabledDecoration: _getDisabledDecoration(context),
                   pressedDecoration: _getPressedDecoration(context),
                   width: _getKeyWidth(context),
                   height: _getKeyHeight(context),
                 ),
                 SizedBox(width: _getHorizontalSpacing(context)),
-                SizedBox(
-                  width: _getKeyWidth(context),
-                  height: _getKeyHeight(context),
-                  child: rightExtraKeyChild,
-                ),
+                rightExtraKeyChild != null
+                    ? PinpadKey(
+                        width: _getKeyWidth(context),
+                        height: _getKeyHeight(context),
+                        defaultDecoration: _getDefaultDecoration(context),
+                        pressedDecoration: _getPressedDecoration(context),
+                        disabledDecoration: _getDisabledDecoration(context),
+                        enabled: enabled,
+                        onTap: rightExtraKeyChild!.onTap,
+                        child: rightExtraKeyChild!.child,
+                      )
+                    : SizedBox(
+                        width: _getKeyWidth(context),
+                        height: _getKeyHeight(context),
+                      ),
               ],
             ),
           ],

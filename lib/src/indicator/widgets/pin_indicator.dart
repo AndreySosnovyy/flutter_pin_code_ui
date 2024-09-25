@@ -43,7 +43,11 @@ class PinIndicator extends StatefulWidget {
     this.defaultDecoration,
     this.spacing = 24.0,
     this.size = 14.0,
+
+    /// {@macro pin_ui.PinIndicator.successCollapseAnimationChild}
     this.loadingCollapseAnimationChild,
+
+    /// {@macro pin_ui.PinIndicator.successCollapseAnimationChild}
     this.successCollapseAnimationChild,
     super.key,
   })  : assert(length >= currentLength),
@@ -63,12 +67,16 @@ class PinIndicator extends StatefulWidget {
   final double spacing;
   final double size;
 
+  /// {@template pin_ui.PinIndicator.successCollapseAnimationChild}
   /// Widget that will appear on the screen after all indicator items are
   /// collapsed in case of PinSuccessAnimation.collapse is chosen.
+  /// {@endtemplate}
   final Widget? successCollapseAnimationChild;
 
+  /// {@template pin_ui.PinIndicator.loadingCollapseAnimationChild}
   /// Widget that will appear on the screen after all indicator items are
   /// collapsed in case of PinLoadingAnimation.collapse is chosen.
+  /// {@endtemplate}
   final Widget? loadingCollapseAnimationChild;
 
   @override
@@ -92,13 +100,6 @@ class _PinIndicatorState extends State<PinIndicator> {
       widget.inputDecoration ??
       const BoxDecoration(shape: BoxShape.circle, color: Colors.blue);
 
-  BoxDecoration _getDecorationForDotIndexed(int index) {
-    if (widget.isSuccess) return successDecoration;
-    if (widget.isError) return errorDecoration;
-    if (index < widget.currentLength) return inputDecoration;
-    return defaultDecoration;
-  }
-
   late final defaultDots = List.generate(
     widget.length,
     (i) => PinIndicatorDot(
@@ -113,6 +114,13 @@ class _PinIndicatorState extends State<PinIndicator> {
       decoration: inputDecoration,
     ),
   );
+
+  BoxDecoration _getDecorationForDotIndexed(int index) {
+    if (widget.isSuccess) return successDecoration;
+    if (widget.isError) return errorDecoration;
+    if (index < widget.currentLength) return inputDecoration;
+    return defaultDecoration;
+  }
 
   @override
   Widget build(BuildContext context) {

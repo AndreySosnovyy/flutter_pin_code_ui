@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:pin_ui/src/pinpad/models/extra_key.dart';
 import 'package:pin_ui/src/pinpad/pinpad_key.dart';
 
+// TODO(Sosnovyy): disable ability to tap multiple keys at one time
+// TODO(Sosnovyy): detect if finger is no more on the key to set default decoration
 class Pinpad extends StatelessWidget {
   const Pinpad({
     required this.onKeyTap,

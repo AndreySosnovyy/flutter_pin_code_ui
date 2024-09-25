@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animation_controller.dart';
 import 'package:pin_ui/src/indicator/models/animation_data.dart';
@@ -26,9 +25,10 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/suc
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_fill_last_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_fill_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_kick_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/default_animation_children/pin_loading_collapse_child.dart';
+import 'package:pin_ui/src/indicator/widgets/default_animation_children/pin_success_collapse_child.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
-// TODO(Sosnovyy): make child widgets configurable
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
     required this.length,
@@ -42,6 +42,8 @@ class PinIndicator extends StatefulWidget {
     this.defaultDecoration,
     this.spacing = 24.0,
     this.size = 14.0,
+    this.loadingCollapseAnimationChild,
+    this.successCollapseAnimationChild,
     super.key,
   })  : assert(length >= currentLength),
         assert(length > 3),
@@ -59,6 +61,14 @@ class PinIndicator extends StatefulWidget {
   final BoxDecoration? inputDecoration;
   final double spacing;
   final double size;
+
+  /// Widget that will appear on the screen after all indicator items are
+  /// collapsed in case of PinSuccessAnimation.collapse is chosen.
+  final Widget? successCollapseAnimationChild;
+
+  /// Widget that will appear on the screen after all indicator items are
+  /// collapsed in case of PinLoadingAnimation.collapse is chosen.
+  final Widget? loadingCollapseAnimationChild;
 
   @override
   State<PinIndicator> createState() => _PinIndicatorState();
@@ -192,12 +202,10 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              loadingIndicator: Container(
-                width: widget.size,
-                height: widget.size,
-                margin: EdgeInsets.only(top: widget.size),
-                child: CupertinoActivityIndicator(radius: widget.size),
-              ),
+              loadingIndicator: widget.loadingCollapseAnimationChild ??
+                  DefaultPinLoadingCollapseAnimationChild(
+                    anchorSize: widget.size,
+                  ),
             ),
           PinIndicatorSuccessCollapseAnimationData() =>
             SuccessCollapsePinIndicator(
@@ -207,26 +215,10 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              collapsedChild: Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: widget.size * 2.3,
-                    height: widget.size * 2.3,
-                    child: const DecoratedBox(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                    ),
+              collapsedChild: widget.successCollapseAnimationChild ??
+                  DefaultPinSuccessCollapseAnimationChild(
+                    anchorSize: widget.size,
                   ),
-                  Icon(
-                    CupertinoIcons.checkmark_alt_circle_fill,
-                    color: Colors.green,
-                    size: widget.size * 3,
-                  ),
-                ],
-              ),
             ),
           PinIndicatorSuccessFillAnimationData() => SuccessFillPinIndicator(
               key: animationKey,

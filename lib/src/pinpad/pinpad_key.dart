@@ -1,76 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:pin_ui/src/pinpad/pinpad_key_wrapper.dart';
 
-// TODO(Sosnovyy): refactor to avoid duplicate code
-
-class PinpadKey extends StatefulWidget {
+class PinpadKey extends PinpadKeyBase {
   const PinpadKey({
     required this.child,
-    required this.onTap,
-    this.defaultDecoration,
-    this.pressedDecoration,
-    this.disabledDecoration,
-    this.width,
-    this.height,
-    this.enabled = true,
+    super.onTap,
+    super.defaultDecoration,
+    super.pressedDecoration,
+    super.disabledDecoration,
+    super.width,
+    super.height,
+    super.enabled,
     super.key,
   });
 
   final Widget child;
-  final VoidCallback onTap;
-  final BoxDecoration? defaultDecoration;
-  final BoxDecoration? pressedDecoration;
-  final BoxDecoration? disabledDecoration;
-  final double? width;
-  final double? height;
-  final bool enabled;
 
   @override
-  State<PinpadKey> createState() => _PinpadKeyState();
+  State<StatefulWidget> createState() {
+    return _PinpadKeyState();
+  }
 }
 
 class _PinpadKeyState extends State<PinpadKey> {
-  bool _isPressed = false;
-
   @override
   Widget build(BuildContext context) {
-    return IgnorePointer(
-      ignoring: !widget.enabled,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: widget.onTap,
-        onPanStart: (_) => setState(() => _isPressed = true),
-        onPanDown: (_) => setState(() => _isPressed = true),
-        onPanEnd: (_) => setState(() => _isPressed = false),
-        onPanCancel: () => setState(() => _isPressed = false),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 120),
-          width: widget.width,
-          height: widget.height,
-          decoration: widget.enabled
-              ? _isPressed
-                  ? widget.pressedDecoration
-                  : widget.defaultDecoration
-              : widget.disabledDecoration,
-          child: Center(child: widget.child),
-        ),
-      ),
+    return PinpadKeyWrapper(
+      onTap: widget.onTap,
+      defaultDecoration: widget.defaultDecoration,
+      pressedDecoration: widget.pressedDecoration,
+      disabledDecoration: widget.disabledDecoration,
+      width: widget.width,
+      height: widget.height,
+      enabled: widget.enabled,
+      builder: (_) => widget.child,
     );
   }
 }
 
-class PinpadTextKey extends StatefulWidget {
+class PinpadTextKey extends PinpadKeyBase {
   const PinpadTextKey(
     this.text, {
-    required this.onTap,
     this.defaultTextStyle,
     this.pressedTextStyle,
     this.disabledTextStyle,
-    this.defaultDecoration,
-    this.pressedDecoration,
-    this.disabledDecoration,
-    this.width,
-    this.height,
-    this.enabled = true,
+    super.onTap,
+    super.defaultDecoration,
+    super.pressedDecoration,
+    super.disabledDecoration,
+    super.width,
+    super.height,
+    super.enabled,
     super.key,
   });
 
@@ -78,52 +58,29 @@ class PinpadTextKey extends StatefulWidget {
   final TextStyle? defaultTextStyle;
   final TextStyle? pressedTextStyle;
   final TextStyle? disabledTextStyle;
-  final VoidCallback onTap;
-  final BoxDecoration? defaultDecoration;
-  final BoxDecoration? pressedDecoration;
-  final BoxDecoration? disabledDecoration;
-  final double? width;
-  final double? height;
-  final bool enabled;
 
   @override
   State<PinpadTextKey> createState() => _PinpadTextKeyState();
 }
 
 class _PinpadTextKeyState extends State<PinpadTextKey> {
-  bool _isPressed = false;
-
   @override
   Widget build(BuildContext context) {
-    return IgnorePointer(
-      ignoring: !widget.enabled,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: widget.onTap,
-        onPanStart: (_) => setState(() => _isPressed = true),
-        onPanDown: (_) => setState(() => _isPressed = true),
-        onPanEnd: (_) => setState(() => _isPressed = false),
-        onPanCancel: () => setState(() => _isPressed = false),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 120),
-          width: widget.width,
-          height: widget.height,
-          decoration: widget.enabled
-              ? _isPressed
-                  ? widget.pressedDecoration
-                  : widget.defaultDecoration
-              : widget.disabledDecoration,
-          child: Center(
-            child: Text(
-              widget.text,
-              style: widget.enabled
-                  ? _isPressed
-                      ? widget.pressedTextStyle
-                      : widget.defaultTextStyle
-                  : widget.disabledTextStyle,
-            ),
-          ),
-        ),
+    return PinpadKeyWrapper(
+      onTap: widget.onTap,
+      defaultDecoration: widget.defaultDecoration,
+      pressedDecoration: widget.pressedDecoration,
+      disabledDecoration: widget.disabledDecoration,
+      width: widget.width,
+      height: widget.height,
+      enabled: widget.enabled,
+      builder: (isPressed) => Text(
+        widget.text,
+        style: widget.enabled
+            ? isPressed
+                ? widget.pressedTextStyle
+                : widget.defaultTextStyle
+            : widget.disabledTextStyle,
       ),
     );
   }

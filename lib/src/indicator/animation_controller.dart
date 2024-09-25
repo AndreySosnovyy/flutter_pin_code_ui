@@ -7,6 +7,7 @@ import 'package:pin_ui/src/indicator/models/animation_data.dart';
 import 'package:pin_ui/src/indicator/models/implementations.dart';
 import 'package:pin_ui/src/indicator/utils/identifier_util.dart';
 
+// TODO(Sosnovyy): add animations spam check (limit the queue size)
 class PinIndicatorAnimationController
     extends ValueNotifier<PinIndicatorAnimation?> {
   PinIndicatorAnimationController() : super(null);
@@ -37,10 +38,16 @@ class PinIndicatorAnimationController
   /// Call this method if you want to stop currently playing animation and
   /// all of planned ones if any.
   /// Method stops even non-interruptible animations from being played.
-  void stop() {
+  void stop({
+    /// If set to true, animations queue will be cleared without calling
+    /// onInterrupt callbacks if any. Otherwise, they will be called one by one
+    /// until all animations cleared.
+    bool ignoreOnInterruptCallbacks = false,
+  }) {
     value?.onInterrupt?.call();
     while (_animationsQueue.isNotEmpty) {
-      _animationsQueue.removeFirst().onInterrupt?.call();
+      final animation = _animationsQueue.removeFirst();
+      if (!ignoreOnInterruptCallbacks) animation.onInterrupt?.call();
     }
     value = null;
     notifyListeners();
@@ -220,6 +227,7 @@ class PinIndicatorAnimationController
     );
   }
 
+  // TODO(Sosnovyy): add repeatCount parameter
   void animateIdle({
     PinIdleAnimation animation = PinIdleAnimation.wave,
     bool vibration = false,

@@ -28,6 +28,7 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/suc
 import 'package:pin_ui/src/indicator/widgets/default_animation_children/pin_loading_collapse_child.dart';
 import 'package:pin_ui/src/indicator/widgets/default_animation_children/pin_success_collapse_child.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/pin_indicator_dot.dart';
 
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
@@ -100,14 +101,14 @@ class _PinIndicatorState extends State<PinIndicator> {
 
   late final defaultDots = List.generate(
     widget.length,
-    (i) => _PinIndicatorDot(
+    (i) => PinIndicatorDot(
       size: widget.size,
       decoration: defaultDecoration,
     ),
   );
   late final inputDots = List.generate(
     widget.length,
-    (i) => _PinIndicatorDot(
+    (i) => PinIndicatorDot(
       size: widget.size,
       decoration: inputDecoration,
     ),
@@ -117,7 +118,7 @@ class _PinIndicatorState extends State<PinIndicator> {
   Widget build(BuildContext context) {
     final currentDots = List.generate(
       widget.length,
-      (i) => _PinIndicatorDot(
+      (i) => PinIndicatorDot(
         size: widget.size,
         decoration: _getDecorationForDotIndexed(i),
       ),
@@ -341,27 +342,6 @@ class _PinIndicatorState extends State<PinIndicator> {
             ),
         };
       },
-    );
-  }
-}
-
-class _PinIndicatorDot extends StatelessWidget {
-  const _PinIndicatorDot({
-    required this.decoration,
-    required this.size,
-  });
-
-  final BoxDecoration decoration;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: DecoratedBox(
-        decoration: decoration,
-      ),
     );
   }
 }

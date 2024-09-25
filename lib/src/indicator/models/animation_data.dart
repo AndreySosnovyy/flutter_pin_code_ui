@@ -1,5 +1,7 @@
 import 'package:pin_ui/src/indicator/models/implementations.dart';
 
+enum PinAnimationTypes { input, loading, success, error, clear, erase, idle }
+
 sealed class PinIndicatorAnimationData {
   const PinIndicatorAnimationData({
     required this.type,

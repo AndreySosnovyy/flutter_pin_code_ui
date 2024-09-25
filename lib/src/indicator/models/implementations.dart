@@ -1,4 +1,4 @@
-// TODO(Sosnovyy): update instructions
+// TODO(Sosnovyy): update and move to separate .md file
 // To add a new animation, follow one of the instructions below:
 //
 // In case you want to add a new animation with already existing type:
@@ -23,8 +23,8 @@
 // 6) Go through all steps from the instruction above.
 //
 
-enum PinAnimationTypes { input, loading, success, error, clear, erase, idle }
-
+/// Empty class to be implemented by other enums, so they have one type.
+/// Necessary for parsing them when a developer call animations from controller.
 sealed class PinAnimationImplementation {}
 
 enum PinInputAnimation implements PinAnimationImplementation {

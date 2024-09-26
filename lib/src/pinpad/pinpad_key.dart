@@ -5,6 +5,8 @@ class PinpadKey extends PinpadKeyBase {
   const PinpadKey({
     required this.child,
     super.onTap,
+    super.onTapStart,
+    super.onTapEnd,
     super.defaultDecoration,
     super.pressedDecoration,
     super.disabledDecoration,
@@ -27,6 +29,8 @@ class _PinpadKeyState extends State<PinpadKey> {
   Widget build(BuildContext context) {
     return PinpadKeyWrapper(
       onTap: widget.onTap,
+      onTapStart: widget.onTapStart,
+      onTapEnd: widget.onTapEnd,
       defaultDecoration: widget.defaultDecoration,
       pressedDecoration: widget.pressedDecoration,
       disabledDecoration: widget.disabledDecoration,
@@ -45,6 +49,8 @@ class PinpadTextKey extends PinpadKeyBase {
     this.pressedTextStyle,
     this.disabledTextStyle,
     super.onTap,
+    super.onTapStart,
+    super.onTapEnd,
     super.defaultDecoration,
     super.pressedDecoration,
     super.disabledDecoration,
@@ -68,6 +74,8 @@ class _PinpadTextKeyState extends State<PinpadTextKey> {
   Widget build(BuildContext context) {
     return PinpadKeyWrapper(
       onTap: widget.onTap,
+      onTapStart: widget.onTapStart,
+      onTapEnd: widget.onTapEnd,
       defaultDecoration: widget.defaultDecoration,
       pressedDecoration: widget.pressedDecoration,
       disabledDecoration: widget.disabledDecoration,

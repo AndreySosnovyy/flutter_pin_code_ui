@@ -3,9 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:pin_ui/src/pinpad/models/extra_key.dart';
 import 'package:pin_ui/src/pinpad/pinpad_key.dart';
 
-// TODO(Sosnovyy): disable ability to tap multiple keys at one time
 // TODO(Sosnovyy): detect if finger is no more on the key to set default decoration
-class Pinpad extends StatelessWidget {
+class Pinpad extends StatefulWidget {
   const Pinpad({
     required this.onKeyTap,
     this.keyDefaultDecoration,
@@ -47,39 +46,47 @@ class Pinpad extends StatelessWidget {
   final bool vibrationEnabled;
   final bool isVisible;
 
+  @override
+  State<Pinpad> createState() => _PinpadState();
+}
+
+class _PinpadState extends State<Pinpad> {
+  bool isAnyKeyPressed = false;
+
   BoxDecoration _getDefaultDecoration(BuildContext context) =>
-      keyDefaultDecoration ?? const BoxDecoration(shape: BoxShape.circle);
+      widget.keyDefaultDecoration ??
+      const BoxDecoration(shape: BoxShape.circle);
 
   BoxDecoration _getPressedDecoration(BuildContext context) =>
-      keyPressedDecoration ??
+      widget.keyPressedDecoration ??
       _getDefaultDecoration(context).copyWith(
         color: Colors.blue.withOpacity(0.1),
       );
 
   BoxDecoration _getDisabledDecoration(BuildContext context) =>
-      keyDisabledDecoration ?? _getDefaultDecoration(context);
+      widget.keyDisabledDecoration ?? _getDefaultDecoration(context);
 
   TextStyle _getDefaultTextStyle(BuildContext context) =>
-      keysDefaultTextStyle ??
+      widget.keysDefaultTextStyle ??
       Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 32);
 
   TextStyle _getDisabledTextStyle(BuildContext context) =>
-      keysDisabledTextStyle ??
+      widget.keysDisabledTextStyle ??
       _getDefaultTextStyle(context).copyWith(color: Colors.black26);
 
   TextStyle _getPressedTextStyle(BuildContext context) =>
-      keysPressedTextStyle ?? _getDefaultTextStyle(context);
+      widget.keysPressedTextStyle ?? _getDefaultTextStyle(context);
 
   double _getDefaultSpacing(BuildContext context) =>
       (MediaQuery.of(context).size.width - _getMaxKeyTextWidth(context) * 3) /
       4;
 
   double _getHorizontalSpacing(BuildContext context) =>
-      horizontalSpacing ??
+      widget.horizontalSpacing ??
       _getDefaultSpacing(context) - 2 * _getMaxKeyTextWidth(context);
 
   double _getVerticalSpacing(BuildContext context) =>
-      verticalSpacing ??
+      widget.verticalSpacing ??
       _getDefaultSpacing(context) / 2 - 0.4 * _getKeyHeight(context);
 
   Size _getKeyTextSize(BuildContext context, String keyText) => (TextPainter(
@@ -90,7 +97,7 @@ class Pinpad extends StatelessWidget {
           .size;
 
   double _getMaxKeyTextWidth(BuildContext context) {
-    if (keyWidth != null) return keyWidth!;
+    if (widget.keyWidth != null) return widget.keyWidth!;
     double max = 0;
     for (int i = 0; i < 10; i++) {
       final double width = _getKeyTextSize(context, i.toString()).width;
@@ -100,12 +107,16 @@ class Pinpad extends StatelessWidget {
   }
 
   double _getKeyHeight(BuildContext context) =>
-      keyHeight ?? _getKeyTextSize(context, '0').height * 1.4;
+      widget.keyHeight ?? _getKeyTextSize(context, '0').height * 1.4;
 
   double _getKeyWidth(BuildContext context) =>
-      keyWidth ?? _getMaxKeyTextWidth(context) * 3;
+      widget.keyWidth ?? _getMaxKeyTextWidth(context) * 3;
 
   Future<void> vibrate() async => HapticFeedback.lightImpact();
+
+  void onAnyKeyTap() => setState(() => isAnyKeyPressed = true);
+
+  void onAnyKeyReleased() => setState(() => isAnyKeyPressed = false);
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +124,9 @@ class Pinpad extends StatelessWidget {
       maintainSize: true,
       maintainAnimation: true,
       maintainState: true,
-      visible: isVisible,
+      visible: widget.isVisible,
       child: IgnorePointer(
-        ignoring: !enabled,
+        ignoring: !widget.enabled || isAnyKeyPressed,
         child: Column(
           children: [
             for (int i = 0; i < 3; i++)
@@ -130,14 +141,16 @@ class Pinpad extends StatelessWidget {
                             right: j == 2 ? 0 : _getHorizontalSpacing(context)),
                         child: PinpadTextKey(
                           (3 * i + j + 1).toString(),
+                          onTapStart: onAnyKeyTap,
+                          onTapEnd: onAnyKeyReleased,
                           defaultTextStyle: _getDefaultTextStyle(context),
                           disabledTextStyle: _getDisabledTextStyle(context),
                           pressedTextStyle: _getPressedTextStyle(context),
                           onTap: () {
-                            onKeyTap((3 * i + j + 1).toString());
-                            if (vibrationEnabled) vibrate();
+                            widget.onKeyTap((3 * i + j + 1).toString());
+                            if (widget.vibrationEnabled) vibrate();
                           },
-                          enabled: enabled,
+                          enabled: widget.enabled,
                           defaultDecoration: _getDefaultDecoration(context),
                           pressedDecoration: _getPressedDecoration(context),
                           disabledDecoration: _getDefaultDecoration(context),
@@ -151,16 +164,18 @@ class Pinpad extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                leftExtraKeyChild != null
+                widget.leftExtraKeyChild != null
                     ? PinpadKey(
                         width: _getKeyWidth(context),
                         height: _getKeyHeight(context),
                         defaultDecoration: _getDefaultDecoration(context),
                         pressedDecoration: _getPressedDecoration(context),
                         disabledDecoration: _getDisabledDecoration(context),
-                        enabled: enabled,
-                        onTap: leftExtraKeyChild!.onTap,
-                        child: leftExtraKeyChild!.child,
+                        enabled: widget.enabled,
+                        onTapStart: onAnyKeyTap,
+                        onTapEnd: onAnyKeyReleased,
+                        onTap: widget.leftExtraKeyChild!.onTap,
+                        child: widget.leftExtraKeyChild!.child,
                       )
                     : SizedBox(
                         width: _getKeyWidth(context),
@@ -172,11 +187,13 @@ class Pinpad extends StatelessWidget {
                   defaultTextStyle: _getDefaultTextStyle(context),
                   disabledTextStyle: _getDisabledTextStyle(context),
                   pressedTextStyle: _getPressedTextStyle(context),
+                  onTapStart: onAnyKeyTap,
+                  onTapEnd: onAnyKeyReleased,
                   onTap: () {
-                    onKeyTap('0');
-                    if (vibrationEnabled) vibrate();
+                    widget.onKeyTap('0');
+                    if (widget.vibrationEnabled) vibrate();
                   },
-                  enabled: enabled,
+                  enabled: widget.enabled,
                   defaultDecoration: _getDefaultDecoration(context),
                   disabledDecoration: _getDisabledDecoration(context),
                   pressedDecoration: _getPressedDecoration(context),
@@ -184,16 +201,18 @@ class Pinpad extends StatelessWidget {
                   height: _getKeyHeight(context),
                 ),
                 SizedBox(width: _getHorizontalSpacing(context)),
-                rightExtraKeyChild != null
+                widget.rightExtraKeyChild != null
                     ? PinpadKey(
                         width: _getKeyWidth(context),
                         height: _getKeyHeight(context),
                         defaultDecoration: _getDefaultDecoration(context),
                         pressedDecoration: _getPressedDecoration(context),
                         disabledDecoration: _getDisabledDecoration(context),
-                        enabled: enabled,
-                        onTap: rightExtraKeyChild!.onTap,
-                        child: rightExtraKeyChild!.child,
+                        enabled: widget.enabled,
+                        onTapStart: onAnyKeyTap,
+                        onTapEnd: onAnyKeyReleased,
+                        onTap: widget.rightExtraKeyChild!.onTap,
+                        child: widget.rightExtraKeyChild!.child,
                       )
                     : SizedBox(
                         width: _getKeyWidth(context),

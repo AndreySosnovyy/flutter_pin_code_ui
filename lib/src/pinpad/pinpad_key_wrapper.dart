@@ -9,10 +9,14 @@ abstract class PinpadKeyBase extends StatefulWidget {
     this.width,
     this.height,
     this.enabled = true,
+    this.onTapStart,
+    this.onTapEnd,
     super.key,
   });
 
   final VoidCallback? onTap;
+  final VoidCallback? onTapStart;
+  final VoidCallback? onTapEnd;
   final BoxDecoration? defaultDecoration;
   final BoxDecoration? pressedDecoration;
   final BoxDecoration? disabledDecoration;
@@ -25,6 +29,8 @@ class PinpadKeyWrapper extends PinpadKeyBase {
   const PinpadKeyWrapper({
     required this.builder,
     super.onTap,
+    super.onTapStart,
+    super.onTapEnd,
     super.defaultDecoration,
     super.pressedDecoration,
     super.disabledDecoration,
@@ -50,10 +56,22 @@ class _PinpadKeyWrapperState extends State<PinpadKeyWrapper> {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: widget.onTap,
-        onPanStart: (_) => setState(() => _isPressed = true),
-        onPanDown: (_) => setState(() => _isPressed = true),
-        onPanEnd: (_) => setState(() => _isPressed = false),
-        onPanCancel: () => setState(() => _isPressed = false),
+        onPanStart: (_) => setState(() {
+          widget.onTapStart?.call();
+          _isPressed = true;
+        }),
+        onPanDown: (_) => setState(() {
+          widget.onTapStart?.call();
+          _isPressed = true;
+        }),
+        onPanEnd: (_) => setState(() {
+          widget.onTapEnd?.call();
+          _isPressed = false;
+        }),
+        onPanCancel: () => setState(() {
+          widget.onTapEnd?.call();
+          _isPressed = false;
+        }),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 120),
           width: widget.width,

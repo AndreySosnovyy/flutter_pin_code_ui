@@ -18,7 +18,6 @@ class App extends StatelessWidget {
 const String validPin = '1111';
 
 // TODO(Sosnovyy): fix error state after fast tap on erase button
-// TODO(Sosnovyy): fix idle call after dispose
 class PinView extends StatefulWidget {
   const PinView({super.key});
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pin_ui/src/pinpad/widgets/press_detector_builder.dart';
 
 abstract class PinpadKeyBase extends StatefulWidget {
   const PinpadKeyBase({
@@ -47,41 +48,24 @@ class PinpadKeyWrapper extends PinpadKeyBase {
 }
 
 class _PinpadKeyWrapperState extends State<PinpadKeyWrapper> {
-  bool _isPressed = false;
-
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
       ignoring: !widget.enabled,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
+      child: PressDetectorBuilder(
         onTap: widget.onTap,
-        onPanStart: (_) => setState(() {
-          widget.onTapStart?.call();
-          _isPressed = true;
-        }),
-        onPanDown: (_) => setState(() {
-          widget.onTapStart?.call();
-          _isPressed = true;
-        }),
-        onPanEnd: (_) => setState(() {
-          widget.onTapEnd?.call();
-          _isPressed = false;
-        }),
-        onPanCancel: () => setState(() {
-          widget.onTapEnd?.call();
-          _isPressed = false;
-        }),
-        child: AnimatedContainer(
+        onPressStart: widget.onTapStart,
+        onPressEnd: widget.onTapEnd,
+        builder: (context, isPressed) => AnimatedContainer(
           duration: const Duration(milliseconds: 120),
           width: widget.width,
           height: widget.height,
           decoration: widget.enabled
-              ? _isPressed
+              ? isPressed
                   ? widget.pressedDecoration
                   : widget.defaultDecoration
               : widget.disabledDecoration,
-          child: Center(child: widget.builder(_isPressed)),
+          child: Center(child: widget.builder(isPressed)),
         ),
       ),
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pin_ui/src/pinpad/pinpad_key_wrapper.dart';
+import 'package:pin_ui/src/pinpad/widgets/pinpad_key_wrapper.dart';
 
 class PinpadKey extends PinpadKeyBase {
   const PinpadKey({

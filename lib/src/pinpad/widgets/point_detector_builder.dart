@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
 
@@ -75,7 +76,13 @@ class _PointDetectorBuilderState extends State<PointDetectorBuilder> {
             pointerOffset!.dy >= widgetOffset!.dy &&
             pointerOffset!.dy <= widgetOffset!.dy + widgetSize!.height;
       case BoxShape.circle:
-        isPointed = true;
+        // (x - center_x)² + (y - center_y)² < radius².
+        final radius = widgetSize!.width / 2;
+        final centerX = widgetOffset!.dx + radius;
+        final centerY = widgetOffset!.dy + radius;
+        isPointed = math.pow((pointerOffset!.dx - centerX), 2) +
+                math.pow((pointerOffset!.dy - centerY), 2) <
+            math.pow(radius, 2);
     }
     if (_isPointed != isPointed) {
       setState(() => _isPointed = isPointed);

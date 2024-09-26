@@ -143,6 +143,7 @@ class PinIndicatorAnimationController
     VoidCallback? onInterrupt,
     double animationSpeed = 1.0,
   }) {
+    assert(repeatCount > 0 && repeatCount < 10);
     for (int i = 0; i < repeatCount; i++) {
       _prepareAndStart(
         animation,
@@ -235,6 +236,7 @@ class PinIndicatorAnimationController
     VoidCallback? onInterrupt,
     double animationSpeed = 1.0,
   }) {
+    assert(repeatCount > 0 && repeatCount < 10);
     for (int i = 0; i < repeatCount; i++) {
       _prepareAndStart(
         animation,

@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:pin_ui/src/pinpad/models/extra_key.dart';
 import 'package:pin_ui/src/pinpad/pinpad_key.dart';
 
-// TODO(Sosnovyy): detect if finger is no more on the key to set default decoration
 class Pinpad extends StatefulWidget {
   const Pinpad({
     required this.onKeyTap,

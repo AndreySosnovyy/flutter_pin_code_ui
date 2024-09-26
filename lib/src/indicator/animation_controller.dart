@@ -63,8 +63,8 @@ class PinIndicatorAnimationController
     VoidCallback? onInterrupt,
     double animationSpeed = 1.0,
   }) {
-    assert(animationSpeed > 0.1);
-    assert(animationSpeed < 10);
+    assert(animationSpeed >= 0.1);
+    assert(animationSpeed <= 10);
     final data = PinIndicatorAnimationData.fromImpl(impl);
 
     // Remove all interruptible animations from the queue if any
@@ -227,20 +227,22 @@ class PinIndicatorAnimationController
     );
   }
 
-  // TODO(Sosnovyy): add repeatCount parameter
   void animateIdle({
     PinIdleAnimation animation = PinIdleAnimation.wave,
     bool vibration = false,
+    int repeatCount = 1,
     VoidCallback? onComplete,
     VoidCallback? onInterrupt,
     double animationSpeed = 1.0,
   }) {
-    _prepareAndStart(
-      animation,
-      onComplete: onComplete,
-      onInterrupt: onInterrupt,
-      animationSpeed: animationSpeed,
-    );
+    for (int i = 0; i < repeatCount; i++) {
+      _prepareAndStart(
+        animation,
+        onComplete: onComplete,
+        onInterrupt: onInterrupt,
+        animationSpeed: animationSpeed,
+      );
+    }
   }
 
   @override

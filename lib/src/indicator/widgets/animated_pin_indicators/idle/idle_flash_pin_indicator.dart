@@ -43,6 +43,7 @@ class _IdleFlashPinIndicatorState extends State<IdleFlashPinIndicator>
     final stopwatch = Stopwatch()..start();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       while (stopwatch.elapsed + flashMaxDuration < widget.duration) {
+        if (!mounted) return;
         if (animations.every((a) => a.isAnimating)) {
           await Future.delayed(delayMinDuration);
           continue;
@@ -59,11 +60,14 @@ class _IdleFlashPinIndicatorState extends State<IdleFlashPinIndicator>
                     flashLowerBound,
                 duration: flashDuration ~/ 2,
                 curve: Curves.ease)
-            .then((_) => animation.animateTo(
-                  animation.lowerBound,
-                  duration: flashDuration ~/ 2,
-                  curve: Curves.ease,
-                ));
+            .then((_) {
+          if (!mounted) return;
+          animation.animateTo(
+            animation.lowerBound,
+            duration: flashDuration ~/ 2,
+            curve: Curves.ease,
+          );
+        });
         final delay = Duration(
           milliseconds: delayMinDuration.inMilliseconds +
               random.nextInt(delayMaxDuration.inMilliseconds -

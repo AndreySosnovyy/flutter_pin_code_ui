@@ -7,6 +7,7 @@ class LoadingWaveInflatePinIndicator extends StatefulWidget {
     required this.length,
     required this.duration,
     required this.spacing,
+    required this.vibration,
     super.key,
   });
 
@@ -14,6 +15,7 @@ class LoadingWaveInflatePinIndicator extends StatefulWidget {
   final int length;
   final Duration duration;
   final double spacing;
+  final bool vibration;
 
   @override
   State<LoadingWaveInflatePinIndicator> createState() =>

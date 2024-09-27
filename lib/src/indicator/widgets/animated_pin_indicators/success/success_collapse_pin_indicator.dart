@@ -11,6 +11,7 @@ class SuccessCollapsePinIndicator extends StatefulWidget {
     required this.spacing,
     required this.childSize,
     required this.collapsedChild,
+    required this.vibration,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class SuccessCollapsePinIndicator extends StatefulWidget {
   final int length;
   final Duration duration;
   final double spacing;
+  final bool vibration;
 
   /// Size of indicator item
   final double childSize;

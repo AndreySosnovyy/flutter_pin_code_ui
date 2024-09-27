@@ -8,6 +8,7 @@ class InputInflatePinIndicator extends StatefulWidget {
     required this.duration,
     required this.currentPinLength,
     required this.spacing,
+    required this.vibration,
     super.key,
   })  : assert(currentPinLength > 0),
         assert(currentPinLength <= length);
@@ -17,6 +18,7 @@ class InputInflatePinIndicator extends StatefulWidget {
   final int currentPinLength;
   final Duration duration;
   final double spacing;
+  final bool vibration;
 
   @override
   State<InputInflatePinIndicator> createState() =>

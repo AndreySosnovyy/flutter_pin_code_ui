@@ -11,6 +11,7 @@ class SuccessFillPinIndicator extends StatefulWidget {
     required this.duration,
     required this.spacing,
     required this.childSize,
+    required this.vibration,
     super.key,
   });
 
@@ -19,6 +20,7 @@ class SuccessFillPinIndicator extends StatefulWidget {
   final Duration duration;
   final double spacing;
   final double childSize;
+  final bool vibration;
 
   @override
   State<SuccessFillPinIndicator> createState() =>

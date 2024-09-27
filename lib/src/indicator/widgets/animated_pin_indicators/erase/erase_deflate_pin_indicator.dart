@@ -8,6 +8,7 @@ class EraseDeflatePinIndicator extends StatefulWidget {
     required this.currentPinLength,
     required this.duration,
     required this.spacing,
+    required this.vibration,
     super.key,
   })  : assert(currentPinLength >= 0),
         assert(currentPinLength < length);
@@ -17,6 +18,7 @@ class EraseDeflatePinIndicator extends StatefulWidget {
   final int currentPinLength;
   final Duration duration;
   final double spacing;
+  final bool vibration;
 
   @override
   State<EraseDeflatePinIndicator> createState() =>

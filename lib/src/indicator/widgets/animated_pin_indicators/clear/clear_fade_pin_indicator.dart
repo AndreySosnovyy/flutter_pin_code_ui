@@ -8,6 +8,7 @@ class ClearFadePinIndicator extends StatefulWidget {
     required this.length,
     required this.duration,
     required this.spacing,
+    required this.vibration,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class ClearFadePinIndicator extends StatefulWidget {
   final int length;
   final Duration duration;
   final double spacing;
+  final bool vibration;
 
   @override
   State<ClearFadePinIndicator> createState() => _ClearFadePinIndicatorState();

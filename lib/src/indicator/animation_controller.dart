@@ -61,6 +61,7 @@ class PinIndicatorAnimationController
     VoidCallback? onComplete,
     VoidCallback? onInterrupt,
     double animationSpeed = 1.0,
+    bool vibration = false,
   }) {
     assert(animationSpeed >= 0.1);
     assert(animationSpeed <= 10);
@@ -79,13 +80,13 @@ class PinIndicatorAnimationController
     // Delay after will be handled as a part of the animation itself.
     if (delayBefore != null) {
       _animationsQueue.add(PinIndicatorAnimation(
-        id: IdentifierUtil.getUniqueIdentifier(),
-        data: PinIndicatorNoAnimationData(
-          duration: delayBefore,
-          isInterruptible: data.isInterruptible,
-          canInterrupt: data.canInterrupt,
-        ),
-      ));
+          id: IdentifierUtil.getUniqueIdentifier(),
+          data: PinIndicatorNoAnimationData(
+            duration: delayBefore,
+            isInterruptible: data.isInterruptible,
+            canInterrupt: data.canInterrupt,
+          ),
+          vibrationEnabled: vibration));
     }
     _animationsQueue.add(PinIndicatorAnimation(
       id: IdentifierUtil.getUniqueIdentifier(),
@@ -130,6 +131,7 @@ class PinIndicatorAnimationController
       onComplete: onComplete,
       onInterrupt: onInterrupt,
       animationSpeed: animationSpeed,
+      vibration: vibration,
     );
   }
 
@@ -152,6 +154,7 @@ class PinIndicatorAnimationController
         onComplete: i == repeatCount - 1 ? onComplete : null,
         onInterrupt: onInterrupt,
         animationSpeed: animationSpeed,
+        vibration: vibration,
       );
     }
   }
@@ -172,6 +175,7 @@ class PinIndicatorAnimationController
       onComplete: onComplete,
       onInterrupt: onInterrupt,
       animationSpeed: animationSpeed,
+      vibration: vibration,
     );
   }
 
@@ -191,6 +195,7 @@ class PinIndicatorAnimationController
       onComplete: onComplete,
       onInterrupt: onInterrupt,
       animationSpeed: animationSpeed,
+      vibration: vibration,
     );
   }
 
@@ -210,6 +215,7 @@ class PinIndicatorAnimationController
       onComplete: onComplete,
       onInterrupt: onInterrupt,
       animationSpeed: animationSpeed,
+      vibration: vibration,
     );
   }
 
@@ -225,6 +231,7 @@ class PinIndicatorAnimationController
       onComplete: onComplete,
       onInterrupt: onInterrupt,
       animationSpeed: animationSpeed,
+      vibration: vibration,
     );
   }
 
@@ -243,6 +250,7 @@ class PinIndicatorAnimationController
         onComplete: onComplete,
         onInterrupt: onInterrupt,
         animationSpeed: animationSpeed,
+        vibration: vibration,
       );
     }
   }

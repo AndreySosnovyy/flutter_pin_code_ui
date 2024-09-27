@@ -8,6 +8,7 @@ class ErrorShakePinIndicator extends StatefulWidget {
     required this.duration,
     required this.spacing,
     required this.childSize,
+    required this.vibration,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class ErrorShakePinIndicator extends StatefulWidget {
   final Duration duration;
   final double spacing;
   final double childSize;
+  final bool vibration;
 
   @override
   State<ErrorShakePinIndicator> createState() => _ErrorShakePinIndicatorState();

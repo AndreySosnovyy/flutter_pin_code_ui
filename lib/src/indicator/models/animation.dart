@@ -10,6 +10,7 @@ class PinIndicatorAnimation {
     this.delayAfter,
     this.onComplete,
     this.onInterrupt,
+    this.vibrationEnabled = false,
   });
 
   /// Unique identifier of the animation
@@ -30,6 +31,10 @@ class PinIndicatorAnimation {
   /// Called when the animation is interrupted by stop method
   final VoidCallback? onInterrupt;
 
+  /// If set to true, vibration is requested but not guaranteed by actual
+  /// implementation.
+  final bool vibrationEnabled;
+
   @override
   String toString() => 'PinIndicatorAnimation('
       'id: $id, '
@@ -37,6 +42,7 @@ class PinIndicatorAnimation {
       'durationMultiplier: $durationMultiplier, '
       'delayAfter: $delayAfter, '
       'onComplete: $onComplete, '
-      'onInterrupt: $onInterrupt'
+      'onInterrupt: $onInterrupt, '
+      'vibrationEnabled: $vibrationEnabled'
       ')';
 }

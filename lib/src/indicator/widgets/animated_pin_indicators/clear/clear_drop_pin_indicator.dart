@@ -9,6 +9,7 @@ class ClearDropPinIndicator extends StatefulWidget {
     required this.duration,
     required this.spacing,
     required this.childSize,
+    required this.vibration,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class ClearDropPinIndicator extends StatefulWidget {
   final double childSize;
   final Duration duration;
   final double spacing;
+  final bool vibration;
 
   @override
   State<ClearDropPinIndicator> createState() => _ClearDropPinIndicatorState();

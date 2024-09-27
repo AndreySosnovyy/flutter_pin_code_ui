@@ -8,7 +8,6 @@ sealed class PinIndicatorAnimationData {
     required this.duration,
     required this.isInterruptible,
     required this.canInterrupt,
-    this.vibrationPattern,
   });
 
   /// Type of the animation.
@@ -23,9 +22,6 @@ sealed class PinIndicatorAnimationData {
 
   /// Whether the animation can interrupt other animation marked with isInterruptible
   final bool canInterrupt;
-
-  /// Vibration pattern.
-  final List<int>? vibrationPattern;
 
   static PinIndicatorAnimationData fromImpl(PinAnimationImplementation impl) {
     return switch (impl) {
@@ -91,7 +87,6 @@ sealed class PinIndicatorAnimationData {
       'type: $type, '
       'duration: $duration, '
       'isInterruptible: $isInterruptible, '
-      'vibrationPattern: $vibrationPattern'
       ')';
 }
 

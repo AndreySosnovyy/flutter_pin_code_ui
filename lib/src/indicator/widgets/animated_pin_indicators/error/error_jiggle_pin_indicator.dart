@@ -9,6 +9,7 @@ class ErrorJigglePinIndicator extends StatefulWidget {
     required this.length,
     required this.duration,
     required this.spacing,
+    required this.vibration,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class ErrorJigglePinIndicator extends StatefulWidget {
   final int length;
   final Duration duration;
   final double spacing;
+  final bool vibration;
 
   @override
   State<ErrorJigglePinIndicator> createState() =>

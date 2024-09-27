@@ -7,7 +7,6 @@ import 'package:pin_ui/src/indicator/models/animation_data.dart';
 import 'package:pin_ui/src/indicator/models/implementations.dart';
 import 'package:pin_ui/src/indicator/utils/identifier_util.dart';
 
-// TODO(Sosnovyy): add animations spam check (limit the queue size)
 class PinIndicatorAnimationController
     extends ValueNotifier<PinIndicatorAnimation?> {
   PinIndicatorAnimationController() : super(null);
@@ -65,14 +64,14 @@ class PinIndicatorAnimationController
   }) {
     assert(animationSpeed >= 0.1);
     assert(animationSpeed <= 10);
+    assert(_animationsQueue.length < 16);
     final data = PinIndicatorAnimationData.fromImpl(impl);
 
     // Remove all interruptible animations from the queue if any
     while (_animationsQueue.isNotEmpty &&
         _animationsQueue.last.data.isInterruptible &&
         data.canInterrupt) {
-      final animation = _animationsQueue.removeLast();
-      animation.onInterrupt?.call();
+      _animationsQueue.removeLast().onInterrupt?.call();
     }
 
     // Load new animation with delays into the queue.

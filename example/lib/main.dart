@@ -146,7 +146,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       },
                     ),
                     rightExtraKeyChild: PinpadExtraKey(
-                      child: pinText.isEmpty
+                      child: pinText.isEmpty ||
+                              pinIndicatorAnimationController.isAnimatingClear
                           // Display your current biometrics type icon here
                           ? const Icon(Icons.fingerprint_rounded, size: 32)
                           : Icon(
@@ -157,7 +158,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                                   ? null
                                   : Colors.black26,
                             ),
-                      onTap: pinText.isEmpty
+                      onTap: pinText.isEmpty ||
+                              pinIndicatorAnimationController.isAnimatingClear
                           ? () {
                               restartIdleTimer();
                               // Call your biometrics method here

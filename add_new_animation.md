@@ -9,7 +9,8 @@ issue/pull request.
 
 If your animation have a type already existing in PinAnimationTypes enum
 PinAnimationTypes from lib/src/indicator/models/animation_data.dart, follow
-this instruction:
+this instruction. For more details check already existing animations and how
+they work.
 
 1) Add a new enum value (yours animation name) to the corresponding enum
    implementing `PinAnimationImplementation` in **lib/src/indicator/models/implementations.dart**.
@@ -22,7 +23,8 @@ this instruction:
 4) Create a new class in **lib/src/widgets/animated_pin_indicators/** folder
    with your animation visual implementation. Make anything you want inside this
    class, actual implementation doesn't matter. But you can check any other animation
-   sources to get inspiration or take something from there.
+   sources to get inspiration or take something from there. Take attention that you
+   must add vibration logic in this class if you want to use it.
 5) Add your animation to **lib/src/indicator/widgets/pin_indicator.dart**
    in general `switch` statement from where it will be displayed when called.
    You better also add it in order of types to remain it clean.

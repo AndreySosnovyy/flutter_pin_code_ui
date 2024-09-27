@@ -17,7 +17,6 @@ class App extends StatelessWidget {
 // Change this value to test different lengths of Pin Indicator
 const String validPin = '1111';
 
-// TODO(Sosnovyy): fix error state after fast tap on erase button
 class PinView extends StatefulWidget {
   const PinView({super.key});
 

@@ -71,7 +71,8 @@ class PinIndicatorAnimationController
     while (_animationsQueue.isNotEmpty &&
         _animationsQueue.last.data.isInterruptible &&
         data.canInterrupt) {
-      _animationsQueue.removeLast();
+      final animation = _animationsQueue.removeLast();
+      animation.onInterrupt?.call();
     }
 
     // Load new animation with delays into the queue.

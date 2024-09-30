@@ -90,9 +90,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       }
                       if (pinText.length < validPin.length) {
                         setState(() => pinText += key);
-                        pinIndicatorAnimationController.animateInput(
-                          vibration: true,
-                        );
+                        pinIndicatorAnimationController.animateInput();
                       }
                       if (pinText == validPin) {
                         pinIndicatorAnimationController.animateLoading(
@@ -176,7 +174,9 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                               pinText =
                                   pinText.substring(0, pinText.length - 1);
                               setState(() {});
-                              pinIndicatorAnimationController.animateErase();
+                              pinIndicatorAnimationController.animateErase(
+                                vibration: true,
+                              );
                             },
                     ),
                   ),

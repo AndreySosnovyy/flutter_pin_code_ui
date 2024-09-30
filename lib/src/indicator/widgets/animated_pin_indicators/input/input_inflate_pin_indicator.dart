@@ -37,7 +37,10 @@ class _InputInflatePinIndicatorState extends State<InputInflatePinIndicator>
 
   void vibrate() async {
     if (!widget.vibration) return;
-    Vibration.vibrate(pattern: [1, 50], intensities: [64, 64]);
+    Vibration.vibrate(
+      pattern: [1, (widget.duration ~/ 2).inMilliseconds],
+      intensities: [128, 128],
+    );
   }
 
   @override

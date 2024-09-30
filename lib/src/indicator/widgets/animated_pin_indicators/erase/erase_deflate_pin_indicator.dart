@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
+import 'package:vibration/vibration.dart';
 
 class EraseDeflatePinIndicator extends StatefulWidget {
   const EraseDeflatePinIndicator({
@@ -35,10 +36,24 @@ class _EraseDeflatePinIndicatorState extends State<EraseDeflatePinIndicator>
     value: 1.0,
   );
 
+  void vibrate() async {
+    if (!widget.vibration) return;
+    Vibration.vibrate(
+      pattern: [1, (widget.duration ~/ 2).inMilliseconds],
+      intensities: [92, 92],
+    );
+  }
+
   @override
   void initState() {
-    animation.animateTo(animation.lowerBound, curve: Curves.easeOutQuint).then(
-        (_) => animation.animateTo(animation.upperBound, curve: Curves.linear));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      vibrate();
+      animation
+          .animateTo(animation.lowerBound, curve: Curves.easeOutQuint)
+          .then((_) =>
+              animation.animateTo(animation.upperBound, curve: Curves.linear));
+    });
+
     super.initState();
   }
 

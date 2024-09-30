@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
 class SuccessKickPinIndicator extends StatefulWidget {
@@ -92,6 +93,7 @@ class _SuccessKickPinIndicatorState extends State<SuccessKickPinIndicator>
           curve: Curves.easeInCubic,
         ),
       ]);
+      if (widget.vibration) HapticFeedback.heavyImpact();
       for (int i = 2; i < widget.length; i++) {
         await Future.wait([
           for (int j = 0; j < i; j++)

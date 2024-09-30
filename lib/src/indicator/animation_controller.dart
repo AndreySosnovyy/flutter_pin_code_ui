@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:pin_ui/src/indicator/exceptions/controller_not_initialized_exception.dart';
 import 'package:pin_ui/src/indicator/models/animation.dart';
 import 'package:pin_ui/src/indicator/models/animation_data.dart';
 import 'package:pin_ui/src/indicator/models/implementations.dart';
 import 'package:pin_ui/src/indicator/utils/identifier_util.dart';
+import 'package:vibration/vibration.dart';
 
 class PinIndicatorAnimationController
     extends ValueNotifier<PinIndicatorAnimation?> {
@@ -30,9 +32,25 @@ class PinIndicatorAnimationController
 
   bool get isAnimatingIdle => value?.data.type == PinAnimationTypes.idle;
 
+  /// Whether the device meets vibration requirements.
+  /// Vibration requires vibrator and custom vibration support.
+  /// So older devices will not vibrate even if it is enabled when calling animation.
+  ///
+  /// In order to get this value you must [initialize()] controller.
+  late final bool canVibrate;
+
   final _animationsQueue = Queue<PinIndicatorAnimation>();
 
   Timer? _animationTimer;
+
+  final _initCompleter = Completer();
+
+  Future<void> initialize() async {
+    canVibrate = (await Vibration.hasVibrator() ?? false) &&
+        (await Vibration.hasCustomVibrationsSupport() ?? false) &&
+        (await Vibration.hasAmplitudeControl() ?? false);
+    _initCompleter.complete();
+  }
 
   /// Call this method if you want to stop currently playing animation and
   /// all of planned ones if any.
@@ -63,6 +81,9 @@ class PinIndicatorAnimationController
     double animationSpeed = 1.0,
     bool vibration = false,
   }) {
+    if (!_initCompleter.isCompleted) {
+      throw PinIndicatorAnimationControllerNotInitializedException();
+    }
     assert(animationSpeed >= 0.1);
     assert(animationSpeed <= 10);
     assert(_animationsQueue.length < 16);

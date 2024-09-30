@@ -143,6 +143,8 @@ class _PinIndicatorState extends State<PinIndicator> {
         final animationKey = ValueKey(animation.id);
         final animationDuration =
             animation.data.duration * animation.durationMultiplier;
+        final isVibrationEnabledAndCanVibrate = animation.vibrationEnabled &&
+            (widget.controller?.canVibrate ?? false);
         return switch (animation.data) {
           PinIndicatorNoAnimationData() => noAnimationPinIndicator,
           PinIndicatorInputInflateAnimationData() => InputInflatePinIndicator(
@@ -152,7 +154,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorInputFallAnimationData() => InputFallPinIndicator(
               key: animationKey,
@@ -162,7 +164,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => currentDots[i],
               builderDefault: (i) => defaultDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorInputFadeAnimationData() => InputFadePinIndicator(
               key: animationKey,
@@ -172,7 +174,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => currentDots[i],
               builderDefault: (i) => defaultDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorLoadingJumpAnimationData() => LoadingJumpPinIndicator(
               key: animationKey,
@@ -181,7 +183,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
               childSize: widget.size,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorLoadingWaveInflateAnimationData() =>
             LoadingWaveInflatePinIndicator(
@@ -190,7 +192,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorLoadingWaveDeflateAnimationData() =>
             LoadingWaveDeflatePinIndicator(
@@ -199,7 +201,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorLoadingTravelAnimationData() => LoadingTravelPinIndicator(
               key: animationKey,
@@ -208,7 +210,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
               childSize: widget.size,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorLoadingCollapseAnimationData() =>
             LoadingCollapsePinIndicator(
@@ -222,7 +224,7 @@ class _PinIndicatorState extends State<PinIndicator> {
                   DefaultPinLoadingCollapseAnimationChild(
                     anchorSize: widget.size,
                   ),
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorSuccessCollapseAnimationData() =>
             SuccessCollapsePinIndicator(
@@ -236,7 +238,7 @@ class _PinIndicatorState extends State<PinIndicator> {
                   DefaultPinSuccessCollapseAnimationChild(
                     anchorSize: widget.size,
                   ),
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorSuccessFillAnimationData() => SuccessFillPinIndicator(
               key: animationKey,
@@ -245,7 +247,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorSuccessFillLastAnimationData() =>
             SuccessFillLastPinIndicator(
@@ -255,7 +257,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorSuccessKickAnimationData() => SuccessKickPinIndicator(
               key: animationKey,
@@ -264,7 +266,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorErrorShakeAnimationData() => ErrorShakePinIndicator(
               key: animationKey,
@@ -273,7 +275,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorErrorBlinkAnimationData() => ErrorBlinkPinIndicator(
               key: animationKey,
@@ -281,7 +283,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorErrorJiggleAnimationData() => ErrorJigglePinIndicator(
               key: animationKey,
@@ -289,7 +291,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorErrorBrownianAnimationData() => ErrorBrownianPinIndicator(
               key: animationKey,
@@ -298,7 +300,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
               childSize: widget.size,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorClearFadeAnimationData() => ClearFadePinIndicator(
               key: animationKey,
@@ -307,7 +309,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               builderOld: (i) => currentDots[i],
               builderNew: (i) => defaultDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorClearDropAnimationData() => ClearDropPinIndicator(
               key: animationKey,
@@ -317,7 +319,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               builderNew: (i) => defaultDots[i],
               spacing: widget.spacing,
               childSize: widget.size,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorEraseDeflateAnimationData() => EraseDeflatePinIndicator(
               key: animationKey,
@@ -326,7 +328,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorEraseTakeOffAnimationData() => EraseTakeOffPinIndicator(
               key: animationKey,
@@ -336,7 +338,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => currentDots[i],
               builderInput: (i) => inputDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorEraseFadeAnimationData() => EraseFadePinIndicator(
               key: animationKey,
@@ -346,7 +348,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               builder: (i) => currentDots[i],
               builderInput: (i) => inputDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorIdleWaveAnimationData() => IdleWavePinIndicator(
               key: animationKey,
@@ -354,7 +356,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorIdlePulseAnimationData() => IdlePulsePinIndicator(
               key: animationKey,
@@ -362,7 +364,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorIdleFlashAnimationData() => IdleFlashPinIndicator(
               key: animationKey,
@@ -370,7 +372,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentDots[i],
               spacing: widget.spacing,
-              vibration: animation.vibrationEnabled,
+              vibration: isVibrationEnabledAndCanVibrate,
             ),
         };
       },

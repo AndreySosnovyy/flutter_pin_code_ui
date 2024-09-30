@@ -3,7 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pin_ui/pin_ui.dart';
 
-void main() => runApp(const App());
+final pinIndicatorAnimationController = PinIndicatorAnimationController();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await pinIndicatorAnimationController.initialize();
+  runApp(const App());
+}
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -25,8 +31,7 @@ class PinView extends StatefulWidget {
 }
 
 class _PinViewState extends State<PinView> with TickerProviderStateMixin {
-  final pinIndicatorAnimationController = PinIndicatorAnimationController();
-  Timer? timer;
+  Timer? idleTimer;
 
   // Current entered pin code
   String pinText = '';
@@ -41,8 +46,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
 
   // It will start idle animation if no action has been made in 10 seconds
   void restartIdleTimer() {
-    if (timer != null && timer!.isActive) timer!.cancel();
-    timer = Timer.periodic(
+    if (idleTimer != null && idleTimer!.isActive) idleTimer!.cancel();
+    idleTimer = Timer.periodic(
       const Duration(seconds: 10),
       (_) => pinIndicatorAnimationController.animateIdle(
         animation: (List.from(PinIdleAnimation.values)..shuffle()).first,
@@ -184,8 +189,8 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
   @override
   void dispose() {
     pinIndicatorAnimationController.dispose();
-    timer?.cancel();
-    timer = null;
+    idleTimer?.cancel();
+    idleTimer = null;
     super.dispose();
   }
 }

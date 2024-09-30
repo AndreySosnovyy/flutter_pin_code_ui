@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
+import 'package:vibration/vibration.dart';
 
 class InputInflatePinIndicator extends StatefulWidget {
   const InputInflatePinIndicator({
@@ -34,10 +35,18 @@ class _InputInflatePinIndicatorState extends State<InputInflatePinIndicator>
     upperBound: 1.3,
   );
 
+  void vibrate() async {
+    if (!widget.vibration) return;
+    Vibration.vibrate(pattern: []);
+  }
+
   @override
   void initState() {
-    animation.animateTo(animation.upperBound, curve: Curves.ease).then(
-        (_) => animation.animateTo(animation.lowerBound, curve: Curves.easeIn));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      vibrate();
+      animation.animateTo(animation.upperBound, curve: Curves.ease).then((_) =>
+          animation.animateTo(animation.lowerBound, curve: Curves.easeIn));
+    });
     super.initState();
   }
 

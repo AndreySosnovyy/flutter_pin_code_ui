@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
 class LoadingJumpPinIndicator extends StatefulWidget {
@@ -42,9 +43,14 @@ class _LoadingJumpPinIndicatorState extends State<LoadingJumpPinIndicator>
     for (int i = 0; i < widget.length; i++) {
       final delay = widget.duration ~/ (widget.length * 2) * i;
       Future.delayed(delay).then((_) => animations[i]
-          .animateTo(animations[i].upperBound, curve: Curves.easeOutSine)
-          .then((_) => animations[i]
-              .animateTo(animations[i].lowerBound, curve: Curves.bounceOut)));
+              .animateTo(animations[i].upperBound, curve: Curves.easeOutSine)
+              .then((_) {
+            Future.delayed(widget.duration ~/ 2 * 0.3).then((_) {
+              if (widget.vibration) HapticFeedback.lightImpact();
+            });
+            animations[i]
+                .animateTo(animations[i].lowerBound, curve: Curves.bounceOut);
+          }));
     }
     super.initState();
   }

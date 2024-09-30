@@ -30,6 +30,7 @@ import 'package:pin_ui/src/indicator/widgets/default_animation_children/pin_succ
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/pin_indicator_dot.dart';
 
+// TODO(Sosnovyy): make indicator items customizable
 class PinIndicator extends StatefulWidget {
   const PinIndicator({
     required this.length,

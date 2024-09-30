@@ -101,13 +101,13 @@ class PinIndicatorAnimationController
     // Delay after will be handled as a part of the animation itself.
     if (delayBefore != null) {
       _animationsQueue.add(PinIndicatorAnimation(
-          id: IdentifierUtil.getUniqueIdentifier(),
-          data: PinIndicatorNoAnimationData(
-            duration: delayBefore,
-            isInterruptible: data.isInterruptible,
-            canInterrupt: data.canInterrupt,
-          ),
-          vibrationEnabled: vibration));
+        id: IdentifierUtil.getUniqueIdentifier(),
+        data: PinIndicatorNoAnimationData(
+          duration: delayBefore,
+          isInterruptible: data.isInterruptible,
+          canInterrupt: data.canInterrupt,
+        ),
+      ));
     }
     _animationsQueue.add(PinIndicatorAnimation(
       id: IdentifierUtil.getUniqueIdentifier(),
@@ -116,6 +116,7 @@ class PinIndicatorAnimationController
       delayAfter: delayAfter,
       onComplete: onComplete,
       onInterrupt: onInterrupt,
+      vibrationEnabled: vibration,
     ));
 
     // Start animation there is no queue to wait for. Otherwise it will be

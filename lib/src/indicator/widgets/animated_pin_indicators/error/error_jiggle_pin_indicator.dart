@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
 class ErrorJigglePinIndicator extends StatefulWidget {
@@ -63,15 +64,18 @@ class _ErrorJigglePinIndicatorState extends State<ErrorJigglePinIndicator>
         angleAnimation.lowerBound,
         duration: jiggleDuration ~/ 2,
       );
+      if (widget.vibration) HapticFeedback.mediumImpact();
       for (int i = 0; i < jiggleCount; i++) {
         await angleAnimation.animateTo(
           angleAnimation.upperBound,
           duration: jiggleDuration,
         );
+        if (widget.vibration) HapticFeedback.mediumImpact();
         await angleAnimation.animateTo(
           angleAnimation.lowerBound,
           duration: jiggleDuration,
         );
+        if (widget.vibration) HapticFeedback.mediumImpact();
       }
       await angleAnimation.animateTo(
         0.0,

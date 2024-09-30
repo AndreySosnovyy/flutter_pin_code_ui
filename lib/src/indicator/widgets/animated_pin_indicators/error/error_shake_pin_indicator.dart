@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
 class ErrorShakePinIndicator extends StatefulWidget {
@@ -46,10 +47,12 @@ class _ErrorShakePinIndicatorState extends State<ErrorShakePinIndicator>
           animation.upperBound,
           duration: quarterDuration,
         );
+        if (widget.vibration) HapticFeedback.mediumImpact();
         await animation.animateTo(
           animation.lowerBound,
           duration: quarterDuration * 2,
         );
+        if (widget.vibration) HapticFeedback.mediumImpact();
         await animation.animateTo(
           0.0,
           duration:

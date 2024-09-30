@@ -94,7 +94,6 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       }
                       if (pinText == validPin) {
                         pinIndicatorAnimationController.animateLoading(
-                          vibration: true,
                           repeatCount: 2,
                           delayAfterAnimation:
                               const Duration(milliseconds: 160),
@@ -114,6 +113,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       } else if (pinText.length == validPin.length) {
                         setState(() => isPinError = true);
                         pinIndicatorAnimationController.animateError(
+                          vibration: true,
                           delayAfterAnimation:
                               const Duration(milliseconds: 240),
                           onInterrupt: clear,

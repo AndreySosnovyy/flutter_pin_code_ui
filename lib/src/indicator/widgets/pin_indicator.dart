@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/animation_controller.dart';
 import 'package:pin_ui/src/indicator/widgets/pin_indicator_builder.dart';
-import 'package:pin_ui/src/indicator/widgets/pin_indicator_dot.dart';
+import 'package:pin_ui/src/indicator/widgets/pin_indicator_item.dart';
 
 /// Simple pin indicator widget. Can be decorated using Flutter's BoxDecoration.
 class PinIndicator extends StatefulWidget {
@@ -75,19 +75,19 @@ class _PinIndicatorState extends State<PinIndicator> {
       currentLength: widget.currentLength,
       isError: widget.isError,
       isSuccess: widget.isSuccess,
-      errorItemBuilder: (_) => PinIndicatorDot(
+      errorItemBuilder: (_) => PinIndicatorItem(
         size: widget.size,
         decoration: errorDecoration,
       ),
-      successItemBuilder: (_) => PinIndicatorDot(
+      successItemBuilder: (_) => PinIndicatorItem(
         size: widget.size,
         decoration: successDecoration,
       ),
-      inputItemBuilder: (_) => PinIndicatorDot(
+      inputItemBuilder: (_) => PinIndicatorItem(
         size: widget.size,
         decoration: inputDecoration,
       ),
-      defaultItemBuilder: (_) => PinIndicatorDot(
+      defaultItemBuilder: (_) => PinIndicatorItem(
         size: widget.size,
         decoration: defaultDecoration,
       ),

@@ -19,9 +19,7 @@ class PinpadKey extends PinpadKeyBase {
   final Widget child;
 
   @override
-  State<StatefulWidget> createState() {
-    return _PinpadKeyState();
-  }
+  State<StatefulWidget> createState() => _PinpadKeyState();
 }
 
 class _PinpadKeyState extends State<PinpadKey> {

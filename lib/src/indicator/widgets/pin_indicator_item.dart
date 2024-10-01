@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PinIndicatorDot extends StatelessWidget {
-  const PinIndicatorDot({
+class PinIndicatorItem extends StatelessWidget {
+  const PinIndicatorItem({
     required this.decoration,
     required this.size,
     super.key,

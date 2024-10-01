@@ -3,7 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:pin_ui/src/pinpad/models/extra_key.dart';
 import 'package:pin_ui/src/pinpad/pinpad_key.dart';
 
+/// {@template pin_ui.Pinpad}
+/// Pinpad widget. Pinpad is a special keyboard for entering pin code.
+/// {@endtemplate}
 class Pinpad extends StatefulWidget {
+  /// {@macro pin_ui.Pinpad}
   const Pinpad({
     required this.onKeyTap,
     this.keyDefaultDecoration,
@@ -24,12 +28,26 @@ class Pinpad extends StatefulWidget {
     super.key,
   });
 
+  /// Callback for handling pinpad key tap. It returns tapped key value.
   final Function(String key) onKeyTap;
+
+  /// Default decoration that will be applied for every key.
   final BoxDecoration? keyDefaultDecoration;
+
+  /// Decoration that will be applied for key when it is pressed.
   final BoxDecoration? keyPressedDecoration;
+
+  /// Decoration that will be applied for keys when they are disabled.
   final BoxDecoration? keyDisabledDecoration;
+
+  /// Vertical spacing between keys.
   final double? verticalSpacing;
+
+  /// Horizontal spacing between keys.
   final double? horizontalSpacing;
+
+  /// If pinpad is enabled. If disabled it can not be touched and allies
+  /// disabled decoration if provided.
   final bool enabled;
 
   /// Data for widget that will be displayed on the right side of zero key button.
@@ -37,12 +55,29 @@ class Pinpad extends StatefulWidget {
 
   /// Data for widget that will be displayed on the left side of zero key button.
   final PinpadExtraKey? leftExtraKeyChild;
+
+  /// Default text style for 0-9 keys
   final TextStyle? keysDefaultTextStyle;
+
+  /// Text style for 0-9 keys when they are pressed
   final TextStyle? keysPressedTextStyle;
+
+  /// Text style for 0-9 keys when they are disabled
   final TextStyle? keysDisabledTextStyle;
+
+  /// Key width
   final double? keyWidth;
+
+  /// Key height
   final double? keyHeight;
+
+  /// If on tap feedback vibration is enabled.
+  /// You better set this parameter to false if you have enabled input and erase
+  /// animations vibration when animating.
   final bool vibrationEnabled;
+
+  /// If pinpad is visible. When it is hidden, size will remain the same.
+  /// This parameter is useful for some Pin Indicator animations.
   final bool isVisible;
 
   @override

@@ -4,18 +4,37 @@ import 'package:pin_ui/src/pinpad/widgets/pinpad_key_wrapper.dart';
 class PinpadKey extends PinpadKeyBase {
   const PinpadKey({
     required this.child,
+
+    /// {@macro pin_ui.PinpadKeyBase.onTap}
     super.onTap,
+
+    /// {@macro pin_ui.PinpadKeyBase.onTapStart}
     super.onTapStart,
+
+    /// {@macro pin_ui.PinpadKeyBase.onTapEnd}
     super.onTapEnd,
+
+    /// {@macro pin_ui.PinpadKeyBase.defaultDecoration}
     super.defaultDecoration,
+
+    /// {@macro pin_ui.PinpadKeyBase.pressedDecoration}
     super.pressedDecoration,
+
+    /// {@macro pin_ui.PinpadKeyBase.disabledDecoration}
     super.disabledDecoration,
+
+    /// {@macro pin_ui.PinpadKeyBase.width}
     super.width,
+
+    /// {@macro pin_ui.PinpadKeyBase.height}
     super.height,
+
+    /// {@macro pin_ui.PinpadKeyBase.enabled}
     super.enabled,
     super.key,
   });
 
+  /// Child widget to be displayed as pinpad key
   final Widget child;
 
   @override
@@ -46,21 +65,46 @@ class PinpadTextKey extends PinpadKeyBase {
     this.defaultTextStyle,
     this.pressedTextStyle,
     this.disabledTextStyle,
+
+    /// {@macro pin_ui.PinpadKeyBase.onTap}
     super.onTap,
+
+    /// {@macro pin_ui.PinpadKeyBase.onTapStart}
     super.onTapStart,
+
+    /// {@macro pin_ui.PinpadKeyBase.onTapEnd}
     super.onTapEnd,
+
+    /// {@macro pin_ui.PinpadKeyBase.defaultDecoration}
     super.defaultDecoration,
+
+    /// {@macro pin_ui.PinpadKeyBase.pressedDecoration}
     super.pressedDecoration,
+
+    /// {@macro pin_ui.PinpadKeyBase.disabledDecoration}
     super.disabledDecoration,
+
+    /// {@macro pin_ui.PinpadKeyBase.width}
     super.width,
+
+    /// {@macro pin_ui.PinpadKeyBase.height}
     super.height,
+
+    /// {@macro pin_ui.PinpadKeyBase.enabled}
     super.enabled,
     super.key,
   });
 
+  /// Text to be displayed as pinpad key
   final String text;
+
+  /// Default text style for child Text widget
   final TextStyle? defaultTextStyle;
+
+  /// Pressed text style for child Text widget
   final TextStyle? pressedTextStyle;
+
+  /// Disabled text style for child Text widget
   final TextStyle? disabledTextStyle;
 
   @override

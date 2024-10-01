@@ -2,7 +2,11 @@ import 'dart:ui';
 
 import 'package:pin_ui/src/indicator/models/animation_data.dart';
 
+/// {@template pin_ui.PinIndicatorAnimation}
+/// Pin Indicator animation model.
+/// {@endtemplate}
 class PinIndicatorAnimation {
+  /// {@macro pin_ui.PinIndicatorAnimation}
   const PinIndicatorAnimation({
     required this.id,
     required this.data,

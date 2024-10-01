@@ -2,7 +2,11 @@ import 'package:pin_ui/src/indicator/models/implementations.dart';
 
 enum PinAnimationTypes { input, loading, success, error, clear, erase, idle }
 
+/// {@template pin_ui.PinIndicatorAnimationData}
+/// Pin indicator animation data. This contains core configuration for animation.
+/// {@endtemplate}
 sealed class PinIndicatorAnimationData {
+  /// {@macro pin_ui.PinIndicatorAnimationData}
   const PinIndicatorAnimationData({
     required this.type,
     required this.duration,
@@ -23,6 +27,8 @@ sealed class PinIndicatorAnimationData {
   /// Whether the animation can interrupt other animation marked with isInterruptible
   final bool canInterrupt;
 
+  /// Static method to create an instance of [PinIndicatorAnimationData] from
+  /// provided animation implementation.
   static PinIndicatorAnimationData fromImpl(PinAnimationImplementation impl) {
     return switch (impl) {
       PinInputAnimation input => switch (input) {
@@ -100,6 +106,7 @@ class PinIndicatorNoAnimationData extends PinIndicatorAnimationData {
   }) : super(type: null);
 }
 
+///
 class PinIndicatorInputInflateAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorInputInflateAnimationData()
       : super(
@@ -110,6 +117,7 @@ class PinIndicatorInputInflateAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorInputFadeAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorInputFadeAnimationData()
       : super(
@@ -120,6 +128,7 @@ class PinIndicatorInputFadeAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorInputFallAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorInputFallAnimationData()
       : super(
@@ -130,6 +139,7 @@ class PinIndicatorInputFallAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorLoadingJumpAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorLoadingJumpAnimationData()
       : super(
@@ -140,6 +150,7 @@ class PinIndicatorLoadingJumpAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorLoadingWaveInflateAnimationData
     extends PinIndicatorAnimationData {
   const PinIndicatorLoadingWaveInflateAnimationData()
@@ -151,6 +162,7 @@ class PinIndicatorLoadingWaveInflateAnimationData
         );
 }
 
+///
 class PinIndicatorLoadingWaveDeflateAnimationData
     extends PinIndicatorAnimationData {
   const PinIndicatorLoadingWaveDeflateAnimationData()
@@ -162,6 +174,7 @@ class PinIndicatorLoadingWaveDeflateAnimationData
         );
 }
 
+///
 class PinIndicatorLoadingTravelAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorLoadingTravelAnimationData()
       : super(
@@ -172,6 +185,7 @@ class PinIndicatorLoadingTravelAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorLoadingCollapseAnimationData
     extends PinIndicatorAnimationData {
   const PinIndicatorLoadingCollapseAnimationData()
@@ -184,6 +198,7 @@ class PinIndicatorLoadingCollapseAnimationData
         );
 }
 
+///
 class PinIndicatorSuccessCollapseAnimationData
     extends PinIndicatorAnimationData {
   const PinIndicatorSuccessCollapseAnimationData()
@@ -195,6 +210,7 @@ class PinIndicatorSuccessCollapseAnimationData
         );
 }
 
+///
 class PinIndicatorSuccessFillAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorSuccessFillAnimationData()
       : super(
@@ -205,6 +221,7 @@ class PinIndicatorSuccessFillAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorSuccessFillLastAnimationData
     extends PinIndicatorAnimationData {
   const PinIndicatorSuccessFillLastAnimationData()
@@ -216,6 +233,7 @@ class PinIndicatorSuccessFillLastAnimationData
         );
 }
 
+///
 class PinIndicatorSuccessKickAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorSuccessKickAnimationData()
       : super(
@@ -226,6 +244,7 @@ class PinIndicatorSuccessKickAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorErrorShakeAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorErrorShakeAnimationData()
       : super(
@@ -236,6 +255,7 @@ class PinIndicatorErrorShakeAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorErrorJiggleAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorErrorJiggleAnimationData()
       : super(
@@ -246,6 +266,7 @@ class PinIndicatorErrorJiggleAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorErrorBrownianAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorErrorBrownianAnimationData()
       : super(
@@ -256,6 +277,7 @@ class PinIndicatorErrorBrownianAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorErrorBlinkAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorErrorBlinkAnimationData()
       : super(
@@ -266,6 +288,7 @@ class PinIndicatorErrorBlinkAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorClearDropAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorClearDropAnimationData()
       : super(
@@ -276,6 +299,7 @@ class PinIndicatorClearDropAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorClearFadeAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorClearFadeAnimationData()
       : super(
@@ -286,6 +310,7 @@ class PinIndicatorClearFadeAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorEraseDeflateAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorEraseDeflateAnimationData()
       : super(
@@ -296,6 +321,7 @@ class PinIndicatorEraseDeflateAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorEraseTakeOffAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorEraseTakeOffAnimationData()
       : super(
@@ -306,6 +332,7 @@ class PinIndicatorEraseTakeOffAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorEraseFadeAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorEraseFadeAnimationData()
       : super(
@@ -316,6 +343,7 @@ class PinIndicatorEraseFadeAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorIdleWaveAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorIdleWaveAnimationData()
       : super(
@@ -326,6 +354,7 @@ class PinIndicatorIdleWaveAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorIdlePulseAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorIdlePulseAnimationData()
       : super(
@@ -336,6 +365,7 @@ class PinIndicatorIdlePulseAnimationData extends PinIndicatorAnimationData {
         );
 }
 
+///
 class PinIndicatorIdleFlashAnimationData extends PinIndicatorAnimationData {
   const PinIndicatorIdleFlashAnimationData()
       : super(

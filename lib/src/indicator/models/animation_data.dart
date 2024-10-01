@@ -87,6 +87,7 @@ sealed class PinIndicatorAnimationData {
       'type: $type, '
       'duration: $duration, '
       'isInterruptible: $isInterruptible, '
+      'canInterrupt: $canInterrupt'
       ')';
 }
 

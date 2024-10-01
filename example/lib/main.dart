@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pin_ui/pin_ui.dart';
 
 final pinIndicatorAnimationController = PinIndicatorAnimationController();
@@ -71,6 +72,22 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
               return Column(
                 children: [
                   const Spacer(flex: 3),
+                  // Uncomment to test PinIndicatorBuilder
+                  // PinIndicatorBuilder(
+                  //   controller: pinIndicatorAnimationController,
+                  //   length: validPin.length,
+                  //   currentLength: pinText.length,
+                  //   isError: isPinError,
+                  //   isSuccess: isPinSuccess,
+                  //   errorItemBuilder: (i) =>
+                  //       const PinIndicatorStar(color: Colors.red),
+                  //   successItemBuilder: (i) =>
+                  //       const PinIndicatorStar(color: Colors.green),
+                  //   inputItemBuilder: (i) =>
+                  //       const PinIndicatorStar(color: Colors.blue),
+                  //   defaultItemBuilder: (i) =>
+                  //       const PinIndicatorStar(color: Colors.black26),
+                  // ),
                   PinIndicator(
                     controller: pinIndicatorAnimationController,
                     length: validPin.length,
@@ -192,5 +209,28 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
     idleTimer?.cancel();
     idleTimer = null;
     super.dispose();
+  }
+}
+
+class PinIndicatorStar extends StatelessWidget {
+  const PinIndicatorStar({
+    required this.color,
+    this.size = 14.0,
+    super.key,
+  });
+
+  final double size;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: SvgPicture.asset(
+        'assets/star.svg',
+        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+      ),
+    );
   }
 }

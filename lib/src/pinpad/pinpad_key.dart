@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/pinpad/widgets/pinpad_key_wrapper.dart';
 
+/// {@template pin_ui.PinpadKey}
+/// Custom pinpad key widget.
+/// {@endtemplate}
 class PinpadKey extends PinpadKeyBase {
+  /// {@macro pin_ui.PinpadKey}
   const PinpadKey({
     required this.child,
 
@@ -59,7 +63,11 @@ class _PinpadKeyState extends State<PinpadKey> {
   }
 }
 
+/// {@template pin_ui.PinpadTextKey}
+/// Text pinpad key widget with text.
+/// {@endtemplate}
 class PinpadTextKey extends PinpadKeyBase {
+  /// {@macro pin_ui.PinpadTextKey}
   const PinpadTextKey(
     this.text, {
     this.defaultTextStyle,

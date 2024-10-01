@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 import 'package:vibration/vibration.dart';
 
+// ignore_for_file: public_member_api_docs
+
 class InputInflatePinIndicator extends StatefulWidget {
   const InputInflatePinIndicator({
     required this.builder,

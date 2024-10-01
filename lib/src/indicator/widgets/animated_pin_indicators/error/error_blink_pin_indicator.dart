@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
+// ignore_for_file: public_member_api_docs
+
 class ErrorBlinkPinIndicator extends StatefulWidget {
   const ErrorBlinkPinIndicator({
     required this.builder,

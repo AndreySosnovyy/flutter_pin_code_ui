@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
+/// {@template pin_ui.PinpadExtraKey}
 /// Class representing data for extra pinpad key widget.
+/// {@endtemplate}
 class PinpadExtraKey {
+  /// {@macro pin_ui.PinpadExtraKey}
   PinpadExtraKey({
     /// {@macro pinpad.pinpad_extra_key.child}
     required this.child,

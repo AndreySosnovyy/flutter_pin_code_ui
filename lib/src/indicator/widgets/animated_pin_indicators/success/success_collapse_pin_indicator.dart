@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
+// ignore_for_file: public_member_api_docs
+
 class SuccessCollapsePinIndicator extends StatefulWidget {
   const SuccessCollapsePinIndicator({
     required this.builder,

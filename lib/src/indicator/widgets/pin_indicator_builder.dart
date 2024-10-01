@@ -29,10 +29,14 @@ import 'package:pin_ui/src/indicator/widgets/default_animation_children/pin_load
 import 'package:pin_ui/src/indicator/widgets/default_animation_children/pin_success_collapse_child.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 
+/// Pin indicator item widget builder.
 typedef PinIndicatorItemBuilder = Widget Function(int index);
 
+/// {@template pin_ui.PinIndicatorBuilder}
 /// Pin indicator widget builder.
+/// {@endtemplate}
 class PinIndicatorBuilder extends StatefulWidget {
+  /// {@macro pin_ui.PinIndicatorBuilder}
   const PinIndicatorBuilder({
     required this.length,
     required this.currentLength,

@@ -3,8 +3,11 @@ import 'package:pin_ui/src/indicator/animation_controller.dart';
 import 'package:pin_ui/src/indicator/widgets/pin_indicator_builder.dart';
 import 'package:pin_ui/src/indicator/widgets/pin_indicator_item.dart';
 
+/// {@template pin_ui.PinIndicator}
 /// Simple pin indicator widget. Can be decorated using Flutter's BoxDecoration.
+/// {@endtemplate}
 class PinIndicator extends StatefulWidget {
+  /// {@macro pin_ui.PinIndicator}
   const PinIndicator({
     required this.length,
     required this.currentLength,

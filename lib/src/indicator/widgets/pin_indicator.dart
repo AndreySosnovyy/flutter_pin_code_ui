@@ -32,16 +32,37 @@ class PinIndicator extends StatefulWidget {
         assert(spacing > 0),
         assert(size > 0);
 
+  /// {@macro pin_ui.PinIndicatorBuilder.controller}
   final PinIndicatorAnimationController? controller;
+
+  /// {@macro pin_ui.PinIndicatorBuilder.length}
   final int length;
+
+  /// {@macro pin_ui.PinIndicatorBuilder.currentLength}
   final int currentLength;
+
+  /// {@macro pin_ui.PinIndicatorBuilder.isError}
   final bool isError;
+
+  /// {@macro pin_ui.PinIndicatorBuilder.isSuccess}
   final bool isSuccess;
+
+  /// {@macro pin_ui.PinIndicatorBuilder.successDecoration}
   final BoxDecoration? successDecoration;
+
+  /// {@macro pin_ui.PinIndicatorBuilder.errorDecoration}
   final BoxDecoration? errorDecoration;
+
+  /// {@macro pin_ui.PinIndicatorBuilder.defaultDecoration}
   final BoxDecoration? defaultDecoration;
+
+  /// {@macro pin_ui.PinIndicatorBuilder.inputDecoration}
   final BoxDecoration? inputDecoration;
+
+  /// {@macro pin_ui.PinIndicatorBuilder.spacing}
   final double spacing;
+
+  /// Size of Pin indicator items.
   final double size;
 
   /// {@macro pin_ui.PinIndicator.successCollapseAnimationChild}

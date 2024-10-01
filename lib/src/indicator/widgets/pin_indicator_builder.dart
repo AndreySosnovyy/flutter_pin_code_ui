@@ -61,16 +61,58 @@ class PinIndicatorBuilder extends StatefulWidget {
         assert(spacing > 0),
         assert(size > 0);
 
+  /// {@template pin_ui.PinIndicatorBuilder.controller}
+  /// Controller for managing animations.
+  /// {@endtemplate}
   final PinIndicatorAnimationController? controller;
+
+  /// {@template pin_ui.PinIndicatorBuilder.length}
+  /// Number of items in Pin indicator.
+  /// {@endtemplate}
   final int length;
+
+  /// {@template pin_ui.PinIndicatorBuilder.currentLength}
+  /// Current number of entered pin code symbols.
+  /// {@endtemplate}
   final int currentLength;
+
+  /// {@template pin_ui.PinIndicatorBuilder.isError}
+  /// If Pin indicator is in error state (wrong pin entered).
+  /// {@endtemplate}
   final bool isError;
+
+  /// {@template pin_ui.PinIndicatorBuilder.isSuccess}
+  /// If Pin indicator is in success state (correct pin entered).
+  /// {@endtemplate}
   final bool isSuccess;
+
+  /// {@template pin_ui.PinIndicatorBuilder.successItemBuilder}
+  /// Builder for item in success state.
+  /// {@endtemplate}
   final PinIndicatorItemBuilder successItemBuilder;
+
+  /// {@template pin_ui.PinIndicatorBuilder.errorItemBuilder}
+  /// Builder for item in error state.
+  /// {@endtemplate}
   final PinIndicatorItemBuilder errorItemBuilder;
+
+  /// {@template pin_ui.PinIndicatorBuilder.defaultItemBuilder}
+  /// Builder for item in default state.
+  /// {@endtemplate}
   final PinIndicatorItemBuilder defaultItemBuilder;
+
+  /// {@template pin_ui.PinIndicatorBuilder.inputItemBuilder}
+  /// Builder for item in input state (for entered symbols).
+  /// {@endtemplate}
   final PinIndicatorItemBuilder inputItemBuilder;
+
+  /// {@template pin_ui.PinIndicatorBuilder.spacing}
+  /// Spacing between Pin indicator items.
+  /// {@endtemplate}
   final double spacing;
+
+  /// Size of Pin indicator item. Value is used in some animations.
+  /// If size is not symmetric or different, provide estimate value.
   final double size;
 
   /// {@template pin_ui.PinIndicator.successCollapseAnimationChild}

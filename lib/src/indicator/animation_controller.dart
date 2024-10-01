@@ -9,27 +9,48 @@ import 'package:pin_ui/src/indicator/models/implementations.dart';
 import 'package:pin_ui/src/indicator/utils/identifier_util.dart';
 import 'package:vibration/vibration.dart';
 
+/// {@template pin_ui.PinIndicatorAnimationController}
+/// Controller for managing animations for PinIndicator.
+///
+/// It handles the queue of animations, so you just have to call desired
+/// animations and react to them in your UI using getters from this controller.
+///
+/// You can also listen to this in case you want to update your UI when
+/// animations starts or ends.
+/// {@endtemplate}
 class PinIndicatorAnimationController
     extends ValueNotifier<PinIndicatorAnimation?> {
+  /// {@macro pin_ui.PinIndicatorAnimationController}
   PinIndicatorAnimationController() : super(null);
 
+  /// Returns true if there is an animation in progress.
   bool get isAnimating => value != null;
 
+  /// Returns true if the current animation can not be interrupted.
+  /// You can check which animations is interruptible in
+  /// lib/src/indicator/models/animation_data.dart
   bool get isAnimatingNonInterruptible =>
       !(value?.data.isInterruptible ?? true);
 
+  /// Returns true if there are animation in progress and it has input type.
   bool get isAnimatingInput => value?.data.type == PinAnimationTypes.input;
 
+  /// Returns true if there are animation in progress and it has loading type.
   bool get isAnimatingLoading => value?.data.type == PinAnimationTypes.loading;
 
+  /// Returns true if there are animation in progress and it has success type.
   bool get isAnimatingSuccess => value?.data.type == PinAnimationTypes.success;
 
+  /// Returns true if there are animation in progress and it has error type.
   bool get isAnimatingError => value?.data.type == PinAnimationTypes.error;
 
+  /// Returns true if there are animation in progress and it has clear type.
   bool get isAnimatingClear => value?.data.type == PinAnimationTypes.clear;
 
+  /// Returns true if there are animation in progress and it has erase type.
   bool get isAnimatingErase => value?.data.type == PinAnimationTypes.erase;
 
+  /// Returns true if there are animation in progress and it has idle type.
   bool get isAnimatingIdle => value?.data.type == PinAnimationTypes.idle;
 
   /// Whether the device meets vibration requirements.
@@ -80,12 +101,46 @@ class PinIndicatorAnimationController
   }
 
   void _prepareAndStart(
+    /// {@template pin_ui.PinXAnimation}
+    /// Specific variant of animation. Choose one from corresponding enum.
+    /// Otherwise, default one will be used.
+    /// {@endtemplate}
     PinAnimationImplementation impl, {
+    /// {@template pin_ui.delayBefore}
+    /// Duration to put before animation starts.
+    /// Can be used to make it look smother.
+    /// {@endtemplate}
     Duration? delayBefore,
+
+    /// {@template pin_ui.delayAfter}
+    /// Duration to put after animation ends.
+    /// Can be used to make it look smother.
+    /// {@endtemplate}
     Duration? delayAfter,
+
+    /// {@template pin_ui.onComplete}
+    /// Callback to be triggered when animation is over successfully.
+    /// {@endtemplate}
     VoidCallback? onComplete,
+
+    /// {@template pin_ui.onInterrupt}
+    /// Callback to be triggered in case animation is interrupted (stoped)
+    /// by other animation or [stop] method.
+    /// {@endtemplate}
     VoidCallback? onInterrupt,
+
+    /// {@template pin_ui.animationSpeed}
+    /// Multiplier for managing animation speed.
+    /// Default to 1.
+    /// If less then one it will be slower.
+    /// if more then it will be faster.
+    /// {@endtemplate}
     double animationSpeed = 1.0,
+
+    /// {@template pin_ui.vibration}
+    /// Enables vibration for the animation. You must call [initializeVibration]
+    /// first if you want to use vibration in your animations.
+    /// {@endtemplate}
     bool vibration = false,
   }) {
     if (vibration && !_vibrationInitCompleter.isCompleted) {
@@ -148,11 +203,22 @@ class PinIndicatorAnimationController
     );
   }
 
+  /// Method for calling animation with input type for PinIndicator associated
+  /// with this controller. Call this method when user enters pin code symbol.
   void animateInput({
+    /// {@macro pin_ui.PinXAnimation}
     PinInputAnimation animation = PinInputAnimation.inflate,
+
+    /// {@macro pin_ui.vibration}
     bool vibration = false,
+
+    /// {@macro pin_ui.onComplete}
     VoidCallback? onComplete,
+
+    /// {@macro pin_ui.onInterrupt}
     VoidCallback? onInterrupt,
+
+    /// {@macro pin_ui.animationSpeed}
     double animationSpeed = 1.0,
   }) {
     _prepareAndStart(
@@ -164,14 +230,35 @@ class PinIndicatorAnimationController
     );
   }
 
+  /// Method for calling animation with loading type for PinIndicator associated
+  /// with this controller. Call this method when you need to delay UI when
+  /// making async operations or to let user know that app is doing something
+  /// in this moment.
   void animateLoading({
+    /// {@macro pin_ui.PinXAnimation}
     PinLoadingAnimation animation = PinLoadingAnimation.jump,
+
+    /// {@macro pin_ui.vibration}
     bool vibration = false,
+
+    /// {@template pin_ui.repeatCount}
+    /// Number of times to repeat the animation.
+    /// {@endtemplate}
     int repeatCount = 1,
+
+    /// {@macro pin_ui.delayBefore}
     Duration? delayBeforeAnimation,
+
+    /// {@macro pin_ui.delayAfter}
     Duration? delayAfterAnimation,
+
+    /// {@macro pin_ui.onComplete}
     VoidCallback? onComplete,
+
+    /// {@macro pin_ui.onInterrupt}
     VoidCallback? onInterrupt,
+
+    /// {@macro pin_ui.animationSpeed}
     double animationSpeed = 1.0,
   }) {
     assert(repeatCount > 0 && repeatCount < 10);
@@ -188,13 +275,28 @@ class PinIndicatorAnimationController
     }
   }
 
+  /// Method for calling animation with input type for PinIndicator associated
+  /// with this controller. Call this method when user enters correct pin code.
   void animateSuccess({
+    /// {@macro pin_ui.PinXAnimation}
     PinSuccessAnimation animation = PinSuccessAnimation.collapse,
+
+    /// {@macro pin_ui.vibration}
     bool vibration = false,
+
+    /// {@macro pin_ui.delayBefore}
     Duration? delayBeforeAnimation,
+
+    /// {@macro pin_ui.delayAfter}
     Duration? delayAfterAnimation,
+
+    /// {@macro pin_ui.onComplete}
     VoidCallback? onComplete,
+
+    /// {@macro pin_ui.onInterrupt}
     VoidCallback? onInterrupt,
+
+    /// {@macro pin_ui.animationSpeed}
     double animationSpeed = 1.0,
   }) {
     _prepareAndStart(
@@ -208,13 +310,28 @@ class PinIndicatorAnimationController
     );
   }
 
+  /// Method for calling animation with input type for PinIndicator associated
+  /// with this controller. Call this method when user enters wrong pin code.
   void animateError({
+    /// {@macro pin_ui.PinXAnimation}
     PinErrorAnimation animation = PinErrorAnimation.shake,
+
+    /// {@macro pin_ui.vibration}
     bool vibration = false,
+
+    /// {@macro pin_ui.delayBefore}
     Duration? delayBeforeAnimation,
+
+    /// {@macro pin_ui.delayAfter}
     Duration? delayAfterAnimation,
+
+    /// {@macro pin_ui.onComplete}
     VoidCallback? onComplete,
+
+    /// {@macro pin_ui.onInterrupt}
     VoidCallback? onInterrupt,
+
+    /// {@macro pin_ui.animationSpeed}
     double animationSpeed = 1.0,
   }) {
     _prepareAndStart(
@@ -228,13 +345,30 @@ class PinIndicatorAnimationController
     );
   }
 
+  /// Method for calling animation with input type for PinIndicator associated
+  /// with this controller. Call this method when user clears entire pin code at
+  /// once (if there are such logic) or you want to clear pin when other logic
+  /// triggers it (for example, pressing "Forgot PIN code" button).
   void animateClear({
+    /// {@macro pin_ui.PinXAnimation}
     PinClearAnimation animation = PinClearAnimation.drop,
+
+    /// {@macro pin_ui.vibration}
     bool vibration = false,
+
+    /// {@macro pin_ui.delayBefore}
     Duration? delayBeforeAnimation,
+
+    /// {@macro pin_ui.delayAfter}
     Duration? delayAfterAnimation,
+
+    /// {@macro pin_ui.onComplete}
     VoidCallback? onComplete,
+
+    /// {@macro pin_ui.onInterrupt}
     VoidCallback? onInterrupt,
+
+    /// {@macro pin_ui.animationSpeed}
     double animationSpeed = 1.0,
   }) {
     _prepareAndStart(
@@ -248,11 +382,22 @@ class PinIndicatorAnimationController
     );
   }
 
+  /// Method for calling animation with input type for PinIndicator associated
+  /// with this controller. Call this method when user erases one symbol from pin.
   void animateErase({
+    /// {@macro pin_ui.PinXAnimation}
     PinEraseAnimation animation = PinEraseAnimation.deflate,
+
+    /// {@macro pin_ui.vibration}
     bool vibration = false,
+
+    /// {@macro pin_ui.onComplete}
     VoidCallback? onComplete,
+
+    /// {@macro pin_ui.onInterrupt}
     VoidCallback? onInterrupt,
+
+    /// {@macro pin_ui.animationSpeed}
     double animationSpeed = 1.0,
   }) {
     _prepareAndStart(
@@ -264,12 +409,27 @@ class PinIndicatorAnimationController
     );
   }
 
+  /// Method for calling animation with input type for PinIndicator associated
+  /// with this controller. Call this method when user is inactive for a
+  /// long time to let them know that action is required and show that app is
+  /// still alive.
   void animateIdle({
+    /// {@macro pin_ui.PinXAnimation}
     PinIdleAnimation animation = PinIdleAnimation.wave,
+
+    /// {@macro pin_ui.vibration}
     bool vibration = false,
+
+    /// {@macro pin_ui.repeatCount}
     int repeatCount = 1,
+
+    /// {@macro pin_ui.onComplete}
     VoidCallback? onComplete,
+
+    /// {@macro pin_ui.onInterrupt}
     VoidCallback? onInterrupt,
+
+    /// {@macro pin_ui.animationSpeed}
     double animationSpeed = 1.0,
   }) {
     assert(repeatCount > 0 && repeatCount < 10);

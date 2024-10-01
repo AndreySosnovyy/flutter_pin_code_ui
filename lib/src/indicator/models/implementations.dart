@@ -67,7 +67,7 @@ enum PinEraseAnimation implements PinAnimationImplementation {
 /// Enum with all idle animations that can be played via controller in Pin indicator.
 ///
 /// Idle animations are used when user don't interact with app for some time
-/// to instigate him to do an action and show that the app is still alive.
+/// to instigate them to do an action and show that the app is still alive.
 enum PinIdleAnimation implements PinAnimationImplementation {
   wave,
   pulse,

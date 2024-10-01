@@ -8,7 +8,8 @@ final pinIndicatorAnimationController = PinIndicatorAnimationController();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await pinIndicatorAnimationController.initialize();
+  // Call this method in case you want to use vibration in your animations
+  await pinIndicatorAnimationController.initializeVibration();
   runApp(const App());
 }
 

@@ -36,20 +36,27 @@ class PinIndicatorAnimationController
   /// Vibration requires vibrator and custom vibration support.
   /// So older devices will not vibrate even if it is enabled when calling animation.
   ///
-  /// In order to get this value you must [initialize()] controller.
+  /// In order to get this value you must call initializeVibration().
+  /// Otherwise it will throw LateInitializationError.
   late final bool canVibrate;
 
   final _animationsQueue = Queue<PinIndicatorAnimation>();
 
   Timer? _animationTimer;
 
-  final _initCompleter = Completer();
+  final _vibrationInitCompleter = Completer();
 
-  Future<void> initialize() async {
+  /// Controller initialize method for vibration feature.
+  /// You must call in case you want to use vibration in your animations.
+  /// Otherwise it will throw an exception.
+  ///
+  /// If you won't use vibration, you can use controller without calling
+  /// this method.
+  Future<void> initializeVibration() async {
     canVibrate = (await Vibration.hasVibrator() ?? false) &&
         (await Vibration.hasCustomVibrationsSupport() ?? false) &&
         (await Vibration.hasAmplitudeControl() ?? false);
-    _initCompleter.complete();
+    _vibrationInitCompleter.complete();
   }
 
   /// Call this method if you want to stop currently playing animation and
@@ -81,7 +88,7 @@ class PinIndicatorAnimationController
     double animationSpeed = 1.0,
     bool vibration = false,
   }) {
-    if (!_initCompleter.isCompleted) {
+    if (vibration && !_vibrationInitCompleter.isCompleted) {
       throw PinIndicatorAnimationControllerNotInitializedException();
     }
     assert(animationSpeed >= 0.1);

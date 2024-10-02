@@ -145,7 +145,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                     enabled: !pinIndicatorAnimationController
                         .isAnimatingNonInterruptible,
                     vibrationEnabled: false,
-                    leftExtraKeyChild: PinpadExtraKey(
+                    leftExtraKey: PinpadExtraKey(
                       child: Text(
                         'Forgot',
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -168,7 +168,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                         // Call your forgot pin flow logic
                       },
                     ),
-                    rightExtraKeyChild: PinpadExtraKey(
+                    rightExtraKey: PinpadExtraKey(
                       child: pinText.isEmpty ||
                               pinIndicatorAnimationController.isAnimatingClear
                           // Display your current biometrics type icon here

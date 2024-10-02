@@ -111,6 +111,7 @@ class PinIndicatorBuilder extends StatefulWidget {
   /// {@endtemplate}
   final double spacing;
 
+  // TODO(Sosnovyy): remove and calculate this via render boxes
   /// Size of Pin indicator item. Value is used in some animations.
   /// If size is not symmetric or different, provide estimate value.
   final double size;

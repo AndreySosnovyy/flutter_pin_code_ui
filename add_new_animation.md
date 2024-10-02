@@ -1,7 +1,7 @@
 ## How to add a new animation?
 
 Currently, **pin_ui** package doesn't allow developers to add new animations with
-its api via public classes. So in case you still want to add your own animation
+its API via public classes. So in case you still want to add your own animation
 you have to either fork this project or suggest it in [GitHub](https://github.com/AndreySosnovyy/flutter_pin_code_ui)
 issue/pull request.
 

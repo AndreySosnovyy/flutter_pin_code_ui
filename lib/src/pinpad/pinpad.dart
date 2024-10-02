@@ -16,11 +16,11 @@ class Pinpad extends StatefulWidget {
     this.horizontalSpacing,
     this.verticalSpacing,
     this.enabled = true,
-    this.rightExtraKeyChild,
-    this.leftExtraKeyChild,
-    this.keysDefaultTextStyle,
-    this.keysPressedTextStyle,
-    this.keysDisabledTextStyle,
+    this.rightExtraKey,
+    this.leftExtraKey,
+    this.keyDefaultTextStyle,
+    this.keyPressedTextStyle,
+    this.keyDisabledTextStyle,
     this.keyHeight,
     this.keyWidth,
     this.vibrationEnabled = false,
@@ -51,19 +51,19 @@ class Pinpad extends StatefulWidget {
   final bool enabled;
 
   /// Data for widget that will be displayed on the right side of zero key button.
-  final PinpadExtraKey? rightExtraKeyChild;
+  final PinpadExtraKey? rightExtraKey;
 
   /// Data for widget that will be displayed on the left side of zero key button.
-  final PinpadExtraKey? leftExtraKeyChild;
+  final PinpadExtraKey? leftExtraKey;
 
   /// Default text style for 0-9 keys
-  final TextStyle? keysDefaultTextStyle;
+  final TextStyle? keyDefaultTextStyle;
 
   /// Text style for 0-9 keys when they are pressed
-  final TextStyle? keysPressedTextStyle;
+  final TextStyle? keyPressedTextStyle;
 
   /// Text style for 0-9 keys when they are disabled
-  final TextStyle? keysDisabledTextStyle;
+  final TextStyle? keyDisabledTextStyle;
 
   /// Key width
   final double? keyWidth;
@@ -101,15 +101,15 @@ class _PinpadState extends State<Pinpad> {
       widget.keyDisabledDecoration ?? _getDefaultDecoration(context);
 
   TextStyle _getDefaultTextStyle(BuildContext context) =>
-      widget.keysDefaultTextStyle ??
+      widget.keyDefaultTextStyle ??
       Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 32);
 
   TextStyle _getDisabledTextStyle(BuildContext context) =>
-      widget.keysDisabledTextStyle ??
+      widget.keyDisabledTextStyle ??
       _getDefaultTextStyle(context).copyWith(color: Colors.black26);
 
   TextStyle _getPressedTextStyle(BuildContext context) =>
-      widget.keysPressedTextStyle ?? _getDefaultTextStyle(context);
+      widget.keyPressedTextStyle ?? _getDefaultTextStyle(context);
 
   double _getDefaultSpacing(BuildContext context) =>
       (MediaQuery.of(context).size.width - _getMaxKeyTextWidth(context) * 3) /
@@ -198,7 +198,7 @@ class _PinpadState extends State<Pinpad> {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                widget.leftExtraKeyChild != null
+                widget.leftExtraKey != null
                     ? PinpadKey(
                         width: _getKeyWidth(context),
                         height: _getKeyHeight(context),
@@ -208,8 +208,8 @@ class _PinpadState extends State<Pinpad> {
                         enabled: widget.enabled,
                         onTapStart: onAnyKeyTap,
                         onTapEnd: onAnyKeyReleased,
-                        onTap: widget.leftExtraKeyChild!.onTap,
-                        child: widget.leftExtraKeyChild!.child,
+                        onTap: widget.leftExtraKey!.onTap,
+                        child: widget.leftExtraKey!.child,
                       )
                     : SizedBox(
                         width: _getKeyWidth(context),
@@ -235,7 +235,7 @@ class _PinpadState extends State<Pinpad> {
                   height: _getKeyHeight(context),
                 ),
                 SizedBox(width: _getHorizontalSpacing(context)),
-                widget.rightExtraKeyChild != null
+                widget.rightExtraKey != null
                     ? PinpadKey(
                         width: _getKeyWidth(context),
                         height: _getKeyHeight(context),
@@ -245,8 +245,8 @@ class _PinpadState extends State<Pinpad> {
                         enabled: widget.enabled,
                         onTapStart: onAnyKeyTap,
                         onTapEnd: onAnyKeyReleased,
-                        onTap: widget.rightExtraKeyChild!.onTap,
-                        child: widget.rightExtraKeyChild!.child,
+                        onTap: widget.rightExtraKey!.onTap,
+                        child: widget.rightExtraKey!.child,
                       )
                     : SizedBox(
                         width: _getKeyWidth(context),

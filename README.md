@@ -17,7 +17,7 @@ days of development and the result will be already perfect even out of the box.
 **Pinpad** is a numeric keyboard with 2 extra key slots. Usually they place
 *"Forgot PIN"* and *Biometrics* buttons there.
 
-<img src="readme_assets/pinpad.png" alt="drawing" width="360"/>
+<img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/pinpad.png" alt="drawing" width="360"/>
 
 ### Customization
 
@@ -48,7 +48,7 @@ days of development and the result will be already perfect even out of the box.
 how many digits are entered, is there an error, was an attempt successful and so on.</br>
 The simplest variants of Pin Indicator is a line of colored dots or obscured stars.
 
-<img src="readme_assets/pinpad_pinindicator_demo.gif" alt="drawing" width="380"/>
+<img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/pinpad_pinindicator_demo.gif" alt="drawing" width="380"/>
 
 ### Customization
 
@@ -110,9 +110,44 @@ Indicator can be animated in such ways:
   side.
 
 Each of these animation types has a set of already implemented animations to
-chose from.
+chose from. Here is the table with all of them with useful information and
+recommendations.
 
 [//]: # (TODO: table of animations)
+
+| Type    | Name         | Demo | Notes and Recommendations | Vibration |
+|---------|--------------|------|---------------------------|-----------|
+| Input   | Inflate      |      |                           | +         |
+| Input   | Fall         |      |                           | -         |
+| Input   | Fade         |      |                           | -         |
+| Loading | Jump         |      |                           | +         |
+| Loading | Wave Inflate |      |                           | -         |
+| Loading | Wave Deflate |      |                           | -         |
+| Loading | Collapse     |      |                           | -         |
+| Loading | Travel       |      |                           | -         |
+| Success | Collapse     |      |                           | -         |
+| Success | Fill         |      |                           | -         |
+| Success | Fill last    |      |                           | -         |
+| Success | Kick         |      |                           | +         |
+| Error   | Shake        |      |                           | +         |
+| Error   | Jiggle       |      |                           | +         |
+| Error   | Brownian     |      |                           | -         |
+| Error   | Blink        |      |                           | -         |
+| Clear   | Drop         |      |                           | -         |
+| Clear   | Fade         |      |                           | -         |
+| Erase   | Deflate      |      |                           | +         |
+| Erase   | Take off     |      |                           | -         |
+| Erase   | Fade         |      |                           | -         |
+| Idle    | Wave         |      |                           | -         |
+| Idle    | Pulse        |      |                           | -         |
+| Idle    | Flash        |      |                           | -         |
+
+Some of the animation may look wierd, but if you combine them together and add
+delays before and after, they may create good sequences!
+
+You can try them out in [example project](https://github.com/AndreySosnovyy/flutter_pin_code_ui/tree/main/example).
+Also, it can be a great start point where
+you can copy some code for your application.
 
 Currently, there are no ability to customize them or add your own via package API.
 You can

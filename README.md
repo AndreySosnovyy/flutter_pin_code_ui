@@ -48,7 +48,7 @@ days of development and the result will be already perfect even out of the box.
 how many digits are entered, is there an error, was an attempt successful and so on.</br>
 The simplest variants of Pin Indicator is a line of colored dots or obscured stars.
 
-<img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/pinpad_pinindicator_demo.gif" alt="drawing" width="380"/>
+[//]: # (<img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/pinpad_pinindicator_demo.gif" alt="drawing" width="380"/>)
 
 ### Customization
 

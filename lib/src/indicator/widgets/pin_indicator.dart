@@ -27,10 +27,7 @@ class PinIndicator extends StatefulWidget {
     /// {@macro pin_ui.PinIndicator.successCollapseAnimationChild}
     this.successCollapseAnimationChild,
     super.key,
-  })  : assert(length >= currentLength),
-        assert(length > 3),
-        assert(spacing > 0),
-        assert(size > 0);
+  });
 
   /// {@macro pin_ui.PinIndicatorBuilder.controller}
   final PinIndicatorAnimationController? controller;

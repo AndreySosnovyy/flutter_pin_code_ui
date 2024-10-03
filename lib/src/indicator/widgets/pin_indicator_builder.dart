@@ -59,7 +59,8 @@ class PinIndicatorBuilder extends StatefulWidget {
   })  : assert(length >= currentLength),
         assert(length > 3),
         assert(spacing > 0),
-        assert(size > 0);
+        assert(size > 0),
+        assert(!isError || !isSuccess);
 
   /// {@template pin_ui.PinIndicatorBuilder.controller}
   /// Controller for managing animations.

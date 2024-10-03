@@ -76,39 +76,42 @@ The simplest variants of Pin Indicator is a line of colored dots or obscured sta
 ### Customization
 
 There are 2 widgets to layout Pin Indicator in your apps: `PinIndicator` and
-`PinIndicatorBuilder`. Mostly they have the same set of parameters, the main
+`PinIndicatorBuilder`. They have mostly the same set of parameters, the main
 difference is that by using Builder version you can provide any widgets as items.
 So it more customizable. If you don't need this customization level, just use
 `PinIndicator`. It provides simple items that can be decorated with Flutter's
 `BoxDecoration`.
 
-**Items** inside both `PinIndicator` and `PinIndicatorBuilder` have 4 states:
+- **Items** inside both `PinIndicator` and `PinIndicatorBuilder` have 4 states: **Default** represents not entered PIN
+  code digits, **Input** represents entered PIN code digits, **Error ** indicates
+  that there is something wrong happened (wrong PIN entered), **Success**
+  indicates that user entered correct PIN code.</br>
+  So there are 4 different parameters to customize your Pin Indicator.</br>
+  For **PinIndicatorBuilder** 4 required parameters: `defaultItemBuilder`,
+  `inputItemBuilder`, `errorItemBuilder` and `successItemBuilder`.</br>
+  For **PinIndicator**: `defaultDecoration`, `inputDecoration`,
+  `errorDecoration` and `successDecoration`. These parameters are not required.
+  If not provided, pre-made decorations will be used instead.</br>
+- `length` is total number of digits in PIN code. It can be anything starting from 3,
+  but usually it is 4, 5 or 6.
+- `currentLength` represents number of already entered digits by user.
+- `isError` – error state enabler.
+- `isSuccess` – success state enabler.
+- `spacing` – distance between items.
+- `size` – size of item. It resizes items for `PinIndicator`, but for
+  `PinIndicatorBuilder` it used in some calculations for animations.
+- `loadingCollapseAnimationChild` – widget used in Loading Collapse animation.
+- `successCollapseAnimationChild` – widget used in Success Collapse animation.
 
-- **Default.** To represent not entered PIN code digits.
-- **Input.** To represent entered PIN code digits.
-- **Error.** When user has entered wrong PIN code.
-- **Success.** When user has entered correct PIN code.
+```dart
+PinIndicator(
+  
+)
 
-So there are 4 different parameters to customize your Pin Indicator.</br>
-For **PinIndicatorBuilder** 4 required parameters: `defaultItemBuilder`,
-`inputItemBuilder`, `errorItemBuilder` and `successItemBuilder`.</br>
-For **PinIndicator**: `defaultDecoration`, `inputDecoration`,
-`errorDecoration` and `successDecoration`. These parameters are not required.
-If not provided, pre-made decorations will be used instead.</br>
+PinIndicatorBuilder(
 
-**Length** (number of digits in PIN code) can be anything starting from 3,
-but usually it is 4, 5 or 6.</br>
-To set it, use `length` parameter.
-
-To set number on already entered digits for Pin Indicator use `currentLength`
-parameter.
-
-To set **error** or **success** state for Pin Indicator provide `isError` or `isSuccess`
-values.
-
-To change spacing between items, set `spacing` parameter.
-
-When using `PinIndicator` you can provide `size` parameter to resize your items.
+)
+```
 
 ### Animations
 

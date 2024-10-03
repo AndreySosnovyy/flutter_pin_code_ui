@@ -24,9 +24,9 @@ class GlassPinIndicator extends StatelessWidget {
       currentLength: currentLength,
       isError: isError,
       isSuccess: isSuccess,
-      errorItemBuilder: errorItemBuilder,
-      successItemBuilder: successItemBuilder,
-      inputItemBuilder: inputItemBuilder,
+      errorItemBuilder: (_) => const SizedBox(),
+      successItemBuilder: (_) => const SizedBox(),
+      inputItemBuilder: (_) => const SizedBox(),
       defaultItemBuilder: (_) => const SizedBox(width: 14),
     );
   }

@@ -2,8 +2,15 @@ The **pin_ui** package is responsible for fast layout of advanced PIN code relat
 screens in Flutter applications. It provides 2 core widgets:
 
 1) **Pinpad.** Highly customizable keyboard for entering PIN code.
-2) **Pin Indicator.** Obscured field for visualizing entered PIN code status
-   with lots of pre-made animations to choose from.
+2) **Pin Indicator.** Obscured (or not) field for visualizing entered PIN code status
+   with lots of pre-made animations to choose from.</br></br>
+
+<p align="left">
+<a href="https://pub.dev/packages/pin_ui"><img src="https://img.shields.io/pub/v/flutter_pin_code_ui.svg?style=flat&colorB=blue&label=pub pin_ui" alt="Pub"></a>
+<a href="https://github.com/AndreySosnovyy/flutter_pin_code_ui"><img src="https://img.shields.io/github/stars/andreysosnovyy/flutter_pin_code_ui.svg?&style=flat&logo=github&color=red&label=pin_ui" alt="Star on Github"></a>
+<a href="https://pub.dev/packages/pin"><img src="https://img.shields.io/pub/v/pin.svg?style=flat&colorB=blue&label=pub pin" alt="Pub"></a>
+<a href="https://github.com/AndreySosnovyy/flutter_pin_code"><img src="https://img.shields.io/github/stars/andreysosnovyy/flutter_pin_code.svg?&style=flat&logo=github&color=red&label=pin" alt="Star on Github"></a>
+</p>
 
 ## Pinpad
 

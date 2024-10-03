@@ -193,7 +193,10 @@ PinIndicator(
 ```
 
 **Controller** is responsible for managing animations. It is done with Queue, so
-all animation calls are **synchronous** operations.</br>
+all animation calls are **synchronous** operations. In queue animations can go
+one by one, or they can interrupt other not important animations. More on this in
+[Animations priority section](#animations-priority).
+
 To start playing a desired animation just call appropriate method from controller.
 ```dart
 controller.animateLoading();
@@ -324,6 +327,32 @@ void clear() => setState(() {
   isPinError = false; // Go back to Default state for a new attempt
 });
 ```
+
+### Animations priority
+
+Animations queue designed that way so animation can interrupt other one if it is 
+possible. Interruptibility of every animation is preconfigured. As long as 
+role to interrupt other animations. Here is the list of all animation types with
+their properties:
+
+| Type    | Can interrupt | Is interruptible |
+|---------|---------------|------------------|
+| Input   | True          | True             |
+| Loading | False         | False            |
+| Success | False         | False            |
+| Error   | False         | True             |
+| Clear   | False         | True             |
+| Erase   | True          | True             |
+| Idle    | False         | True             |
+
+So take that in mind when designing logic and animation sequences.</br>
+Normally animations goes like this:
+- First there are **Inputs** and **Erases**
+- If PIN is correct, one or a few **Loadings** and one **Success**
+- If PIN in wrong, one **Error** and one **Clear**
+- **Idles** can start anytime
+
+Follow these rules and you won't meet any troubles.
 
 ### Vibration
 

@@ -5,12 +5,11 @@ its API via public classes. So in case you still want to add your own animation
 you have to either fork this project or suggest it in [GitHub](https://github.com/AndreySosnovyy/flutter_pin_code_ui)
 issue/pull request.
 
-### Add a new animation to existing types:
+### Add a new animation with existing type:
 
 If your animation have a type already existing in PinAnimationTypes enum
 PinAnimationTypes from lib/src/indicator/models/animation_data.dart, follow
-this instruction. For more details check already existing animations and how
-they work.
+this instruction. 
 
 1) Add a new enum value (yours animation name) to the corresponding enum
    implementing `PinAnimationImplementation` in **lib/src/indicator/models/implementations.dart**.
@@ -44,8 +43,26 @@ they work.
    methods in controller to make it clean and readable.
 5) (Optional) Add a getter to check if animation with your type is playing
    to `PinIndicatorAnimationController` (isAnimating*YourNewTypeName*).
-6) Go through all the steps from the [instruction above](#add-a-new-animation-to-existing-types)
+6) Go through all the steps from the [instruction above](#add-a-new-animation-with-existing-type)
    to add a new animation with a new type you created.
+
+### How to implement your new animation:
+
+There are no limitations on how to exactly implement animation for **pin_ui**.
+Any approach you best with can be used: AnimationController, Tween, AnimatedContainer,
+any pre-made staff or even other third party solutions.
+
+How does it work?
+
+Every animation in **pin_ui** is absolutely independent and package know nothing
+about their implementation.</br>
+There is a core widget which is `PinIndicatorBuilder`. Its only role is to manage
+what animation should be shown at this moment depending on current `value` from
+associated `PinIndicatorAnimationController`. So implementation doesn't matter.
+If you added a new animation which lasts for 3 seconds, and it was called, core
+widget will display it, give 3 seconds to play an animation, and then it will be
+replaced with a next one from the queue (or earlier if animation is interruptible)
+or with a static Indicator if there are no any.
 </br>
 </br>
 </br>

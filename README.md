@@ -67,7 +67,7 @@ Pinpad(
 )
 ```
 
-## Pin Indicator
+## </br>Pin Indicator
 
 **Pin Indicator** is a widget that provides visual representation of PIN code:
 how many digits are entered, is there an error, was an attempt successful and so on.</br>

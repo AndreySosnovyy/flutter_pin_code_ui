@@ -351,7 +351,7 @@ class PinIndicatorAnimationController
   /// triggers it (for example, pressing "Forgot PIN code" button).
   void animateClear({
     /// {@macro pin_ui.PinXAnimation}
-    PinClearAnimation animation = PinClearAnimation.drop,
+    PinClearAnimation animation = PinClearAnimation.fade,
 
     /// {@macro pin_ui.vibration}
     bool vibration = false,

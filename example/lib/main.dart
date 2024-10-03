@@ -136,7 +136,6 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                           onInterrupt: clear,
                         );
                         pinIndicatorAnimationController.animateClear(
-                          animation: PinClearAnimation.fade,
                           onComplete: clear,
                           onInterrupt: clear,
                         );
@@ -162,6 +161,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                           return;
                         }
                         pinIndicatorAnimationController.animateClear(
+                          animation: PinClearAnimation.drop,
                           onComplete: clear,
                           onInterrupt: clear,
                         );

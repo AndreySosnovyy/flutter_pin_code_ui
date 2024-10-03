@@ -5,13 +5,6 @@ screens in Flutter applications. It provides 2 core widgets:
 2) **Pin Indicator.** Obscured field for visualizing entered PIN code status
    with lots of pre-made animations to choose from.
 
-❗See also: [**pin**](https://pub.dev/packages/pin).</br>
-**pin** is a package focused on PIN code's backend part. It fully covers all
-the necessary logic of storing, updating, validating PIN, setting and handling
-timeouts, calling biometrics, and some other options for better user experience.</br>
-**pin_ui + pin** are designed to work together. Combining these two may save you
-days of development and the result will be already perfect even out of the box.
-
 ## Pinpad
 
 **Pinpad** is a numeric keyboard with 2 extra key slots. Usually they place
@@ -47,8 +40,6 @@ days of development and the result will be already perfect even out of the box.
 **Pin Indicator** is a widget that provides visual representation of PIN code:
 how many digits are entered, is there an error, was an attempt successful and so on.</br>
 The simplest variants of Pin Indicator is a line of colored dots or obscured stars.
-
-[//]: # (<img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/pinpad_pinindicator_demo.gif" alt="drawing" width="380"/>)
 
 ### Customization
 
@@ -115,10 +106,10 @@ recommendations.
 
 | Type    | Name         | Demo                                                                                                                                                  | Notes and Recommendations | Vibration |
 |---------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|-----------|
-| Input   | Inflate      | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_inflate.gif" alt="drawing" width="320"/>       |                           | +         |
+| Input   | Inflate      | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_inflate.gif" alt="drawing" width="320"/>       | - Default Input animation | +         |
 | Input   | Fall         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_fall.gif" alt="drawing" width="320"/>          |                           | -         |
 | Input   | Fade         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_fade.gif" alt="drawing" width="320"/>          |                           | -         |
-| Loading | Jump         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_jump.gif" alt="drawing" width="320"/>        |                           | +         |
+| Loading | Jump         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_jump.gif" alt="drawing" width="320"/>        | - Good                    | +         |
 | Loading | Wave Inflate | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_waveInflate.gif" alt="drawing" width="320"/> |                           | -         |
 | Loading | Wave Deflate | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_waveDeflate.gif" alt="drawing" width="320"/> |                           | -         |
 | Loading | Collapse     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_collapse.gif" alt="drawing" width="320"/>    |                           | -         |
@@ -141,16 +132,35 @@ recommendations.
 | Idle    | Flash        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_flash.gif" alt="drawing" width="320"/>          |                           | -         |
 
 Some of the animation may look wierd, but if you combine them together and add
-delays before and after, they may create good sequences!
+delays before and after, they may create good sequences! Also, you can adjust
+any animation speed or make them a bit slower via `animationSpeed` parameter when
+calling the animation:
 
-You can try them out in [example project](https://github.com/AndreySosnovyy/flutter_pin_code_ui/tree/main/example).
-Also, it can be a great start point where
-you can copy some code for your application.
+```dart
+controller.animateSuccess
+(
+animation: PinSuccessAnimation.fillLast,
+animationSpeed: 2, // <-- animation will be played at 2x speed
+// Delays before and after won't be affected with animationSpeed value
+delayBefore: Duration(milliseconds: 240),
+delayAfter: Duration
+(
+seconds
+:
+1
+)
+,
+);
+```
+
+You can try it out in [example project](https://github.com/AndreySosnovyy/flutter_pin_code_ui/tree/main/example)
+and use it as a playground to test your ideas. Also, it can be a great start point
+to begin with where you can copy some code for your application.
 
 Currently, there are no ability to customize them or add your own via package API.
 You can
-read [how to add a new animation or customize an existing one](#adding-new-animations-or-customizing-existing-ones)
-in case no one of them is suitable for you for some reason.
+read [how to add a new animation or customize an existing one](#-adding-new-animations-or-customizing-existing-ones)
+in case no one of them fits your requirements for some reason.
 
 Animations are called via `PinIndicatorAnimationController` provided by this package.
 Associate a controller with `PinIndicator` or `PinIndicatorBuilder` by passing it
@@ -169,15 +179,33 @@ depending on current animation.
 
 ## Additional information
 
-### Adding new animations or customizing existing ones
+### ❗ See also: [pin](https://pub.dev/packages/pin)
+
+This is a package focused on PIN code's backend part. It fully covers all
+the necessary logic of storing, updating, validating PIN, setting and handling
+timeouts, calling biometrics, and some other options for better user experience.</br>
+**pin_ui + pin** are perfect to work together in pair. Combining these two may
+save you days of development and the result will be already perfect even out of
+the box.
+
+### ➕ Adding new animations or customizing existing ones
 
 **pin_ui** package is designed to be easily extendable in terms of adding
-new animations, but currently there are no such API provided. But you can still
-add own animations by
-forking [source code repository of this package](https://github.com/AndreySosnovyy/flutter_pin_code_ui),
-suggesting something in [issue](https://github.com/AndreySosnovyy/flutter_pin_code_ui/issues)
+new animations for Pin Indicator, but currently there are no such API provided.
+You can still add own animations by
+forking [source code repository of this package](https://github.com/AndreySosnovyy/flutter_pin_code_ui)
+or suggesting something in [issue](https://github.com/AndreySosnovyy/flutter_pin_code_ui/issues)
 or [pull request](https://github.com/AndreySosnovyy/flutter_pin_code_ui/pulls).
 
-Before adding a new animation read an [instruction](add_new_animation.md) on how to do it correctly.
+Before adding a new animation read an [instruction](add_new_animation.md) on how
+to do it in a way it is intended to.
+
+### 🛠 Contributing
+
+If you have found a bug, have a great ready to go new animation or want to
+suggest an idea for new animation, you're always welcome! Fell free to open
+an [issue](https://github.com/AndreySosnovyy/flutter_pin_code_ui/issues)
+or [pull request](https://github.com/AndreySosnovyy/flutter_pin_code_ui/pulls)
+in [repository on GitHub](https://github.com/AndreySosnovyy/flutter_pin_code_ui)!
 
 

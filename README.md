@@ -101,7 +101,7 @@ Indicator can be animated in such ways:
   side.
 
 Each of these animation types has a set of already implemented animations to
-chose from. Here is the table with all of them with useful information and
+chose from. Here is the table with all of them plus useful information and
 recommendations.
 
 | Type    | Name         | Demo                                                                                                                                                  | Notes and Recommendations                                                                                                                                                                                                                                                                                                                                                                                             | Vibration |
@@ -137,19 +137,12 @@ any animation speed or make them a bit slower via `animationSpeed` parameter whe
 calling the animation:
 
 ```dart
-controller.animateSuccess
-(
-animation: PinSuccessAnimation.fillLast,
-animationSpeed: 2, // <-- animation will be played at 2x speed
-// Delays before and after won't be affected with animationSpeed value
-delayBefore: Duration(milliseconds: 240),
-delayAfter: Duration
-(
-seconds
-:
-1
-)
-,
+controller.animateSuccess(
+  animation: PinSuccessAnimation.fillLast,
+  animationSpeed: 2, // <-- animation will be played at 2x speed
+  // Delays before and after won't be affected with animationSpeed value
+  delayBefore: Duration(milliseconds: 240),
+  delayAfter: Duration(seconds: 1),
 );
 ```
 
@@ -174,6 +167,58 @@ disable `Pinpad` or make it invisible when **loading** or **success** animation
 are in progress to show user that something is happening in background and no
 more actions required. Or if you want to update `Scaffold` background color
 depending on current animation.
+
+When starting a new animation you may want to replace items of Pin Indicator with
+different widget or at least change their colors, so animation looks more natural
+and easily understandable for user. To do so you don't need to add any extra
+conditions or update your builders' code. Pin Indicator widget will handle it all
+by reading `isError` and `isSuccess` values for these two states. And for handling
+default and input states it will depend on `length` and `currentLength` to decide
+what builder or decoration apply for each item.
+
+Managing Error and Success states is easy via `onComplete` and `onInterruct`
+callbacks. They can be set when calling animation in controller:
+
+```dart
+// Your Pin Indicator widget
+PinIndicator(
+  controller: controller,
+  length: 4,
+  currentLength: pin.length,
+  isError: isPinError,
+  isSuccess: isPinSuccess,
+)
+
+________________________________________________________________________________
+
+
+// In case user entered correct PIN code
+controller.animateLoading(
+  onComplete: () => setState(() => isPinSuccess = true),
+);
+controller.animateSuccess(
+  onComplete: () { /* Perform navigation or any other necessary logic here */ },
+);
+
+________________________________________________________________________________
+
+
+// In case user entered wrong PIN code     
+setState(() => isPinError = true); // Set Error state
+controller.animateError(
+  onInterrupt: clear,
+);
+controller.animateClear(
+  onComplete: clear,
+  onInterrupt: clear,
+);
+
+void clear() => setState(() {
+  pin = ''; // Clean current entered pin variable
+  isPinError = false; // Go back to Default state for a new attempt
+});
+```
+
 
 ## Usage
 

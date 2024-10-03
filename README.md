@@ -113,34 +113,32 @@ Each of these animation types has a set of already implemented animations to
 chose from. Here is the table with all of them with useful information and
 recommendations.
 
-[//]: # (TODO: table of animations)
-
-| Type    | Name         | Demo | Notes and Recommendations | Vibration |
-|---------|--------------|------|---------------------------|-----------|
-| Input   | Inflate      |      |                           | +         |
-| Input   | Fall         |      |                           | -         |
-| Input   | Fade         |      |                           | -         |
-| Loading | Jump         |      |                           | +         |
-| Loading | Wave Inflate |      |                           | -         |
-| Loading | Wave Deflate |      |                           | -         |
-| Loading | Collapse     |      |                           | -         |
-| Loading | Travel       |      |                           | -         |
-| Success | Collapse     |      |                           | -         |
-| Success | Fill         |      |                           | -         |
-| Success | Fill last    |      |                           | -         |
-| Success | Kick         |      |                           | +         |
-| Error   | Shake        |      |                           | +         |
-| Error   | Jiggle       |      |                           | +         |
-| Error   | Brownian     |      |                           | -         |
-| Error   | Blink        |      |                           | -         |
-| Clear   | Drop         |      |                           | -         |
-| Clear   | Fade         |      |                           | -         |
-| Erase   | Deflate      |      |                           | +         |
-| Erase   | Take off     |      |                           | -         |
-| Erase   | Fade         |      |                           | -         |
-| Idle    | Wave         |      |                           | -         |
-| Idle    | Pulse        |      |                           | -         |
-| Idle    | Flash        |      |                           | -         |
+| Type    | Name         | Demo                                                                                                                                                  | Notes and Recommendations | Vibration |
+|---------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|-----------|
+| Input   | Inflate      | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_inflate.gif" alt="drawing" width="320"/>       |                           | +         |
+| Input   | Fall         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_fall.gif" alt="drawing" width="320"/>          |                           | -         |
+| Input   | Fade         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_fade.gif" alt="drawing" width="320"/>          |                           | -         |
+| Loading | Jump         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_jump.gif" alt="drawing" width="320"/>        |                           | +         |
+| Loading | Wave Inflate | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_waveInflate.gif" alt="drawing" width="320"/> |                           | -         |
+| Loading | Wave Deflate | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_waveDeflate.gif" alt="drawing" width="320"/> |                           | -         |
+| Loading | Collapse     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_collapse.gif" alt="drawing" width="320"/>    |                           | -         |
+| Loading | Travel       | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_travel.gif" alt="drawing" width="320"/>      |                           | -         |
+| Success | Collapse     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/success_collapse.gif" alt="drawing" width="320"/>    |                           | -         |
+| Success | Fill         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/success_fill.gif" alt="drawing" width="320"/>        |                           | -         |
+| Success | Fill last    | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/success_fillLast.gif" alt="drawing" width="320"/>    |                           | -         |
+| Success | Kick         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/success_kick.gif" alt="drawing" width="320"/>        |                           | +         |
+| Error   | Shake        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/error_shake.gif" alt="drawing" width="320"/>         |                           | +         |
+| Error   | Jiggle       | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/error_jiggle.gif" alt="drawing" width="320"/>        |                           | +         |
+| Error   | Brownian     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/error_brownian.gif" alt="drawing" width="320"/>      |                           | -         |
+| Error   | Blink        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/error_blink.gif" alt="drawing" width="320"/>         |                           | -         |
+| Clear   | Drop         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/clear_drop.gif" alt="drawing" width="320"/>          |                           | -         |
+| Clear   | Fade         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/clear_fade.gif" alt="drawing" width="320"/>          |                           | -         |
+| Erase   | Deflate      | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/erase_deflate.gif" alt="drawing" width="320"/>       |                           | +         |
+| Erase   | Take off     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/erase_takeOff.gif" alt="drawing" width="320"/>       |                           | -         |
+| Erase   | Fade         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/erase_fade.gif" alt="drawing" width="320"/>          |                           | -         |
+| Idle    | Wave         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_wave.gif" alt="drawing" width="320"/>           |                           | -         |
+| Idle    | Pulse        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_pulse.gif" alt="drawing" width="320"/>          |                           | -         |
+| Idle    | Flash        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_flash.gif" alt="drawing" width="320"/>          |                           | -         |
 
 Some of the animation may look wierd, but if you combine them together and add
 delays before and after, they may create good sequences!

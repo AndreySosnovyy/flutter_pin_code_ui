@@ -383,7 +383,7 @@ Follow these rules and you won't meet any troubles.
 
 ### Vibration
 
-Some of the animation has a vibration feature! You can check if it is available
+Some of the animation have a vibration feature! You can check if it is available
 in the [table](#animations).
 
 To enable vibration feature you have to add this to your Android Manifest:

@@ -105,6 +105,10 @@ So it more customizable. If you don't need this customization level, just use
 
 ```dart
 PinIndicatorBuilder(
+  errorItemBuilder: (i) => myErrorItemBuilder(i),
+  successItemBuilder: (i) => mySuccessItemBuilder(i),
+  inputItemBuilder: (i) => myInputItemBuilder(i),
+  defaultItemBuilder: (i) => myDefaultItemBuilder(i),
   length = 4,
   currentLength = pin.length,
   isError = isPinError,
@@ -114,19 +118,22 @@ PinIndicatorBuilder(
   size = 14,
   loadingCollapseAnimationChild = myLoadingCollapsedWidget,
   successCollapseAnimationChild = mySuccessCollapsedWidget,
-  errorItemBuilder: (i) => myErrorItemBuilder(i),
-  successItemBuilder: (i) => mySuccessItemBuilder(i),
-  inputItemBuilder: (i) => myInputItemBuilder(i),
-  defaultItemBuilder: (i) => myDefaultItemBuilder(i),
 )
 
 PinIndicator(
-  // Same as above but decorations except builders 
-  ...
   errorDecoration = myErrorDecoration,
   successDecoration = mySuccessDecoration,
   inputDecoration = myInputDecoration,
   defaultDecoration = myDefaultDecoration,
+  length = 4,
+  currentLength = pin.length,
+  isError = isPinError,
+  isSuccess = isPinSuccess,
+  controller = myController,
+  spacing = 24,
+  size = 14,
+  loadingCollapseAnimationChild = myLoadingCollapsedWidget,
+  successCollapseAnimationChild = mySuccessCollapsedWidget,
 )
 ```
 
@@ -189,8 +196,8 @@ recommendations.
 | Idle    | Pulse        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_pulse.gif" alt="" width="320"/>          |                                                                                                                                                                                                                                                                                                                                                                                                                                             | -         |
 | Idle    | Flash        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_flash.gif" alt="" width="320"/>          | • Items randomly inflate and deflate                                                                                                                                                                                                                                                                                                                                                                                                        | -         |
 
-Some of the animation may look weird at first, but by combining them together
-and adding delays before and after, good sequences can be created!</br>
+Seeing alone, some animations may look raw at first, but by combining them
+together and adding delays before and after, good sequences can be created!</br>
 
 You can try it out in the [example project](#-examples)
 and use it as a playground to test your ideas. Also, it can be a great start point

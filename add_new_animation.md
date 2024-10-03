@@ -46,7 +46,7 @@ this instruction.
 6) Go through all the steps from the [instruction above](#add-a-new-animation-with-existing-type)
    to add a new animation with a new type you created.
 
-### How to implement your new animation:
+### How to implement a new animation:
 
 There are no limitations on how to exactly implement animation for **pin_ui**.
 Any approach you best with can be used: AnimationController, Tween, AnimatedContainer,
@@ -62,7 +62,8 @@ associated `PinIndicatorAnimationController`. So implementation doesn't matter.
 If you added a new animation which lasts for 3 seconds, and it was called, core
 widget will display it, give 3 seconds to play an animation, and then it will be
 replaced with a next one from the queue (or earlier if animation is interruptible)
-or with a static Indicator if there are no any.
+or with a static Pin Indicator if there are no any. The only limitation in this
+case is animation duration, but it is also configured by you in advance. 
 </br>
 </br>
 </br>

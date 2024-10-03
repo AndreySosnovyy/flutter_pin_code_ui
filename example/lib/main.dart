@@ -73,20 +73,20 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
               return Column(
                 children: [
                   const Spacer(flex: 3),
-                  // PinIndicator(
-                  //   controller: pinIndicatorAnimationController,
-                  //   length: validPin.length,
-                  //   currentLength: pinText.length,
-                  //   isError: isPinError,
-                  //   isSuccess: isPinSuccess,
-                  // ),
-                  GlassPinIndicator(
+                  PinIndicator(
                     controller: pinIndicatorAnimationController,
                     length: validPin.length,
                     currentLength: pinText.length,
                     isError: isPinError,
                     isSuccess: isPinSuccess,
                   ),
+                  // GlassPinIndicator(
+                  //   controller: pinIndicatorAnimationController,
+                  //   length: validPin.length,
+                  //   currentLength: pinText.length,
+                  //   isError: isPinError,
+                  //   isSuccess: isPinSuccess,
+                  // ),
                   const SizedBox(height: 64),
                   Pinpad(
                     onKeyTap: (key) {

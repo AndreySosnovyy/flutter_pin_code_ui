@@ -115,8 +115,13 @@ When using `PinIndicator` you can provide `size` parameter to resize your items.
 ### Animating
 
 Animations are one of the core features of **pin_ui** package. It contains lots of
-pre-made animations for several scenarios when user interact with your app. Pin
-Indicator can be animated in such ways:
+pre-made animations for several scenarios when user interact with your app.</br>
+**Why use animations?** First of all, it looks much nicer. Second thing is that you
+can hide some initial async backed requests or other initialization processes not
+behind boring loading indicators or shimmers but behind sequences of cool animations
+that will take a lot of user's attention while playing.
+
+Pin Indicator can be animated in such ways:
 
 - **Input.** Animate input when user enters a digit of PIN code.
 - **Loading.** Animate loading when you need to hide long-lasting async operation

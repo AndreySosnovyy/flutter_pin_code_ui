@@ -104,12 +104,29 @@ So it more customizable. If you don't need this customization level, just use
 - `successCollapseAnimationChild` – widget used in Success Collapse animation.
 
 ```dart
-PinIndicator(
-  
+PinIndicatorBuilder(
+  length = 4,
+  currentLength = pin.length,
+  isError = isPinError,
+  isSuccess = isPinSuccess,
+  controller = myController,
+  spacing = 24,
+  size = 14,
+  loadingCollapseAnimationChild = myLoadingCollapsedWidget,
+  successCollapseAnimationChild = mySuccessCollapsedWidget,
+  errorItemBuilder: (i) => myErrorItemBuilder(i),
+  successItemBuilder: (i) => mySuccessItemBuilder(i),
+  inputItemBuilder: (i) => myInputItemBuilder(i),
+  defaultItemBuilder: (i) => myDefaultItemBuilder(i),
 )
 
-PinIndicatorBuilder(
-
+PinIndicator(
+  // Same as above but decorations except builders 
+  ...
+  errorDecoration = myErrorDecoration,
+  successDecoration = mySuccessDecoration,
+  inputDecoration = myInputDecoration,
+  defaultDecoration = myDefaultDecoration,
 )
 ```
 

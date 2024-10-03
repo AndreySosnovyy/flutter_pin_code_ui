@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:example/pin_indicators/glass.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_ui/pin_ui.dart';
 
@@ -80,13 +79,6 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                     isError: isPinError,
                     isSuccess: isPinSuccess,
                   ),
-                  // GlassPinIndicator(
-                  //   controller: pinIndicatorAnimationController,
-                  //   length: validPin.length,
-                  //   currentLength: pinText.length,
-                  //   isError: isPinError,
-                  //   isSuccess: isPinSuccess,
-                  // ),
                   const SizedBox(height: 64),
                   Pinpad(
                     onKeyTap: (key) {

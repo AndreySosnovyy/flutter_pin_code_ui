@@ -204,18 +204,18 @@ will be played without any other modifications.
 But you can slightly modify animation call by passing necessary parameters.
 List of available parameters differs from one method to another. Here is 
 description for them:
-- `animation` - is a variant of animation you want to play (check table above).
-- `delayBefore` and `delayAfter` - delays to be set before and after this animation.
+- `animation` – is a variant of animation you want to play (check table above).
+- `delayBefore` and `delayAfter` – delays to be set before and after this animation.
   They are useful for making a sequences of animations or adding extra time for
   animation to last longer in some cases.
-- `onComplete` and `onInterrupt` - useful callbacks for any cases: staring one
+- `onComplete` and `onInterrupt` – useful callbacks for any cases: staring one
   animation after another, reacting to user input during interruptible animations,
   navigating or triggering other needed logic.
-- `animationSpeed` - animation speed multiplier. Useful in some cases because
+- `animationSpeed` – animation speed multiplier. Useful in some cases because
   all animation have preconfigured duration.
-- `vibration` - enables vibration for animation (not all animation will vibrate!).
+- `vibration` – enables vibration for animation (not all animation will vibrate!).
   More in [Vibration section](#vibration).
-- `repeatCount` - a way to avoid calling an animation multiple times.
+- `repeatCount` – a way to avoid calling an animation multiple times.
 
 </br>You may want to update your UI when animations starts or ends.
 This can be done by listening to controller via `ValueListenableBuilder`. It will

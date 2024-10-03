@@ -110,14 +110,15 @@ To change spacing between items, set `spacing` parameter.
 
 When using `PinIndicator` you can provide `size` parameter to resize your items.
 
-### Animating
+### Animations
 
-Animations are one of the core features of **pin_ui** package. It contains lots of
+Animations are core features of **pin_ui** package. It contains lots of
 pre-made animations for several scenarios when user interact with your app.</br>
-**Why use animations?** First of all, it looks much nicer. Second thing is that you
-can hide some initial async backed requests or other initialization processes not
-behind boring loading indicators or shimmers but behind sequences of cool animations
-that will take a lot of user's attention while playing.
+**Why use animations?** First of all, it looks much nicer. Second thing is that they
+can take user's attention while some async backed requests or other
+initialization processes will happen in background. Usually it's done with boring
+loading indicators or shimmers. But a good sequences of cool animations can
+handle this task much better!
 
 Pin Indicator can be animated in such ways:
 
@@ -168,44 +169,109 @@ recommendations.
 | Idle    | Pulse        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_pulse.gif" alt="" width="320"/>          |                                                                                                                                                                                                                                                                                                                                                                                                                                             | -         |
 | Idle    | Flash        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_flash.gif" alt="" width="320"/>          | • Items randomly inflate and deflate                                                                                                                                                                                                                                                                                                                                                                                                        | -         |
 
-Some of the animation may look wierd, but if you combine them together and add
-delays before and after, they may create good sequences! Also, you can adjust
-any animation speed or make them a bit slower via `animationSpeed` parameter when
-calling the animation:
+Some of the animation may look weird at first, but by combining them together
+and adding delays before and after, good sequences can be created!</br>
 
-```dart
-controller.animateSuccess(
-  animation: PinSuccessAnimation.fillLast,
-  animationSpeed: 2, // <-- animation will be played at 2x speed
-  // Delays before and after won't be affected with animationSpeed value
-  delayBefore: Duration(milliseconds: 240),
-  delayAfter: Duration(seconds: 1),
-);
-```
-
-You can try it out in [example project](https://github.com/AndreySosnovyy/flutter_pin_code_ui/tree/main/example)
+You can try it out in the [example project](#-examples)
 and use it as a playground to test your ideas. Also, it can be a great start point
 to begin with where you can copy some code for your application.
 
-Currently, there are no ability to customize them or add your own via package API.
-You can
-read [how to add a new animation or customize an existing one](#-adding-new-animations-or-customizing-existing-ones)
-in case no one of them fits your requirements for some reason.
+### Controller
 
 Animations are called via `PinIndicatorAnimationController` provided by this package.
 Associate a controller with `PinIndicator` or `PinIndicatorBuilder` by passing it
 in `controller` parameter. After that you can call animation methods and Indicator
 will be animated in a way you said it to.
 
-You may also want to update your UI when animations starts or ends.
-This can be done by listening to controller via `ValueListenableBuilder`.</br>
-Such opportunity may be useful in some cases. For example, if you want to
+```dart
+final controller = PinIndicatorAnimationController();
+        
+PinIndicator(
+  controller: controller,
+  ...
+)
+```
+
+**Controller** is responsible for managing animations. It is done with Queue, so
+all animation calls are **synchronous** operations.</br>
+To start playing a desired animation just call appropriate method from controller.
+```dart
+controller.animateLoading();
+```
+
+Simple call does not contain any parameters. In this case default animation
+will be played without any other modifications.
+But you can slightly modify animation call by passing necessary parameters.
+List of available parameters differs from one method to another. Here is 
+description for them:
+- `animation` - is a variant of animation you want to play (check table above).
+- `delayBefore` and `delayAfter` - delays to be set before and after this animation.
+  They are useful for making a sequences of animations or adding extra time for
+  animation to last longer in some cases.
+- `onComplete` and `onInterrupt` - useful callbacks for any cases: staring one
+  animation after another, reacting to user input during interruptible animations,
+  navigating or triggering other needed logic.
+- `animationSpeed` - animation speed multiplier. Useful in some cases because
+  all animation have preconfigured duration.
+- `vibration` - enables vibration for animation (not all animation will vibrate!).
+  More in [Vibration section](#vibration).
+- `repeatCount` - a way to avoid calling an animation multiple times.
+
+</br>You may want to update your UI when animations starts or ends.
+This can be done by listening to controller via `ValueListenableBuilder`. It will
+return a value with `PinIndicatorAnimation` type containing service information about
+current animation or `null` if no animation is playing. You can avoid using this
+and in case you need to check what animation is now playing appeal to getters in
+controller.</br>
+Listening to controller may be useful in some cases. For example, if you want to
 disable `Pinpad` or make it invisible when **loading** or **success** animation
 are in progress to show user that something is happening in background and no
 more actions required. Or if you want to update `Scaffold` background color
-depending on current animation.
+depending on current animation.</br>
+In this code snippet it listens to the controller and disables or hides Pinpad
+when needed:
 
-When starting a new animation you may want to replace items of Pin Indicator with
+```dart
+return ValueListenableBuilder(
+  valueListenable: controller,
+  builder: (context, value, child) {
+    return Column(
+      children: [
+        PinIndicator(
+          contoller: controller,
+          ...
+        ),
+        Pinpad(
+          // Disable keyboard when important animation is playing
+          enabled: !controller.isAnimatingNonInterruptible,
+          // Hide keyboard when Success animation is playing
+          isVisible: !controller.isAnimatingSuccess,
+          ...
+        ),
+      ],
+    );  
+  },
+);
+```
+
+</br>All the animations works with any allowed number of items (> 3). But if you have
+too many items animations will look fast because they have fixed play time. So
+animation speed can be adjusted to make any of them a bit faster of slower via
+`animationSpeed` parameter when calling the animation:
+
+```dart
+controller.animateSuccess(
+  animation: PinSuccessAnimation.fillLast,
+  animationSpeed: 2, // <-- animation will be played at 2x speed
+  // animationSpeed: 0.33, // <-- this will make animation 3 times slower
+
+  // Both delays won't be affected with animationSpeed value
+  delayBefore: Duration(milliseconds: 240),
+  delayAfter: Duration(seconds: 1),
+);
+```
+
+</br>When starting a new animation you may want to replace items of Pin Indicator with
 different widget or at least change their colors, so animation looks more natural
 and easily understandable for user. To do so you don't need to add any extra
 conditions or update your builders' code. Pin Indicator widget will handle it all
@@ -214,7 +280,10 @@ default and input states it will depend on `length` and `currentLength` to decid
 what builder or decoration apply for each item.
 
 Managing Error and Success states is easy via `onComplete` and `onInterruct`
-callbacks. They can be set when calling animation in controller:
+callbacks. `onComplete` triggers when animation and delay after (if set) is over,
+`onInterrupt` triggers when animation is stopped (by user with `stop()`or
+by other more important animation). These callbacks can be set when calling
+animation in controller:
 
 ```dart
 // Your Pin Indicator widget
@@ -256,7 +325,31 @@ void clear() => setState(() {
 });
 ```
 
-## Usage
+### Vibration
+
+Some of the animation has a vibration feature! You can check if it is available
+in the [table](#animations).
+
+To enable vibration feature you have to add this to your Android Manifest:
+
+```manifest
+<uses-permission android:name="android.permission.VIBRATE"/>
+```
+
+Then initialize controller with `initializeVibration()` async method. Otherwise,
+it will throw an exception when animation with vibration called!
+
+After preparation, you can call animations and enable vibration feature:
+
+```dart
+controller.animateLoading(
+  animation: PinLoadingAnimation.jump,
+  vibration: true,
+);
+```
+
+If animation was called with vibration enabled, but it is not implemented for some
+reason, nothing bad will happen.
 
 ## Additional information
 

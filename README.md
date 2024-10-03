@@ -31,7 +31,7 @@ screens in Flutter applications. It provides 2 core widgets:
   to style digits inside the keys.
 - Resize keys with `keyHeight` and `keyWidth`.
 - Spacing between keys can be changed with `horizontalSpacing` and `verticalSpacing`
-  properties.
+  properties. By default, these values will be calculated depending on the screen size. 
 - You can disable or make pinpad invisible by setting `enabled` and `isVisible`.
   Making it invisible will not change actual size of the keyboard.
 - Vibration can be enabled with `vibrationEnabled` property. It will make a slight
@@ -41,6 +41,33 @@ screens in Flutter applications. It provides 2 core widgets:
   where you add onTap callback. Child can be any widget, but also you can use
   `PinpadKey` or `PinpadTextKey` provided by this package to make all buttons look
   the same.
+
+```dart
+Pinpad(
+  onKeyTap: myKeyTapHandler,
+  keyDefaultDecoration: myDecoration,
+  keyPressedDecoration: myDecoratino.copyWith(color: blue),
+  keyDisabledDecoration: myDecoration,
+  keyDefaultTextStyle: myTextStyle,
+  keyPressedTextStyle: myTextStyle.copyWith(fontWeight: FontWeight.w700),
+  keyDisabledTextStyle: myTextStyle.copyWith(color: grey),
+  leftExtraKey: PinpadExtraKey(
+    onTap: handleForgotPinTap,
+    child: myForgotPinButton,
+  ),
+  rightExtraKey: PinpadExtraKey(
+    onTap: handleEraseTap,
+    child: myEraseButton,
+  ),
+  horizontalSpacing: 100,
+  verticalSpacing: 50,
+  keyHeight: 50,
+  keyWidth: 50,
+  enabled: myEnableCondition,
+  isVisible: myVisibleCondition,
+  vibrationEnabled: true,
+)
+```
 
 ## Pin Indicator
 
@@ -226,7 +253,6 @@ void clear() => setState(() {
 });
 ```
 
-
 ## Usage
 
 ## Additional information
@@ -240,24 +266,32 @@ timeouts, calling biometrics, and some other options for better user experience.
 save you days of development and the result will be already perfect even out of
 the box.
 
+### 📱 Examples
+
+This package has a brief but complex enough [example](https://github.com/AndreySosnovyy/flutter_pin_code_ui/tree/main/example).
+Feel free to use it  as a playground or a template for your applications!
+
+You can also [share your own examples](#-contributing) for this section. 
+
 ### ➕ Adding new animations or customizing existing ones
+
+Before adding a new animation read an [instruction](add_new_animation.md) on how
+to do it in a way it is intended to.
 
 **pin_ui** package is designed to be easily extendable in terms of adding
 new animations for Pin Indicator, but currently there are no such API provided.
 You can still add own animations by
 forking [source code repository of this package](https://github.com/AndreySosnovyy/flutter_pin_code_ui)
-or suggesting something in [issue](https://github.com/AndreySosnovyy/flutter_pin_code_ui/issues)
-or [pull request](https://github.com/AndreySosnovyy/flutter_pin_code_ui/pulls).
-
-Before adding a new animation read an [instruction](add_new_animation.md) on how
-to do it in a way it is intended to.
+or [contribute by suggesting something useful for others](#-contributing).
 
 ### 🛠 Contributing
 
-If you have found a bug, have a great ready to go new animation or want to
-suggest an idea for new animation, you're always welcome! Fell free to open
+You have an interesting open source example to share with community? Or found a bug,
+have a great ready to go new animation or want to suggest an idea for new animation,
+you're always welcome! Fell free to open
 an [issue](https://github.com/AndreySosnovyy/flutter_pin_code_ui/issues)
 or [pull request](https://github.com/AndreySosnovyy/flutter_pin_code_ui/pulls)
-in [repository on GitHub](https://github.com/AndreySosnovyy/flutter_pin_code_ui)!
-
-
+in [GitHub repository](https://github.com/AndreySosnovyy/flutter_pin_code_ui)!
+</br>
+</br>
+</br>

@@ -102,8 +102,10 @@ It provides simple items that can be decorated with Flutter's`BoxDecoration`.
 - `spacing` – distance between items.
 - `size` – size of item. It resizes items for `PinIndicator`. There is no such
   parameter for .builder constructor, but take in mind that all items better be
-  *the same fixed size*. This will make Indicator static and will not break
-  animations that depends on child size in their calculations.
+  *the same fixed size*. Even if they must look different, make them take same
+  amount of space by wrapping with SizedBox or adding invisible margins.
+  This will make Indicator static and will not break animations that depends on
+  child size in their calculations.
 - `loadingCollapseAnimationChild` – widget used in Loading Collapse animation.
 - `successCollapseAnimationChild` – widget used in Success Collapse animation.
 

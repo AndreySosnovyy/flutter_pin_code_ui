@@ -108,21 +108,6 @@ It provides simple items that can be decorated with Flutter's`BoxDecoration`.
 - `successCollapseAnimationChild` – widget used in Success Collapse animation.
 
 ```dart
-PinIndicator.builder(
-  errorItemBuilder: (i) => myErrorItemBuilder(i),
-  successItemBuilder: (i) => mySuccessItemBuilder(i),
-  inputItemBuilder: (i) => myInputItemBuilder(i),
-  defaultItemBuilder: (i) => myDefaultItemBuilder(i),
-  length = 4,
-  currentLength = pin.length,
-  isError = isPinError,
-  isSuccess = isPinSuccess,
-  controller = myController,
-  spacing = 24,
-  loadingCollapseAnimationChild = myLoadingCollapsedWidget,
-  successCollapseAnimationChild = mySuccessCollapsedWidget,
-)
-
 PinIndicator(
   errorDecoration = myErrorDecoration,
   successDecoration = mySuccessDecoration,
@@ -138,7 +123,34 @@ PinIndicator(
   loadingCollapseAnimationChild = myLoadingCollapsedWidget,
   successCollapseAnimationChild = mySuccessCollapsedWidget,
 )
+
+PinIndicator.builder(
+  errorItemBuilder: (i) => myErrorItemBuilder(i),
+  successItemBuilder: (i) => mySuccessItemBuilder(i),
+  inputItemBuilder: (i) => myInputItemBuilder(i),
+  defaultItemBuilder: (i) => myDefaultItemBuilder(i),
+  length = 4,
+  currentLength = pin.length,
+  isError = isPinError,
+  isSuccess = isPinSuccess,
+  controller = myController,
+  spacing = 24,
+  loadingCollapseAnimationChild = myLoadingCollapsedWidget,
+  successCollapseAnimationChild = mySuccessCollapsedWidget,
+)
 ```
+
+> **_NOTE:_** builders for `PinIndicator.builder` constructor must return not normal `Widget`
+> type but `PreferredSizeWidget`. To do so just add `implements PreferredSizeWidget`
+> to a `StatefulWidget` or `StatelessWidget` and provide a size with `preferredSize`
+> overridden getter. It is required for some animations, because they use size of
+> Pin Indicator items in their calculations.
+> 
+> There is also a type defined for these 4 builders named `PinIndicatorItemBuilder`.
+> Use it if you need to pass them through layers of widgets or store somewhere:
+> ```dart
+> typedef PinIndicatorItemBuilder = PreferredSizeWidget Function(int index);
+> ```
 
 ### Animations
 

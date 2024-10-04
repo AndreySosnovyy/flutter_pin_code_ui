@@ -31,7 +31,7 @@ import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/pin_indicator_item.dart';
 
 /// Pin indicator item widget builder.
-typedef PinIndicatorItemBuilder = Widget Function(int index);
+typedef PinIndicatorItemBuilder = PreferredSizeWidget Function(int index);
 
 /// Pin indicator widget.
 class PinIndicator extends StatefulWidget {
@@ -174,7 +174,7 @@ class PinIndicator extends StatefulWidget {
 }
 
 class _PinIndicatorState extends State<PinIndicator> {
-  Widget _buildItemForIndex(int index) {
+  PreferredSizeWidget _buildItemForIndex(int index) {
     if (widget.isSuccess) return widget.successItemBuilder(index);
     if (widget.isError) return widget.errorItemBuilder(index);
     if (index < widget.currentLength) return widget.inputItemBuilder(index);
@@ -185,8 +185,14 @@ class _PinIndicatorState extends State<PinIndicator> {
   /// If no, estimated size needs to be calculated for animations.
   bool get hasPreconfiguredSize => widget.itemSize != -1;
 
-  double calculateSizeForItems(List<Widget> items) {
-    return 14.0;
+  /// Calculates max item size
+  double calculateSizeForItems(List<PreferredSizeWidget> items) {
+    double maxSize = 0;
+    for (final item in items) {
+      final size = (item.preferredSize.width + item.preferredSize.height) / 2;
+      if (size > maxSize) maxSize = size;
+    }
+    return maxSize;
   }
 
   @override

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// {@template pin_ui.PinIndicatorItem}
 /// Simple in indicator item that can be customized with [decoration] and [size].
 /// {@endtemplate}
-class PinIndicatorItem extends StatelessWidget {
+class PinIndicatorItem extends StatelessWidget implements PreferredSizeWidget {
   /// {@macro pin_ui.PinIndicatorItem}
   const PinIndicatorItem({
     required this.decoration,
@@ -16,6 +16,9 @@ class PinIndicatorItem extends StatelessWidget {
 
   /// Item's size.
   final double size;
+
+  @override
+  Size get preferredSize => Size(size, size);
 
   @override
   Widget build(BuildContext context) {

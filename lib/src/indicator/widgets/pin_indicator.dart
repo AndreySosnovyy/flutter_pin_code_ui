@@ -174,11 +174,11 @@ class PinIndicator extends StatefulWidget {
 }
 
 class _PinIndicatorState extends State<PinIndicator> {
-  PinIndicatorItemBuilder _getBuilderForItemIndexed(int index) {
-    if (widget.isSuccess) return widget.successItemBuilder;
-    if (widget.isError) return widget.errorItemBuilder;
-    if (index < widget.currentLength) return widget.inputItemBuilder;
-    return widget.defaultItemBuilder;
+  Widget _buildItemForIndex(int index) {
+    if (widget.isSuccess) return widget.successItemBuilder(index);
+    if (widget.isError) return widget.errorItemBuilder(index);
+    if (index < widget.currentLength) return widget.inputItemBuilder(index);
+    return widget.defaultItemBuilder(index);
   }
 
   /// Internal getter to check if items of Pin Indicator has size.
@@ -193,7 +193,7 @@ class _PinIndicatorState extends State<PinIndicator> {
   Widget build(BuildContext context) {
     final currentItems = List.generate(
       widget.length,
-      (i) => _getBuilderForItemIndexed(i)(i),
+      (i) => _buildItemForIndex(i),
     );
     final noAnimationPinIndicator = NoAnimationPinIndicator(
       length: widget.length,

@@ -125,9 +125,7 @@ class _PinpadKeyWrapperState extends State<PinpadKeyWrapper> {
             onPressStart: widget.onTapStart,
             onPressEnd: () {
               widget.onTapEnd?.call();
-              if (isPointed) {
-                widget.onTap?.call();
-              }
+              if (isPointed) widget.onTap?.call();
             },
             builder: (context, isPressed) => DecoratedBox(
               decoration: widget.enabled

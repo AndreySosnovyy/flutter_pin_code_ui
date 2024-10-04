@@ -113,25 +113,30 @@ class PinpadKeyWrapper extends PinpadKeyBase {
 class _PinpadKeyWrapperState extends State<PinpadKeyWrapper> {
   @override
   Widget build(BuildContext context) {
-    // TODO(Sosnovyy): complete decorations logic with isPointed value when it's ready
-    return PointDetectorBuilder(
-      shape: widget.defaultDecoration?.shape ?? BoxShape.circle,
-      builder: (context, isPointed) => IgnorePointer(
-        ignoring: !widget.enabled,
-        child: PressDetectorBuilder(
-          onTap: widget.onTap,
-          onPressStart: widget.onTapStart,
-          onPressEnd: widget.onTapEnd,
-          builder: (context, isPressed) => AnimatedContainer(
-            duration: const Duration(milliseconds: 120),
-            width: widget.width,
-            height: widget.height,
-            decoration: widget.enabled
-                ? isPressed
-                    ? widget.pressedDecoration
-                    : widget.defaultDecoration
-                : widget.disabledDecoration,
-            child: Center(child: widget.builder(isPressed)),
+    return IgnorePointer(
+      ignoring: !widget.enabled,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 120),
+        width: widget.width,
+        height: widget.height,
+        child: PointDetectorBuilder(
+          shape: widget.defaultDecoration?.shape ?? BoxShape.circle,
+          builder: (context, isPointed) => PressDetectorBuilder(
+            onPressStart: widget.onTapStart,
+            onPressEnd: () {
+              widget.onTapEnd?.call();
+              if (isPointed) {
+                widget.onTap?.call();
+              }
+            },
+            builder: (context, isPressed) => DecoratedBox(
+              decoration: widget.enabled
+                  ? isPressed && isPointed
+                      ? widget.pressedDecoration!
+                      : widget.defaultDecoration!
+                  : widget.disabledDecoration!,
+              child: Center(child: widget.builder(isPressed)),
+            ),
           ),
         ),
       ),

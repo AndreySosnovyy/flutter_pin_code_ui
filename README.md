@@ -411,9 +411,10 @@ reason, nothing bad will happen.
 
 ### 👀 See also: [pin](https://pub.dev/packages/pin)
 
-This is a package focused on PIN code's backend part. It fully covers all
-the necessary logic of storing, updating, validating PIN, setting and handling
-timeouts, calling biometrics, and some other options for better user experience.</br>
+[pin package](https://pub.dev/packages/pin) focused on PIN code's backend part.
+It fully covers all the necessary logic of storing, updating, validating PIN,
+setting and handling timeouts, calling biometrics, and some other options for
+better user experience.</br>
 **pin_ui + pin** are perfect to work together in pair. Combining these two may
 save you days of development and the result will be already perfect even out of
 the box.

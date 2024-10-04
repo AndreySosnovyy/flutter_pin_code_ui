@@ -48,13 +48,13 @@ class _PointDetectorBuilderState extends State<PointDetectorBuilder> {
   Offset? widgetOffset;
   Offset? pointerOffset;
 
-  void onDragUpdate(DragUpdateDetails details) {
+  void onDragUpdate(PointerEvent details) {
     updatePointerOffset(details);
     checkIfPointed();
   }
 
-  void updatePointerOffset(DragUpdateDetails details) {
-    pointerOffset = details.globalPosition;
+  void updatePointerOffset(PointerEvent details) {
+    setState(() => pointerOffset = details.position);
   }
 
   void updateWidgetData() {
@@ -110,10 +110,10 @@ class _PointDetectorBuilderState extends State<PointDetectorBuilder> {
     if (!initializeCompleter.isCompleted) {
       return widget.placeholder ?? const SizedBox.shrink();
     }
-    // TODO(Sosnovyy): replace current dragging logic with a complete one
-    return GestureDetector(
-      onVerticalDragUpdate: onDragUpdate,
-      onHorizontalDragUpdate: onDragUpdate,
+    return Listener(
+      onPointerDown: onDragUpdate,
+      onPointerMove: onDragUpdate,
+      onPointerHover: onDragUpdate,
       child: widget.builder(context, _isPointed),
     );
   }

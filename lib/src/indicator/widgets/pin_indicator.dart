@@ -47,36 +47,35 @@ class PinIndicator extends StatefulWidget {
     BoxDecoration? inputDecoration,
     BoxDecoration? defaultDecoration,
     this.spacing = 24.0,
-    this.size = 14.0,
+    this.itemSize = 14.0,
     this.loadingCollapseAnimationChild,
     this.successCollapseAnimationChild,
     super.key,
   })  : assert(length >= currentLength),
         assert(length > 3),
         assert(spacing > 0),
-        assert(size > 0),
+        assert(itemSize > 0),
         assert(!isError || !isSuccess),
-        _isBuilderInstance = false,
         defaultItemBuilder = ((_) => PinIndicatorItem(
-              size: size,
+              size: itemSize,
               decoration: defaultDecoration ??
                   const BoxDecoration(
                       shape: BoxShape.circle, color: Colors.black26),
             )),
         errorItemBuilder = ((_) => PinIndicatorItem(
-              size: size,
+              size: itemSize,
               decoration: errorDecoration ??
                   const BoxDecoration(
                       shape: BoxShape.circle, color: Colors.red),
             )),
         successItemBuilder = ((_) => PinIndicatorItem(
-              size: size,
+              size: itemSize,
               decoration: successDecoration ??
                   const BoxDecoration(
                       shape: BoxShape.circle, color: Colors.green),
             )),
         inputItemBuilder = ((_) => PinIndicatorItem(
-            size: size,
+            size: itemSize,
             decoration: inputDecoration ??
                 const BoxDecoration(
                     shape: BoxShape.circle, color: Colors.blue)));
@@ -101,8 +100,7 @@ class PinIndicator extends StatefulWidget {
         assert(length > 3),
         assert(spacing > 0),
         assert(!isError || !isSuccess),
-        size = -1,
-        _isBuilderInstance = true;
+        itemSize = -1;
 
   /// {@template pin_ui.PinIndicatorBuilder.controller}
   /// Controller for managing animations.
@@ -154,10 +152,10 @@ class PinIndicator extends StatefulWidget {
   /// {@endtemplate}
   final double spacing;
 
-  // TODO(Sosnovyy): remove and calculate this via render boxes
   /// Size of Pin indicator item. Value is used in some animations.
   /// If size is not symmetric or different, provide estimate value.
-  final double size;
+  // This will be -1 for .builder constructor
+  final double itemSize;
 
   /// {@template pin_ui.PinIndicator.successCollapseAnimationChild}
   /// Widget that will appear on the screen after all indicator items are
@@ -171,10 +169,6 @@ class PinIndicator extends StatefulWidget {
   /// {@endtemplate}
   final Widget? loadingCollapseAnimationChild;
 
-  /// Internal values used to detect if this instance was made with .builder
-  /// constructor
-  final bool _isBuilderInstance;
-
   @override
   State<PinIndicator> createState() => _PinIndicatorState();
 }
@@ -185,6 +179,14 @@ class _PinIndicatorState extends State<PinIndicator> {
     if (widget.isError) return widget.errorItemBuilder;
     if (index < widget.currentLength) return widget.inputItemBuilder;
     return widget.defaultItemBuilder;
+  }
+
+  /// Internal getter to check if items of Pin Indicator has size.
+  /// If no, estimated size needs to be calculated for animations.
+  bool get hasPreconfiguredSize => widget.itemSize != -1;
+  
+  double calculateSize() {
+    return 14.0;
   }
 
   @override
@@ -198,6 +200,7 @@ class _PinIndicatorState extends State<PinIndicator> {
       spacing: widget.spacing,
       builder: (i) => currentItems[i],
     );
+    final itemSize = hasPreconfiguredSize ? widget.itemSize : calculateSize();
     return ValueListenableBuilder(
       valueListenable: widget.controller ?? PinIndicatorAnimationController(),
       builder: (context, animation, child) {
@@ -244,7 +247,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentItems[i],
               spacing: widget.spacing,
-              childSize: widget.size,
+              childSize: itemSize,
               vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorLoadingWaveInflateAnimationData() =>
@@ -271,20 +274,20 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentItems[i],
               spacing: widget.spacing,
-              childSize: widget.size,
+              childSize: itemSize,
               vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorLoadingCollapseAnimationData() =>
             LoadingCollapsePinIndicator(
               key: animationKey,
               length: widget.length,
-              childSize: widget.size,
+              childSize: itemSize,
               duration: animationDuration,
               builder: (i) => currentItems[i],
               spacing: widget.spacing,
               loadingIndicator: widget.loadingCollapseAnimationChild ??
                   DefaultPinLoadingCollapseAnimationChild(
-                    anchorSize: widget.size,
+                    anchorSize: itemSize,
                   ),
               vibration: isVibrationEnabledAndCanVibrate,
             ),
@@ -292,20 +295,20 @@ class _PinIndicatorState extends State<PinIndicator> {
             SuccessCollapsePinIndicator(
               key: animationKey,
               length: widget.length,
-              childSize: widget.size,
+              childSize: itemSize,
               duration: animationDuration,
               builder: (i) => currentItems[i],
               spacing: widget.spacing,
               collapsedChild: widget.successCollapseAnimationChild ??
                   DefaultPinSuccessCollapseAnimationChild(
-                    anchorSize: widget.size,
+                    anchorSize: itemSize,
                   ),
               vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorSuccessFillAnimationData() => SuccessFillPinIndicator(
               key: animationKey,
               length: widget.length,
-              childSize: widget.size,
+              childSize: itemSize,
               duration: animationDuration,
               builder: (i) => currentItems[i],
               spacing: widget.spacing,
@@ -315,7 +318,7 @@ class _PinIndicatorState extends State<PinIndicator> {
             SuccessFillLastPinIndicator(
               key: animationKey,
               length: widget.length,
-              childSize: widget.size,
+              childSize: itemSize,
               duration: animationDuration,
               builder: (i) => currentItems[i],
               spacing: widget.spacing,
@@ -324,7 +327,7 @@ class _PinIndicatorState extends State<PinIndicator> {
           PinIndicatorSuccessKickAnimationData() => SuccessKickPinIndicator(
               key: animationKey,
               length: widget.length,
-              childSize: widget.size,
+              childSize: itemSize,
               duration: animationDuration,
               builder: (i) => currentItems[i],
               spacing: widget.spacing,
@@ -333,7 +336,7 @@ class _PinIndicatorState extends State<PinIndicator> {
           PinIndicatorErrorShakeAnimationData() => ErrorShakePinIndicator(
               key: animationKey,
               length: widget.length,
-              childSize: widget.size,
+              childSize: itemSize,
               duration: animationDuration,
               builder: (i) => currentItems[i],
               spacing: widget.spacing,
@@ -361,7 +364,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               duration: animationDuration,
               builder: (i) => currentItems[i],
               spacing: widget.spacing,
-              childSize: widget.size,
+              childSize: itemSize,
               vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorClearFadeAnimationData() => ClearFadePinIndicator(
@@ -380,7 +383,7 @@ class _PinIndicatorState extends State<PinIndicator> {
               builderOld: (i) => currentItems[i],
               builderNew: (i) => widget.defaultItemBuilder(i),
               spacing: widget.spacing,
-              childSize: widget.size,
+              childSize: itemSize,
               vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorEraseDeflateAnimationData() => EraseDeflatePinIndicator(

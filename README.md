@@ -75,31 +75,33 @@ The simplest variants of Pin Indicator is a line of colored dots or obscured sta
 
 ### Customization
 
-There are 2 widgets to layout Pin Indicator in your apps: `PinIndicator` and
-`PinIndicatorBuilder`. They have mostly the same set of parameters, the main
-difference is that by using Builder version you can provide any widgets as items.
-So it more customizable. If you don't need this customization level, just use
-`PinIndicator`. It provides simple items that can be decorated with Flutter's
-`BoxDecoration`.
+`PinIndicator` widget has 2 constructors: default one and `PinIndicator.builder`.
+They have mostly the same set of parameters, the main difference is that by using
+`.builder` version you can provide any widgets as items. So it more customizable.
+If you don't need this customization level, just use default one.
+It provides simple items that can be decorated with Flutter's`BoxDecoration`.
 
-- **Items** inside both `PinIndicator` and `PinIndicatorBuilder` have 4 states: **Default** represents not entered PIN
-  code digits, **Input** represents entered PIN code digits, **Error ** indicates
-  that there is something wrong happened (wrong PIN entered), **Success**
+- Items inside `PinIndicator` have 4 states: *Default* represents not entered
+  PIN code digits, *Input* represents entered PIN code digits, *Error* indicates
+  that there is something wrong happened (wrong PIN entered), *Success*
   indicates that user entered correct PIN code.</br>
   So there are 4 different parameters to customize your Pin Indicator.</br>
-  For **PinIndicatorBuilder** 4 required parameters: `defaultItemBuilder`,
+  For .builder constructor there are 4 required parameters: `defaultItemBuilder`,
   `inputItemBuilder`, `errorItemBuilder` and `successItemBuilder`.</br>
-  For **PinIndicator**: `defaultDecoration`, `inputDecoration`,
-  `errorDecoration` and `successDecoration`. These parameters are not required.
-  If not provided, pre-made decorations will be used instead.</br>
+  For default constructor there are 4 optional parameters: `defaultDecoration`,
+  `inputDecoration`, `errorDecoration` and `successDecoration`.
+  These parameters are not required! If not provided, pre-made decorations will
+  be used instead.</br>
+- `controller` – your instance of `PinIndicatorAnimationController` class for
+  managing animations if needed.
 - `length` is total number of digits in PIN code. It can be anything starting from 3,
   but usually it is 4, 5 or 6.
 - `currentLength` represents number of already entered digits by user.
 - `isError` – error state enabler.
 - `isSuccess` – success state enabler.
 - `spacing` – distance between items.
-- `size` – size of item. It resizes items for `PinIndicator`, but for
-  `PinIndicatorBuilder` it used in some calculations for animations.
+- `size` – size of item. It resizes items for `PinIndicator` (there is no such
+  parameter for .builder constructor).
 - `loadingCollapseAnimationChild` – widget used in Loading Collapse animation.
 - `successCollapseAnimationChild` – widget used in Success Collapse animation.
 

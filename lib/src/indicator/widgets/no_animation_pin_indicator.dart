@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Pin indicator item builder function.
-typedef PinIndicatorItemBuilder = Widget Function(int index);
-
 /// {@template pin_ui.NoAnimationPinIndicator}
 /// Static version of PinIndicator widget.
 /// {@endtemplate}
@@ -22,7 +19,7 @@ class NoAnimationPinIndicator extends StatelessWidget {
   final double spacing;
 
   /// Pin indicator item builder.
-  final PinIndicatorItemBuilder builder;
+  final Widget Function(int index) builder;
 
   @override
   Widget build(BuildContext context) {

@@ -29,7 +29,7 @@ screens in Flutter applications. It provides 2 core widgets:
   to style digits inside the keys.
 - Resize keys with `keyHeight` and `keyWidth`.
 - Spacing between keys can be changed with `horizontalSpacing` and `verticalSpacing`
-  properties. By default, these values will be calculated depending on the screen size. 
+  properties. By default, these values will be calculated depending on the screen size.
 - You can disable or make pinpad invisible by setting `enabled` and `isVisible`.
   Making it invisible will not change actual size of the keyboard.
 - Vibration can be enabled with `vibrationEnabled` property. It will make a slight
@@ -41,29 +41,34 @@ screens in Flutter applications. It provides 2 core widgets:
   the same.
 
 ```dart
-Pinpad(
-  onKeyTap: myKeyTapHandler,
-  keyDefaultDecoration: myDecoration,
-  keyPressedDecoration: myDecoratino.copyWith(color: blue),
-  keyDisabledDecoration: myDecoration,
-  keyDefaultTextStyle: myTextStyle,
-  keyPressedTextStyle: myTextStyle.copyWith(fontWeight: FontWeight.w700),
-  keyDisabledTextStyle: myTextStyle.copyWith(color: grey),
-  leftExtraKey: PinpadExtraKey(
-    onTap: handleForgotPinTap,
-    child: myForgotPinButton,
-  ),
-  rightExtraKey: PinpadExtraKey(
-    onTap: handleEraseTap,
-    child: myEraseButton,
-  ),
-  horizontalSpacing: x,
-  verticalSpacing: y,
-  keyWidth: m,
-  keyHeight: n,
-  enabled: myEnableCondition,
-  isVisible: myVisibleCondition,
-  vibrationEnabled: true,
+Pinpad
+(
+onKeyTap: myKeyTapHandler,
+keyDefaultDecoration: myDecoration,
+keyPressedDecoration: myDecoratino.copyWith(color: blue),
+keyDisabledDecoration: myDecoration,
+keyDefaultTextStyle: myTextStyle,
+keyPressedTextStyle: myTextStyle.copyWith(fontWeight: FontWeight.w700),
+keyDisabledTextStyle: myTextStyle.copyWith(color: grey),
+leftExtraKey: PinpadExtraKey(
+onTap: handleForgotPinTap,
+child: myForgotPinButton,
+),
+rightExtraKey: PinpadExtraKey(
+onTap: handleEraseTap,
+child: myEraseButton,
+),
+horizontalSpacing: x,
+verticalSpacing: y,
+keyWidth: m,
+keyHeight: n,
+enabled: myEnableCondition,
+isVisible: myVisibleCondition
+,
+vibrationEnabled
+:
+true
+,
 )
 ```
 
@@ -100,42 +105,51 @@ It provides simple items that can be decorated with Flutter's`BoxDecoration`.
 - `isError` – error state enabler.
 - `isSuccess` – success state enabler.
 - `spacing` – distance between items.
-- `size` – size of item. It resizes items for `PinIndicator` (there is no such
-  parameter for .builder constructor).
+- `size` – size of item. It resizes items for `PinIndicator`. There is no such
+  parameter for .builder constructor, but take in mind that all items better be
+  *the same fixed size*. This will make Indicator static and will not break
+  animations that depends on child size in their calculations. 
 - `loadingCollapseAnimationChild` – widget used in Loading Collapse animation.
 - `successCollapseAnimationChild` – widget used in Success Collapse animation.
 
 ```dart
-PinIndicatorBuilder(
-  errorItemBuilder: (i) => myErrorItemBuilder(i),
-  successItemBuilder: (i) => mySuccessItemBuilder(i),
-  inputItemBuilder: (i) => myInputItemBuilder(i),
-  defaultItemBuilder: (i) => myDefaultItemBuilder(i),
-  length = 4,
-  currentLength = pin.length,
-  isError = isPinError,
-  isSuccess = isPinSuccess,
-  controller = myController,
-  spacing = 24,
-  size = 14,
-  loadingCollapseAnimationChild = myLoadingCollapsedWidget,
-  successCollapseAnimationChild = mySuccessCollapsedWidget,
+PinIndicatorBuilder
+(
+errorItemBuilder: (i) => myErrorItemBuilder(i),
+successItemBuilder: (i) => mySuccessItemBuilder(i),
+inputItemBuilder: (i) => myInputItemBuilder(i),
+defaultItemBuilder: (i) => myDefaultItemBuilder(i),
+length = 4,
+currentLength = pin.length,
+isError = isPinError,
+isSuccess = isPinSuccess,
+controller = myController,
+spacing = 24,
+size = 14,
+loadingCollapseAnimationChild = myLoadingCollapsedWidget,
+successCollapseAnimationChild = mySuccessCollapsedWidget,
 )
 
 PinIndicator(
-  errorDecoration = myErrorDecoration,
-  successDecoration = mySuccessDecoration,
-  inputDecoration = myInputDecoration,
-  defaultDecoration = myDefaultDecoration,
-  length = 4,
-  currentLength = pin.length,
-  isError = isPinError,
-  isSuccess = isPinSuccess,
-  controller = myController,
-  spacing = 24,
-  size = 14,
-  loadingCollapseAnimationChild = myLoadingCollapsedWidget,
-  successCollapseAnimationChild = mySuccessCollapsedWidget,
+errorDecoration = myErrorDecoration,
+successDecoration = mySuccessDecoration,
+inputDecoration = myInputDecoration,
+defaultDecoration = myDefaultDecoration,
+length = 4,
+currentLength = pin.length,
+isError = isPinError,
+isSuccess = isPinSuccess,
+controller = myController,
+spacing = 24,
+size = 14,
+loadingCollapseAnimationChild
+=
+myLoadingCollapsedWidget
+,
+successCollapseAnimationChild
+=
+mySuccessCollapsedWidget
+,
 )
 ```
 
@@ -213,11 +227,16 @@ in `controller` parameter. After that you can call animation methods and Indicat
 will be animated in a way you said it to.
 
 ```dart
+
 final controller = PinIndicatorAnimationController();
-        
-PinIndicator(
-  controller: controller,
-  ...
+
+PinIndicator
+(
+controller
+:
+controller
+,
+...
 )
 ```
 
@@ -227,15 +246,18 @@ one by one, or they can interrupt other not important animations. More on this i
 [Animations priority section](#animations-priority).
 
 To start playing a desired animation just call appropriate method from controller.
+
 ```dart
-controller.animateLoading();
+controller.animateLoading
+();
 ```
 
 Simple call does not contain any parameters. In this case default animation
 will be played without any other modifications.
 But you can slightly modify animation call by passing necessary parameters.
-List of available parameters differs from one method to another. Here is 
+List of available parameters differs from one method to another. Here is
 description for them:
+
 - `animation` – is a variant of animation you want to play (check table above).
 - `delayBefore` and `delayAfter` – delays to be set before and after this animation.
   They are useful for making a sequences of animations or adding extra time for
@@ -265,24 +287,24 @@ when needed:
 
 ```dart
 return ValueListenableBuilder(
-  valueListenable: controller,
-  builder: (context, value, child) {
-    return Column(
-      children: [
-        PinIndicator(
-          contoller: controller,
-          ...
-        ),
-        Pinpad(
-          // Disable keyboard when important animation is playing
-          enabled: !controller.isAnimatingNonInterruptible,
-          // Hide keyboard when Success animation is playing
-          isVisible: !controller.isAnimatingSuccess,
-          ...
-        ),
-      ],
-    );  
-  },
+valueListenable: controller,
+builder: (context, value, child) {
+return Column(
+children: [
+PinIndicator(
+contoller: controller,
+...
+),
+Pinpad(
+// Disable keyboard when important animation is playing
+enabled: !controller.isAnimatingNonInterruptible,
+// Hide keyboard when Success animation is playing
+isVisible: !controller.isAnimatingSuccess,
+...
+),
+],
+);
+},
 );
 ```
 
@@ -292,14 +314,21 @@ animation speed can be adjusted to make any of them a bit faster of slower via
 `animationSpeed` parameter when calling the animation:
 
 ```dart
-controller.animateSuccess(
-  animation: PinSuccessAnimation.fillLast,
-  animationSpeed: 2, // <-- animation will be played at 2x speed
-  // animationSpeed: 0.33, // <-- this will make animation 3 times slower
+controller.animateSuccess
+(
+animation: PinSuccessAnimation.fillLast,
+animationSpeed: 2, // <-- animation will be played at 2x speed
+// animationSpeed: 0.33, // <-- this will make animation 3 times slower
 
-  // Both delays won't be affected with animationSpeed value
-  delayBefore: Duration(milliseconds: 240),
-  delayAfter: Duration(seconds: 1),
+// Both delays won't be affected with animationSpeed value
+delayBefore: Duration(milliseconds: 240),
+delayAfter: Duration
+(
+seconds
+:
+1
+)
+,
 );
 ```
 
@@ -319,12 +348,13 @@ animation in controller:
 
 ```dart
 // Your Pin Indicator widget
-PinIndicator(
-  controller: controller,
-  length: 4,
-  currentLength: pin.length,
-  isError: isPinError,
-  isSuccess: isPinSuccess,
+PinIndicator
+(
+controller: controller,
+length: 4,
+currentLength: pin.length,
+isError: isPinError,
+isSuccess: isPinSuccess,
 )
 
 ________________________________________________________________________________
@@ -332,10 +362,10 @@ ________________________________________________________________________________
 
 // In case user entered correct PIN code
 controller.animateLoading(
-  onComplete: () => setState(() => isPinSuccess = true),
+onComplete: () => setState(() => isPinSuccess = true),
 );
 controller.animateSuccess(
-  onComplete: () { /* Perform navigation or any other necessary logic here */ },
+onComplete: () { /* Perform navigation or any other necessary logic here */ },
 );
 
 ________________________________________________________________________________
@@ -344,23 +374,23 @@ ________________________________________________________________________________
 // In case user entered wrong PIN code     
 setState(() => isPinError = true); // Set Error state
 controller.animateError(
-  onInterrupt: clear,
+onInterrupt: clear,
 );
 controller.animateClear(
-  onComplete: clear,
-  onInterrupt: clear,
+onComplete: clear,
+onInterrupt: clear,
 );
 
 void clear() => setState(() {
-  pin = ''; // Clean current entered pin variable
-  isPinError = false; // Go back to Default state for a new attempt
+pin = ''; // Clean current entered pin variable
+isPinError = false; // Go back to Default state for a new attempt
 });
 ```
 
 ### Animations priority
 
-Animations queue designed that way so animation can interrupt other one if it is 
-possible. Interruptibility of every animation is preconfigured. As long as 
+Animations queue designed that way so animation can interrupt other one if it is
+possible. Interruptibility of every animation is preconfigured. As long as
 role to interrupt other animations. Here is the list of all animation types with
 their properties:
 
@@ -376,6 +406,7 @@ their properties:
 
 So take that in mind when designing logic and animation sequences.</br>
 Normally animations goes like this:
+
 - First there are **Inputs** and **Erases**
 - If PIN is correct, one or a few **Loadings** and one **Success**
 - If PIN in wrong, one **Error** and one **Clear**
@@ -400,9 +431,10 @@ it will throw an exception when animation with vibration called!
 After preparation, you can call animations and enable vibration feature:
 
 ```dart
-controller.animateLoading(
-  animation: PinLoadingAnimation.jump,
-  vibration: true,
+controller.animateLoading
+(
+animation: PinLoadingAnimation.jump,
+vibration: true,
 );
 ```
 
@@ -428,10 +460,11 @@ the box.
 
 ### 📱 Examples
 
-This package has a brief but complex enough [example](https://github.com/AndreySosnovyy/flutter_pin_code_ui/tree/main/example).
-Feel free to use it  as a playground or a template for your applications!
+This package has a brief but complex
+enough [example](https://github.com/AndreySosnovyy/flutter_pin_code_ui/tree/main/example).
+Feel free to use it as a playground or a template for your applications!
 
-You can also [share your own examples](#-contributing) for this section. 
+You can also [share your own examples](#-contributing) for this section.
 
 ### ✨ Adding new animations or customizing existing ones
 

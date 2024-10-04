@@ -184,8 +184,8 @@ class _PinIndicatorState extends State<PinIndicator> {
   /// Internal getter to check if items of Pin Indicator has size.
   /// If no, estimated size needs to be calculated for animations.
   bool get hasPreconfiguredSize => widget.itemSize != -1;
-  
-  double calculateSize() {
+
+  double calculateSizeForItems(List<Widget> items) {
     return 14.0;
   }
 
@@ -200,7 +200,9 @@ class _PinIndicatorState extends State<PinIndicator> {
       spacing: widget.spacing,
       builder: (i) => currentItems[i],
     );
-    final itemSize = hasPreconfiguredSize ? widget.itemSize : calculateSize();
+    final itemSize = hasPreconfiguredSize
+        ? widget.itemSize
+        : calculateSizeForItems(currentItems);
     return ValueListenableBuilder(
       valueListenable: widget.controller ?? PinIndicatorAnimationController(),
       builder: (context, animation, child) {

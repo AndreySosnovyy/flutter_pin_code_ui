@@ -17,6 +17,8 @@ screens in Flutter applications. It provides 2 core widgets:
 
 <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/pinpad.png" alt="drawing" width="360"/>
 
+[//]: # (TODO: add more Pinpad examples)
+
 ### Usage
 
 - 0-9 keys can be decorated with Flutter's `BoxDecoration` class to change its
@@ -72,6 +74,8 @@ Pinpad(
 **Pin Indicator** is a widget that provides visual representation of PIN code:
 how many digits are entered, is there an error, was an attempt successful and so on.</br>
 The simplest variants of Pin Indicator is a line of colored dots or obscured stars.
+
+[//]: # (TODO: add images of different PinIndicator)
 
 ### Usage
 

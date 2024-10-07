@@ -192,6 +192,8 @@ Each of these animation types has a set of already implemented animations to
 chose from. Here is the table with all of them plus useful information and
 recommendations.
 
+[//]: # (TODO: fix Demo column width)
+
 | Type    | Name         | Demo                                                                                                                                           | Notes and Recommendations                                                                                                                                                                                                                                                                                                                                                                                             | Vibration |
 |---------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
 | Input   | Inflate      | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_inflate.gif" alt="" width="320"/>       | • Default Input animation<br/>• Recommended to be used in pair with Erase Deflate animation                                                                                                                                                                                                                                                                                                                           | +         |
@@ -377,6 +379,8 @@ void clear() => setState(() {
   isPinError = false; // Go back to Default state for a new attempt
 });
 ```
+
+[//]: # (TODO: add Disposing section)
 
 ### Animations priority
 

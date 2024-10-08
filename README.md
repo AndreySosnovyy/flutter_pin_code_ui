@@ -7,6 +7,9 @@ screens in Flutter applications. It provides 2 core widgets:
 2) **Pin Indicator.** Obscured (or not) field for visualizing entered PIN code status
    with lots of pre-made animations to choose from.
 
+If you are also interested in fast implementation of backend part of PIN code
+feature, then check out [**pin**](#-see-also-pin) package.
+
 <p align="left">
 <a href="https://pub.dev/packages/pin_ui"><img src="https://img.shields.io/pub/v/pin_ui.svg?style=flat&colorB=blue&label=pin_ui pub" alt="Pub"></a>
 <a href="https://github.com/AndreySosnovyy/flutter_pin_code_ui"><img src="https://img.shields.io/github/stars/andreysosnovyy/flutter_pin_code_ui.svg?&style=flat&logo=github&color=red&label=pin_ui" alt="Star on Github"></a>

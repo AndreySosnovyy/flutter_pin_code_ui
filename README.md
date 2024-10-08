@@ -457,7 +457,7 @@ the box.
 ### 📱 Examples
 
 This package has a brief but complex enough [example](https://github.com/AndreySosnovyy/flutter_pin_code_ui/tree/main/example).
-Feel free to use it  as a playground or a template for your applications!
+Feel free to use it as a playground or a template for your applications!
 
 You can also [share your own examples](#-contributing) for this section. 
 
@@ -474,9 +474,9 @@ or [contribute by suggesting something useful for others](#-contributing).
 
 ### 🛠 Contributing
 
-You have an interesting open source example to share with community? Or found a bug,
-have a great ready to go new animation or want to suggest an idea for new animation,
-you're always welcome! Fell free to open
+You have an interesting open source example to share with community? Found a bug,
+have a great ready to go new animation or want to suggest an idea for new animation?
+You're always welcome! Fell free to open
 an [issue](https://github.com/AndreySosnovyy/flutter_pin_code_ui/issues)
 or [pull request](https://github.com/AndreySosnovyy/flutter_pin_code_ui/pulls)
 in [GitHub repository](https://github.com/AndreySosnovyy/flutter_pin_code_ui)!

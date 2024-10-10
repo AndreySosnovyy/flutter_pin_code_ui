@@ -21,6 +21,7 @@ enum PinLoadingAnimation implements PinAnimationImplementation {
   jump,
   waveInflate,
   waveDeflate,
+  // waveFade,
   collapse,
   travel,
 }

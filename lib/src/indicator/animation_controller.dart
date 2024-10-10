@@ -151,6 +151,8 @@ class PinIndicatorAnimationController
     assert(_animationsQueue.length < 16);
     final data = PinIndicatorAnimationData.fromImpl(impl);
 
+    // TODO(Sosnovyy): clear current animation also
+
     // Remove all interruptible animations from the queue if any
     while (_animationsQueue.isNotEmpty &&
         _animationsQueue.last.data.isInterruptible &&

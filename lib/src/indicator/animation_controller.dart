@@ -153,7 +153,7 @@ class PinIndicatorAnimationController
     final data = PinIndicatorAnimationData.fromImpl(impl);
 
     // Stop current animation if needed
-    if (value != null && !value!.data.isInterruptible && data.canInterrupt) {
+    if (value != null && value!.data.isInterruptible && data.canInterrupt) {
       value!.onInterrupt?.call();
       value = null;
     }

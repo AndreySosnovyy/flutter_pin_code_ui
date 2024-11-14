@@ -383,7 +383,7 @@ void clear() => setState(() {
 });
 ```
 
-[//]: # (TODO: add Disposing section)
+> **_NOTE:_** As any other controller, this one also should be disposed if possible!
 
 ### Animations priority
 

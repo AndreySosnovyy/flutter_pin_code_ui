@@ -33,7 +33,7 @@ import 'package:pin_ui/src/indicator/widgets/pin_indicator_item.dart';
 /// Pin indicator item widget builder.
 typedef PinIndicatorItemBuilder = PreferredSizeWidget Function(int index);
 
-// TODO(Sosnovyy): change isError and isSuccess with enum state parameter
+// TODO(Sosnovyy): maybe change isError and isSuccess with enum state parameter
 /// Pin indicator widget.
 class PinIndicator extends StatefulWidget {
   /// Simple decorated Pin Indicator widget.

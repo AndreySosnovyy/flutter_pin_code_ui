@@ -4,8 +4,8 @@ import 'package:pin_ui/src/indicator/widgets/pin_indicator.dart';
 
 // ignore_for_file: public_member_api_docs
 
-class LoadingWaveDeflatePinIndicator extends StatefulWidget {
-  const LoadingWaveDeflatePinIndicator({
+class LoadingWaveFadePinIndicator extends StatefulWidget {
+  const LoadingWaveFadePinIndicator({
     required this.builder,
     required this.length,
     required this.duration,
@@ -21,13 +21,12 @@ class LoadingWaveDeflatePinIndicator extends StatefulWidget {
   final bool vibration;
 
   @override
-  State<LoadingWaveDeflatePinIndicator> createState() =>
-      _LoadingWaveDeflatePinIndicatorState();
+  State<LoadingWaveFadePinIndicator> createState() =>
+      _LoadingWaveFadePinIndicatorState();
 }
 
-class _LoadingWaveDeflatePinIndicatorState
-    extends State<LoadingWaveDeflatePinIndicator>
-    with TickerProviderStateMixin {
+class _LoadingWaveFadePinIndicatorState
+    extends State<LoadingWaveFadePinIndicator> with TickerProviderStateMixin {
   late final animations = List.generate(
     widget.length,
     (i) => AnimationController(
@@ -35,7 +34,7 @@ class _LoadingWaveDeflatePinIndicatorState
       duration:
           widget.duration ~/ 2 - widget.duration ~/ 2 ~/ (widget.length - 1),
       value: 1.0,
-      lowerBound: 0.6,
+      lowerBound: 0.2,
       upperBound: 1.0,
     ),
   );
@@ -63,8 +62,8 @@ class _LoadingWaveDeflatePinIndicatorState
         return AnimatedBuilder(
           animation: animations[i],
           builder: (context, child) {
-            return Transform.scale(
-              scale: animations[i].value,
+            return Opacity(
+              opacity: animations[i].value,
               child: widget.builder(i),
             );
           },

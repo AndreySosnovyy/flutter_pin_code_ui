@@ -1,3 +1,5 @@
+[//]: # (TODO: add welcome image)
+
 The **pin_ui** package is responsible for fast layout of advanced PIN code related
 screens in Flutter applications. It provides 2 core widgets:
 
@@ -5,8 +7,11 @@ screens in Flutter applications. It provides 2 core widgets:
 2) **Pin Indicator.** Obscured (or not) field for visualizing entered PIN code status
    with lots of pre-made animations to choose from.
 
+If you are also interested in fast implementation of backend part of PIN code
+feature, then check out [**pin**](#-see-also-pin) package.
+
 <p align="left">
-<a href="https://pub.dev/packages/pin_ui"><img src="https://img.shields.io/pub/v/flutter_pin_code_ui.svg?style=flat&colorB=blue&label=pin_ui pub" alt="Pub"></a>
+<a href="https://pub.dev/packages/pin_ui"><img src="https://img.shields.io/pub/v/pin_ui.svg?style=flat&colorB=blue&label=pin_ui pub" alt="Pub"></a>
 <a href="https://github.com/AndreySosnovyy/flutter_pin_code_ui"><img src="https://img.shields.io/github/stars/andreysosnovyy/flutter_pin_code_ui.svg?&style=flat&logo=github&color=red&label=pin_ui" alt="Star on Github"></a>
 </p>
 
@@ -189,6 +194,8 @@ Pin Indicator can be animated in such ways:
 Each of these animation types has a set of already implemented animations to
 chose from. Here is the table with all of them plus useful information and
 recommendations.
+
+[//]: # (TODO: fix Demo column width)
 
 | Type    | Name         | Demo                                                                                                                                           | Notes and Recommendations                                                                                                                                                                                                                                                                                                                                                                                             | Vibration |
 |---------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
@@ -376,6 +383,8 @@ void clear() => setState(() {
 });
 ```
 
+> **_NOTE:_** As any other controller, this one also should be disposed if possible!
+
 ### Animations priority
 
 Animations queue designed that way so animation can interrupt other one if it is 
@@ -448,7 +457,7 @@ the box.
 ### 📱 Examples
 
 This package has a brief but complex enough [example](https://github.com/AndreySosnovyy/flutter_pin_code_ui/tree/main/example).
-Feel free to use it  as a playground or a template for your applications!
+Feel free to use it as a playground or a template for your applications!
 
 You can also [share your own examples](#-contributing) for this section. 
 
@@ -465,9 +474,9 @@ or [contribute by suggesting something useful for others](#-contributing).
 
 ### 🛠 Contributing
 
-You have an interesting open source example to share with community? Or found a bug,
-have a great ready to go new animation or want to suggest an idea for new animation,
-you're always welcome! Fell free to open
+You have an interesting open source example to share with community? Found a bug,
+have a great ready to go new animation or want to suggest an idea for new animation?
+You're always welcome! Fell free to open
 an [issue](https://github.com/AndreySosnovyy/flutter_pin_code_ui/issues)
 or [pull request](https://github.com/AndreySosnovyy/flutter_pin_code_ui/pulls)
 in [GitHub repository](https://github.com/AndreySosnovyy/flutter_pin_code_ui)!

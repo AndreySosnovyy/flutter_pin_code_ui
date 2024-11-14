@@ -149,7 +149,14 @@ class PinIndicatorAnimationController
     assert(animationSpeed >= 0.1);
     assert(animationSpeed <= 10);
     assert(_animationsQueue.length < 16);
+
     final data = PinIndicatorAnimationData.fromImpl(impl);
+
+    // Stop current animation if needed
+    if (value != null && value!.data.isInterruptible && data.canInterrupt) {
+      value!.onInterrupt?.call();
+      value = null;
+    }
 
     // Remove all interruptible animations from the queue if any
     while (_animationsQueue.isNotEmpty &&

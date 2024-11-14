@@ -20,6 +20,7 @@ import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loa
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_jump_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_travel_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_wave_deflate_pin_indicator.dart';
+import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_wave_fade_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/loading/loading_wave_inflate_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_collapse_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/animated_pin_indicators/success/success_fill_last_pin_indicator.dart';
@@ -33,6 +34,7 @@ import 'package:pin_ui/src/indicator/widgets/pin_indicator_item.dart';
 /// Pin indicator item widget builder.
 typedef PinIndicatorItemBuilder = PreferredSizeWidget Function(int index);
 
+// TODO(Sosnovyy): maybe change isError and isSuccess with enum state parameter
 /// Pin indicator widget.
 class PinIndicator extends StatefulWidget {
   /// Simple decorated Pin Indicator widget.
@@ -297,6 +299,15 @@ class _PinIndicatorState extends State<PinIndicator> {
                   DefaultPinLoadingCollapseAnimationChild(
                     anchorSize: itemSize,
                   ),
+              vibration: isVibrationEnabledAndCanVibrate,
+            ),
+          PinIndicatorLoadingWaveFadeAnimationData() =>
+            LoadingWaveFadePinIndicator(
+              key: animationKey,
+              length: widget.length,
+              duration: animationDuration,
+              builder: (i) => currentItems[i],
+              spacing: widget.spacing,
               vibration: isVibrationEnabledAndCanVibrate,
             ),
           PinIndicatorSuccessCollapseAnimationData() =>

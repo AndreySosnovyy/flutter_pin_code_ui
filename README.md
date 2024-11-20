@@ -459,7 +459,10 @@ the box.
 This package has a brief but complex enough [example](https://github.com/AndreySosnovyy/flutter_pin_code_ui/tree/main/example).
 Feel free to use it as a playground or a template for your applications!
 
-You can also [share your own examples](#-contributing) for this section. 
+Also, there is a [more complete example project](https://github.com/AndreySosnovyy/flutter_pin_example)
+that uses both **pin** and **pin_ui** packages in it.
+
+You can [share your own examples](#-contributing) for this section. 
 
 ### ✨ Adding new animations or customizing existing ones
 

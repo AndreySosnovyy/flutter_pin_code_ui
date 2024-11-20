@@ -1,6 +1,6 @@
 name: pin_ui
 description: "Widgets for implementing PIN code related screens in Flutter applications"
-version: 0.1.0
+version: 0.1.0+1
 repository: https://github.com/AndreySosnovyy/flutter_pin_code_ui
 issue_tracker: https://github.com/AndreySosnovyy/flutter_pin_code_ui/issues
 topics: [ pin, pin-code, widgets, ui, animations ]

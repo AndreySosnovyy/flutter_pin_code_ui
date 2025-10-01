@@ -40,7 +40,7 @@ class PointDetectorBuilder extends StatefulWidget {
 }
 
 class _PointDetectorBuilderState extends State<PointDetectorBuilder> {
-  bool _isPointed = true;
+  bool _isPointed = false;
 
   final initializeCompleter = Completer<void>();
 

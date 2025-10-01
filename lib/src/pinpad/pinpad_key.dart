@@ -7,7 +7,7 @@ import 'package:pin_ui/src/pinpad/widgets/pinpad_key_wrapper.dart';
 class PinpadKey extends PinpadKeyBase {
   /// {@macro pin_ui.PinpadKey}
   const PinpadKey({
-    required this.child,
+    required this.builder,
 
     /// {@macro pin_ui.PinpadKeyBase.onTap}
     super.onTap,
@@ -39,7 +39,7 @@ class PinpadKey extends PinpadKeyBase {
   });
 
   /// Child widget to be displayed as pinpad key
-  final Widget child;
+  final Widget Function(bool isPressed) builder;
 
   @override
   State<StatefulWidget> createState() => _PinpadKeyState();
@@ -58,7 +58,7 @@ class _PinpadKeyState extends State<PinpadKey> {
       width: widget.width,
       height: widget.height,
       enabled: widget.enabled,
-      builder: (_) => widget.child,
+      builder: (isPressed) => widget.builder(isPressed),
     );
   }
 }
@@ -132,14 +132,16 @@ class _PinpadTextKeyState extends State<PinpadTextKey> {
       width: widget.width,
       height: widget.height,
       enabled: widget.enabled,
-      builder: (isPressed) => Text(
-        widget.text,
-        style: widget.enabled
-            ? isPressed
-                ? widget.pressedTextStyle
-                : widget.defaultTextStyle
-            : widget.disabledTextStyle,
-      ),
+      builder: (isPressed) {
+        return Text(
+          widget.text,
+          style: widget.enabled
+              ? isPressed
+                  ? widget.pressedTextStyle
+                  : widget.defaultTextStyle
+              : widget.disabledTextStyle,
+        );
+      },
     );
   }
 }

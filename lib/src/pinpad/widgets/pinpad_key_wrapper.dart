@@ -104,7 +104,7 @@ class PinpadKeyWrapper extends PinpadKeyBase {
   });
 
   /// Key builder function
-  final Function(bool isPressed) builder;
+  final Function(bool isPressed, bool isPointed) builder;
 
   @override
   State<PinpadKeyWrapper> createState() => _PinpadKeyWrapperState();
@@ -133,7 +133,7 @@ class _PinpadKeyWrapperState extends State<PinpadKeyWrapper> {
                       ? widget.pressedDecoration!
                       : widget.defaultDecoration!
                   : widget.disabledDecoration!,
-              child: Center(child: widget.builder(isPressed)),
+              child: Center(child: widget.builder(isPressed, isPointed)),
             ),
           ),
         ),

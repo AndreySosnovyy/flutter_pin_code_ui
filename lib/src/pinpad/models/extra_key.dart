@@ -17,7 +17,7 @@ class PinpadExtraKey {
   /// Widget that will be displayed as an extra key with all.
   /// It will be decorated according to the provided set of properties for pinpad.
   /// {@endtemplate}
-  final Widget Function(bool isPressed) builder;
+  final Widget Function(bool isPressed, bool isPointed) builder;
 
   /// {@template pinpad.pinpad_extra_key.onTap}
   /// Callback for extra key that will be called when it is tapped.

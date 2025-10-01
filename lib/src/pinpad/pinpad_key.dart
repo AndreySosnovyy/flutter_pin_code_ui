@@ -39,7 +39,7 @@ class PinpadKey extends PinpadKeyBase {
   });
 
   /// Child widget to be displayed as pinpad key
-  final Widget Function(bool isPressed) builder;
+  final Widget Function(bool isPressed, bool isPointed) builder;
 
   @override
   State<StatefulWidget> createState() => _PinpadKeyState();
@@ -58,7 +58,7 @@ class _PinpadKeyState extends State<PinpadKey> {
       width: widget.width,
       height: widget.height,
       enabled: widget.enabled,
-      builder: (isPressed) => widget.builder(isPressed),
+      builder: (isPressed, isPointed) => widget.builder(isPressed, isPointed),
     );
   }
 }
@@ -132,11 +132,11 @@ class _PinpadTextKeyState extends State<PinpadTextKey> {
       width: widget.width,
       height: widget.height,
       enabled: widget.enabled,
-      builder: (isPressed) {
+      builder: (isPressed, isPointed) {
         return Text(
           widget.text,
           style: widget.enabled
-              ? isPressed
+              ? isPressed && isPointed
                   ? widget.pressedTextStyle
                   : widget.defaultTextStyle
               : widget.disabledTextStyle,

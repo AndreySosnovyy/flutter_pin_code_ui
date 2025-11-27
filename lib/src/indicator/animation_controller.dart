@@ -202,6 +202,7 @@ class PinIndicatorAnimationController
       value!.data.duration * value!.durationMultiplier +
           (value!.delayAfter ?? Duration.zero),
       () {
+        if (value == null) return;
         value!.onComplete?.call();
         value = null;
         notifyListeners();

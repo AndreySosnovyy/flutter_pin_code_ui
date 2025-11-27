@@ -40,22 +40,22 @@ class _PressDetectorBuilderState extends State<PressDetectorBuilder> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: widget.onTap,
-      onPanStart: (_) => setState(() {
+      onPanStart: (_) {
         widget.onPressStart?.call();
-        _isPressed = true;
-      }),
-      onPanDown: (_) => setState(() {
+        setState(() => _isPressed = true);
+      },
+      onPanDown: (_) {
         widget.onPressStart?.call();
-        _isPressed = true;
-      }),
-      onPanEnd: (_) => setState(() {
+        setState(() => _isPressed = true);
+      },
+      onPanEnd: (_) {
         widget.onPressEnd?.call();
-        _isPressed = false;
-      }),
-      onPanCancel: () => setState(() {
+        setState(() => _isPressed = false);
+      },
+      onPanCancel: () {
         widget.onPressEnd?.call();
-        _isPressed = false;
-      }),
+        setState(() => _isPressed = false);
+      },
       child: widget.builder(context, _isPressed),
     );
   }

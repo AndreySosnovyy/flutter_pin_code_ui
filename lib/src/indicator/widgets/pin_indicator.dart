@@ -176,6 +176,16 @@ class PinIndicator extends StatefulWidget {
 }
 
 class _PinIndicatorState extends State<PinIndicator> {
+  /// Fallback controller used when widget.controller is null.
+  /// This prevents creating a new controller on every build.
+  PinIndicatorAnimationController? _fallbackController;
+
+  PinIndicatorAnimationController get _effectiveController {
+    if (widget.controller != null) return widget.controller!;
+    _fallbackController ??= PinIndicatorAnimationController();
+    return _fallbackController!;
+  }
+
   PreferredSizeWidget _buildItemForIndex(int index) {
     if (widget.isSuccess) return widget.successItemBuilder(index);
     if (widget.isError) return widget.errorItemBuilder(index);
@@ -212,7 +222,7 @@ class _PinIndicatorState extends State<PinIndicator> {
         ? widget.itemSize
         : calculateSizeForItems(currentItems);
     return ValueListenableBuilder(
-      valueListenable: widget.controller ?? PinIndicatorAnimationController(),
+      valueListenable: _effectiveController,
       builder: (context, animation, child) {
         if (animation == null) return noAnimationPinIndicator;
         final animationKey = ValueKey(animation.id);
@@ -461,5 +471,11 @@ class _PinIndicatorState extends State<PinIndicator> {
         };
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _fallbackController?.dispose();
+    super.dispose();
   }
 }

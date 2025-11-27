@@ -73,7 +73,11 @@ class PinIndicatorAnimationController
   ///
   /// If you won't use vibration, you can use controller without calling
   /// this method.
+  ///
+  /// This method can be safely called multiple times - subsequent calls
+  /// will be ignored if already initialized.
   Future<void> initializeVibration() async {
+    if (_vibrationInitCompleter.isCompleted) return;
     canVibrate = (await Vibration.hasVibrator() ?? false) &&
         (await Vibration.hasCustomVibrationsSupport() ?? false) &&
         (await Vibration.hasAmplitudeControl() ?? false);
@@ -89,7 +93,7 @@ class PinIndicatorAnimationController
     /// until all animations cleared.
     bool ignoreOnInterruptCallbacks = false,
   }) {
-    value?.onInterrupt?.call();
+    if (!ignoreOnInterruptCallbacks) value?.onInterrupt?.call();
     while (_animationsQueue.isNotEmpty) {
       final animation = _animationsQueue.removeFirst();
       if (!ignoreOnInterruptCallbacks) animation.onInterrupt?.call();
@@ -108,13 +112,13 @@ class PinIndicatorAnimationController
     PinAnimationImplementation impl, {
     /// {@template pin_ui.delayBefore}
     /// Duration to put before animation starts.
-    /// Can be used to make it look smother.
+    /// Can be used to make it look smoother.
     /// {@endtemplate}
     Duration? delayBefore,
 
     /// {@template pin_ui.delayAfter}
     /// Duration to put after animation ends.
-    /// Can be used to make it look smother.
+    /// Can be used to make it look smoother.
     /// {@endtemplate}
     Duration? delayAfter,
 
@@ -124,7 +128,7 @@ class PinIndicatorAnimationController
     VoidCallback? onComplete,
 
     /// {@template pin_ui.onInterrupt}
-    /// Callback to be triggered in case animation is interrupted (stoped)
+    /// Callback to be triggered in case animation is interrupted (stopped)
     /// by other animation or [stop] method.
     /// {@endtemplate}
     VoidCallback? onInterrupt,
@@ -444,7 +448,7 @@ class PinIndicatorAnimationController
     for (int i = 0; i < repeatCount; i++) {
       _prepareAndStart(
         animation,
-        onComplete: onComplete,
+        onComplete: i == repeatCount - 1 ? onComplete : null,
         onInterrupt: onInterrupt,
         animationSpeed: animationSpeed,
         vibration: vibration,

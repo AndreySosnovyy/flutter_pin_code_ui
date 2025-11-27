@@ -187,7 +187,7 @@ class _PinpadState extends State<Pinpad> {
                           enabled: widget.enabled,
                           defaultDecoration: _getDefaultDecoration(context),
                           pressedDecoration: _getPressedDecoration(context),
-                          disabledDecoration: _getDefaultDecoration(context),
+                          disabledDecoration: _getDisabledDecoration(context),
                           width: _getKeyWidth(context),
                           height: _getKeyHeight(context),
                         ),

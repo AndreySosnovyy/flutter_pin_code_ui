@@ -1,96 +1,68 @@
 [//]: # (TODO: add welcome image)
 
-The **pin_ui** package is responsible for fast layout of advanced PIN code related
-screens in Flutter applications. It provides 2 core widgets:
+The **pin_ui** package provides advanced PIN code UI widgets for Flutter applications:
 
-1) **Pinpad.** Highly customizable numeric keyboard for entering PIN code.
-2) **Pin Indicator.** Obscured (or not) field for visualizing entered PIN code status
-   with lots of pre-made animations to choose from.
-
-If you are also interested in fast implementation of backend part of PIN code
-feature, then check out [**pin**](#-see-also-pin) package.
+1) **Pin Indicator.** Visualizes entered PIN code with 25+ pre-made animations.
+2) **Pinpad.** Highly customizable numeric keyboard.
 
 <p align="left">
 <a href="https://pub.dev/packages/pin_ui"><img src="https://img.shields.io/pub/v/pin_ui.svg?style=flat&colorB=blue&label=pin_ui pub" alt="Pub"></a>
 <a href="https://github.com/AndreySosnovyy/flutter_pin_code_ui"><img src="https://img.shields.io/github/stars/andreysosnovyy/flutter_pin_code_ui.svg?&style=flat&logo=github&color=red&label=pin_ui" alt="Star on Github"></a>
 </p>
 
+## Animations
+
+| Type    | Name         | Demo                                                                                                                                           | Notes and Recommendations                                                                                                                                                                                                                                                                                                                                                                                             | Vibration |
+|---------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| Input   | Inflate      | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_inflate.gif" alt="" width="320"/>       | • Default Input animation<br/>• Recommended to be used in pair with Erase Deflate animation                                                                                                                                                                                                                                                                                                                           | +         |
+| Input   | Fall         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_fall.gif" alt="" width="320"/>          | • Recommended to be used in pair with Erase Take Off animation                                                                                                                                                                                                                                                                                                                                                        | -         |
+| Input   | Fade         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_fade.gif" alt="" width="320"/>          | • Recommended to be used in pair with Erase Fade animation                                                                                                                                                                                                                                                                                                                                                            | -         |
+| Loading | Jump         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_jump.gif" alt="" width="320"/>        | • Default Loading animation<br/>• Good at combining with Success Fill Last animation<br/>• Add delays if you want to repeat this animation                                                                                                                                                                                                                                                                            | +         |
+| Loading | Wave Inflate | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_waveInflate.gif" alt="" width="320"/> |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
+| Loading | Wave Deflate | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_waveDeflate.gif" alt="" width="320"/> |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
+| Loading | Wave Fade    |                                                                                                                                                |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
+| Loading | Collapse     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_collapse.gif" alt="" width="320"/>    | • You can provide own animation indicator in `PinIndicator` via `loadingCollapseAnimationChild` parameter<br/>• Animation will end right after collapsing, so you have to configure time to show the loader by setting `delayAfter`<br/>• Recommended not to use any Success animation right after this one as it will require Pin Indicator items to appear immediately from nowhere and only then start animating | -         |
+| Loading | Travel       | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_travel.gif" alt="" width="320"/>      |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
+| Success | Collapse     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/success_collapse.gif" alt="" width="320"/>    | • Default Success animation<br/>• You can provide own child which is displayed after collapse in `PinIndicator` via `successCollapseAnimationChild` parameter                                                                                                                                                                                                                                                         | -         |
+| Success | Fill         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/success_fill.gif" alt="" width="320"/>        | • This one is great when you make navigation without animation (in `onComplete` callback) to a screen which has a background color same as fill color of animation, so it looks like seconds splash screen for your app<br/>• This animation will have the same play time for any screen size or any start position (position of Pin Indicator on the screen) because it dynamically calculates fill speed when built | -         |
+| Success | Fill last    | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/success_fillLast.gif" alt="" width="320"/>    | • Same as Success Fill animation, but this one is perfect for combining with Loading Jump animation                                                                                                                                                                                                                                                                                                                   | -         |
+| Success | Kick         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/success_kick.gif" alt="" width="320"/>        |                                                                                                                                                                                                                                                                                                                                                                                                                       | +         |
+| Error   | Shake        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/error_shake.gif" alt="" width="320"/>         | • Default Error animation                                                                                                                                                                                                                                                                                                                                                                                             | +         |
+| Error   | Jiggle       | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/error_jiggle.gif" alt="" width="320"/>        | • Jiggle effect will only be visible for non-circle Pin Indicator items                                                                                                                                                                                                                                                                                                                                               | +         |
+| Error   | Brownian     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/error_brownian.gif" alt="" width="320"/>      | • Items randomly move around and then returns to the start point                                                                                                                                                                                                                                                                                                                                                      | -         |
+| Error   | Blink        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/error_blink.gif" alt="" width="320"/>         |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
+| Clear   | Drop         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/clear_drop.gif" alt="" width="320"/>          |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
+| Clear   | Fade         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/clear_fade.gif" alt="" width="320"/>          | • Default Clear animation<br/>• Recommended to be used after Error animations if you need so (like in the [example](https://github.com/AndreySosnovyy/flutter_pin_code_ui/tree/main/example)), to not overload it with unnecessary moving stuff on screen                                                                                                                                                             | -         |
+| Erase   | Deflate      | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/erase_deflate.gif" alt="" width="320"/>       | • Default Erase animation<br/>• Recommended to be used in pair with Input Inflate animation                                                                                                                                                                                                                                                                                                                           | +         |
+| Erase   | Take off     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/erase_takeOff.gif" alt="" width="320"/>       | • Recommended to be used in pair with Input Fall animation                                                                                                                                                                                                                                                                                                                                                            | -         |
+| Erase   | Fade         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/erase_fade.gif" alt="" width="320"/>          | • Recommended to be used in pair with Input Fade animation                                                                                                                                                                                                                                                                                                                                                            | -         |
+| Idle    | Wave         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_wave.gif" alt="" width="320"/>           | • Default Idle animation                                                                                                                                                                                                                                                                                                                                                                                              | -         |
+| Idle    | Pulse        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_pulse.gif" alt="" width="320"/>          |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
+| Idle    | Flash        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_flash.gif" alt="" width="320"/>          | • Items randomly inflate and deflate                                                                                                                                                                                                                                                                                                                                                                                  | -         |
+
+Seeing alone, some animations may look raw at first, but by combining them
+together and adding delays before and after, good sequences can be created!
+
+You can try it out in the [example project](#-examples)
+and use it as a playground to test your ideas.
+
 ## Table of Contents
 
-- [Pinpad](#pinpad)
-  - [Usage](#usage)
+- [Animations](#animations)
 - [Pin Indicator](#pin-indicator)
-  - [Usage](#usage-1)
-  - [Animations](#animations)
+  - [Usage](#usage)
   - [Controller](#controller)
   - [Animations priority](#animations-priority)
   - [Vibration](#vibration)
+- [Pinpad](#pinpad)
+  - [Usage](#usage-1)
 - [Additional information](#additional-information)
   - [See also: pin](#-see-also-pin)
   - [Examples](#-examples)
   - [Adding new animations](#-adding-new-animations-or-customizing-existing-ones)
   - [Contributing](#-contributing)
 
-## Pinpad
-
-**Pinpad** is a numeric keyboard with 2 extra key slots. Usually they place
-*"Forgot PIN"* and *Biometrics* buttons there.
-
-<img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/pinpad.png" alt="drawing" width="360"/>
-
-[//]: # (TODO: add more Pinpad examples)
-
-### Usage
-
-- 0-9 keys can be decorated with Flutter's `BoxDecoration` class to change its
-  appearance: background color, border radius, border, shadows, etc. There are 3 states:
-  default, pressed and disabled. Each is customizable on its own, so you can make
-  them look different. Provide `keyDefaultDecoration`, `keyPressedDecoration` and
-  `keyDisabledDecoration` to set it in a way you prefer.
-- 0-9 keys has a `TextStyle` property. There are also 3 states: default, pressed
-  and disabled. Set `keyDefaultTextStyle`, `keyPressedTextStyle` and `keyDisabledTextStyle`
-  to style digits inside the keys.
-- Resize keys with `keyHeight` and `keyWidth`.
-- Spacing between keys can be changed with `horizontalSpacing` and `verticalSpacing`
-  properties. By default, these values will be calculated depending on the screen size. 
-- You can disable or make pinpad invisible by setting `enabled` and `isVisible`.
-  Making it invisible will not change actual size of the keyboard.
-- Vibration can be enabled with `vibrationEnabled` property. It will make a slight
-  vibration feedback when a key is pressed.
-- To add extra keys to the left and right of 0 key, provide `leftExtraKey` and `rightExtraKey`.
-  These parameters have `PinpadExtraKey` type. It is a wrapper above your child widget
-  where you add onTap callback. Child can be any widget, but also you can use
-  `PinpadKey` or `PinpadTextKey` provided by this package to make all buttons look
-  the same.
-
-```dart
-Pinpad(
-  onKeyTap: myKeyTapHandler,
-  keyDefaultDecoration: myDecoration,
-  keyPressedDecoration: myDecoration.copyWith(color: blue),
-  keyDisabledDecoration: myDecoration,
-  keyDefaultTextStyle: myTextStyle,
-  keyPressedTextStyle: myTextStyle.copyWith(fontWeight: FontWeight.w700),
-  keyDisabledTextStyle: myTextStyle.copyWith(color: grey),
-  leftExtraKey: PinpadExtraKey(
-    onTap: handleForgotPinTap,
-    child: myForgotPinButton,
-  ),
-  rightExtraKey: PinpadExtraKey(
-    onTap: handleEraseTap,
-    child: myEraseButton,
-  ),
-  horizontalSpacing: x,
-  verticalSpacing: y,
-  keyWidth: m,
-  keyHeight: n,
-  enabled: myEnableCondition,
-  isVisible: myVisibleCondition,
-  vibrationEnabled: true,
-)
-```
-
-## </br>Pin Indicator
+## Pin Indicator
 
 **Pin Indicator** is a widget that provides visual representation of PIN code:
 how many digits are entered, is there an error, was an attempt successful and so on.</br>
@@ -172,81 +144,12 @@ PinIndicator.builder(
 > to a `StatefulWidget` or `StatelessWidget` and provide a size with `preferredSize`
 > overridden getter. It is required for some animations, because they use size of
 > Pin Indicator items in their calculations.
-> 
+>
 > There is also a type defined for these 4 builders named `PinIndicatorItemBuilder`.
 > Use it if you need to pass them through layers of widgets or store somewhere:
 > ```dart
 > typedef PinIndicatorItemBuilder = PreferredSizeWidget Function(int index);
 > ```
-
-### Animations
-
-Animations are core features of **pin_ui** package. It contains lots of
-pre-made animations for several scenarios when user interact with your app.</br>
-**Why use animations?** First of all, it looks much nicer. Second thing is that they
-can take user's attention while some async backend requests or other
-initialization processes will happen in background. Usually it's done with boring
-loading indicators or shimmers. But good sequences of cool animations can
-handle this task much better!
-
-Pin Indicator can be animated in such ways:
-
-- **Input.** Animate input when user enters a digit of PIN code.
-- **Loading.** Animate loading when you need to hide long-lasting async operation
-  or to make animations flow more smooth and obvious to user.
-- **Success.** Animate success when user enters correct PIN code to also hide
-  long-lasting async operation after loading animation. And to demonstrate user
-  that they entered correct PIN code and no more actions required from their side.
-- **Error.** Animate error when user entered wrong PIN code to show them that
-  entered PIN code is incorrect.
-- **Clear.** Animate clear when user clears entire PIN code at once if there are
-  such function or when other logic triggers clearing of entire PIN code, such
-  as tapping "Forget PIN" button or requesting biometrics.
-- **Erase.** Animate erase when user erases a digit from PIN code.
-- **Idle.** Animate idle when user was inactive for a while to instigate them for
-  an action and show that app is still alive and waits for an action from user's
-  side.
-
-Each of these animation types has a set of already implemented animations to
-chose from. Here is the table with all of them plus useful information and
-recommendations.
-
-[//]: # (TODO: fix Demo column width)
-
-| Type    | Name         | Demo                                                                                                                                           | Notes and Recommendations                                                                                                                                                                                                                                                                                                                                                                                             | Vibration |
-|---------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
-| Input   | Inflate      | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_inflate.gif" alt="" width="320"/>       | • Default Input animation<br/>• Recommended to be used in pair with Erase Deflate animation                                                                                                                                                                                                                                                                                                                           | +         |
-| Input   | Fall         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_fall.gif" alt="" width="320"/>          | • Recommended to be used in pair with Erase Take Off animation                                                                                                                                                                                                                                                                                                                                                        | -         |
-| Input   | Fade         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/input_fade.gif" alt="" width="320"/>          | • Recommended to be used in pair with Erase Fade animation                                                                                                                                                                                                                                                                                                                                                            | -         |
-| Loading | Jump         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_jump.gif" alt="" width="320"/>        | • Default Loading animation<br/>• Good at combining with Success Fill Last animation<br/>• Add delays if you want to repeat this animation                                                                                                                                                                                                                                                                            | +         |
-| Loading | Wave Inflate | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_waveInflate.gif" alt="" width="320"/> |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
-| Loading | Wave Deflate | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_waveDeflate.gif" alt="" width="320"/> |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
-| Loading | Wave Fade    |                                                                                                                                                |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
-| Loading | Collapse     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_collapse.gif" alt="" width="320"/>    | • You can provide own animation indicator in `PinIndicator` via `loadingCollapseAnimationChild` parameter<br/>• Animation will end right after collapsing, so you have to configure time to show the loader by setting `delayAfter`<br/>• Recommended not to use any Success animation right after this one as it will require Pin Indicator items to appear immediately from nowhere and only then start animating | -         |
-| Loading | Travel       | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/loading_travel.gif" alt="" width="320"/>      |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
-| Success | Collapse     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/success_collapse.gif" alt="" width="320"/>    | • Default Success animation<br/>• You can provide own child which is displayed after collapse in `PinIndicator` via `successCollapseAnimationChild` parameter                                                                                                                                                                                                                                                         | -         |
-| Success | Fill         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/success_fill.gif" alt="" width="320"/>        | • This one is great when you make navigation without animation (in `onComplete` callback) to a screen which has a background color same as fill color of animation, so it looks like seconds splash screen for your app<br/>• This animation will have the same play time for any screen size or any start position (position of Pin Indicator on the screen) because it dynamically calculates fill speed when built | -         |
-| Success | Fill last    | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/success_fillLast.gif" alt="" width="320"/>    | • Same as Success Fill animation, but this one is perfect for combining with Loading Jump animation                                                                                                                                                                                                                                                                                                                   | -         |
-| Success | Kick         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/success_kick.gif" alt="" width="320"/>        |                                                                                                                                                                                                                                                                                                                                                                                                                       | +         |
-| Error   | Shake        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/error_shake.gif" alt="" width="320"/>         | • Default Error animation                                                                                                                                                                                                                                                                                                                                                                                             | +         |
-| Error   | Jiggle       | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/error_jiggle.gif" alt="" width="320"/>        | • Jiggle effect will only be visible for non-circle Pin Indicator items                                                                                                                                                                                                                                                                                                                                               | +         |
-| Error   | Brownian     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/error_brownian.gif" alt="" width="320"/>      | • Items randomly move around and then returns to the start point                                                                                                                                                                                                                                                                                                                                                      | -         |
-| Error   | Blink        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/error_blink.gif" alt="" width="320"/>         |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
-| Clear   | Drop         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/clear_drop.gif" alt="" width="320"/>          |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
-| Clear   | Fade         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/clear_fade.gif" alt="" width="320"/>          | • Default Clear animation<br/>• Recommended to be used after Error animations if you need so (like in the [example](https://github.com/AndreySosnovyy/flutter_pin_code_ui/tree/main/example)), to not overload it with unnecessary moving stuff on screen                                                                                                                                                             | -         |
-| Erase   | Deflate      | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/erase_deflate.gif" alt="" width="320"/>       | • Default Erase animation<br/>• Recommended to be used in pair with Input Inflate animation                                                                                                                                                                                                                                                                                                                           | +         |
-| Erase   | Take off     | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/erase_takeOff.gif" alt="" width="320"/>       | • Recommended to be used in pair with Input Fall animation                                                                                                                                                                                                                                                                                                                                                            | -         |
-| Erase   | Fade         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/erase_fade.gif" alt="" width="320"/>          | • Recommended to be used in pair with Input Fade animation                                                                                                                                                                                                                                                                                                                                                            | -         |
-| Idle    | Wave         | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_wave.gif" alt="" width="320"/>           | • Default Idle animation                                                                                                                                                                                                                                                                                                                                                                                              | -         |
-| Idle    | Pulse        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_pulse.gif" alt="" width="320"/>          |                                                                                                                                                                                                                                                                                                                                                                                                                       | -         |
-| Idle    | Flash        | <img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/idle_flash.gif" alt="" width="320"/>          | • Items randomly inflate and deflate                                                                                                                                                                                                                                                                                                                                                                                  | -         |
-
-Seeing alone, some animations may look raw at first, but by combining them
-together and adding delays before and after, good sequences can be created!</br>
-
-You can try it out in the [example project](#-examples)
-and use it as a playground to test your ideas. Also, it can be a great start point
-to begin with where you can copy some code for your application.
 
 ### Controller
 
@@ -257,7 +160,7 @@ will be animated in a way you said it to.
 
 ```dart
 final controller = PinIndicatorAnimationController();
-        
+
 PinIndicator(
   controller: controller,
   ...
@@ -277,7 +180,7 @@ controller.animateLoading();
 Simple call does not contain any parameters. In this case default animation
 will be played without any other modifications.
 But you can slightly modify animation call by passing necessary parameters.
-List of available parameters differs from one method to another. Here is 
+List of available parameters differs from one method to another. Here is
 description for them:
 - `animation` – is a variant of animation you want to play (check table above).
 - `delayBefore` and `delayAfter` – delays to be set before and after this animation.
@@ -324,7 +227,7 @@ return ValueListenableBuilder(
           ...
         ),
       ],
-    );  
+    );
   },
 );
 ```
@@ -384,7 +287,7 @@ controller.animateSuccess(
 ________________________________________________________________________________
 
 
-// In case user entered wrong PIN code     
+// In case user entered wrong PIN code
 setState(() => isPinError = true); // Set Error state
 controller.animateError(
   onInterrupt: clear,
@@ -454,6 +357,65 @@ controller.animateLoading(
 If animation was called with vibration enabled, but it is not implemented for some
 reason, nothing bad will happen.
 
+## Pinpad
+
+**Pinpad** is a numeric keyboard with 2 extra key slots. Usually they place
+*"Forgot PIN"* and *Biometrics* buttons there.
+
+<img src="https://raw.githubusercontent.com/AndreySosnovyy/flutter_pin_code_ui/refs/heads/assets/pinpad.png" alt="drawing" width="360"/>
+
+[//]: # (TODO: add more Pinpad examples)
+
+### Usage
+
+- 0-9 keys can be decorated with Flutter's `BoxDecoration` class to change its
+  appearance: background color, border radius, border, shadows, etc. There are 3 states:
+  default, pressed and disabled. Each is customizable on its own, so you can make
+  them look different. Provide `keyDefaultDecoration`, `keyPressedDecoration` and
+  `keyDisabledDecoration` to set it in a way you prefer.
+- 0-9 keys has a `TextStyle` property. There are also 3 states: default, pressed
+  and disabled. Set `keyDefaultTextStyle`, `keyPressedTextStyle` and `keyDisabledTextStyle`
+  to style digits inside the keys.
+- Resize keys with `keyHeight` and `keyWidth`.
+- Spacing between keys can be changed with `horizontalSpacing` and `verticalSpacing`
+  properties. By default, these values will be calculated depending on the screen size.
+- You can disable or make pinpad invisible by setting `enabled` and `isVisible`.
+  Making it invisible will not change actual size of the keyboard.
+- Vibration can be enabled with `vibrationEnabled` property. It will make a slight
+  vibration feedback when a key is pressed.
+- To add extra keys to the left and right of 0 key, provide `leftExtraKey` and `rightExtraKey`.
+  These parameters have `PinpadExtraKey` type. It is a wrapper above your child widget
+  where you add onTap callback. Child can be any widget, but also you can use
+  `PinpadKey` or `PinpadTextKey` provided by this package to make all buttons look
+  the same.
+
+```dart
+Pinpad(
+  onKeyTap: myKeyTapHandler,
+  keyDefaultDecoration: myDecoration,
+  keyPressedDecoration: myDecoration.copyWith(color: blue),
+  keyDisabledDecoration: myDecoration,
+  keyDefaultTextStyle: myTextStyle,
+  keyPressedTextStyle: myTextStyle.copyWith(fontWeight: FontWeight.w700),
+  keyDisabledTextStyle: myTextStyle.copyWith(color: grey),
+  leftExtraKey: PinpadExtraKey(
+    onTap: handleForgotPinTap,
+    builder: (isPressed, isPointed) => myForgotPinButton,
+  ),
+  rightExtraKey: PinpadExtraKey(
+    onTap: handleEraseTap,
+    builder: (isPressed, isPointed) => myEraseButton,
+  ),
+  horizontalSpacing: x,
+  verticalSpacing: y,
+  keyWidth: m,
+  keyHeight: n,
+  enabled: myEnableCondition,
+  isVisible: myVisibleCondition,
+  vibrationEnabled: true,
+)
+```
+
 ## Additional information
 
 ### 👀 See also: [pin](https://pub.dev/packages/pin)
@@ -479,7 +441,7 @@ Feel free to use it as a playground or a template for your applications!
 Also, there is a [more complete example project](https://github.com/AndreySosnovyy/flutter_pin_example)
 that uses both **pin** and **pin_ui** packages in it.
 
-You can [share your own examples](#-contributing) for this section. 
+You can [share your own examples](#-contributing) for this section.
 
 ### ✨ Adding new animations or customizing existing ones
 

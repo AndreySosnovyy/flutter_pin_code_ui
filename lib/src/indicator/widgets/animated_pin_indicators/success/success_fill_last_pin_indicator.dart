@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/cupertino.dart';
@@ -33,12 +32,14 @@ class SuccessFillLastPinIndicator extends StatefulWidget {
 class _SuccessFillLastPinIndicatorState
     extends State<SuccessFillLastPinIndicator>
     with SingleTickerProviderStateMixin {
-  late final AnimationController animation;
-  final initializationCompleter = Completer<void>();
+  AnimationController? animation;
+  bool _isInitialized = false;
 
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
       final box = context.findRenderObject() as RenderBox;
       final positionY = box.localToGlobal(Offset.zero).dy;
       final screenHeight = MediaQuery.sizeOf(context).height;
@@ -50,10 +51,10 @@ class _SuccessFillLastPinIndicatorState
         lowerBound: 1.0,
         upperBound: fillScale,
       );
-      setState(() => initializationCompleter.complete());
-      await animation.animateTo(animation.upperBound, curve: Curves.ease);
+      setState(() => _isInitialized = true);
+      if (!mounted) return;
+      await animation!.animateTo(animation!.upperBound, curve: Curves.ease);
     });
-    super.initState();
   }
 
   @override
@@ -61,16 +62,16 @@ class _SuccessFillLastPinIndicatorState
     return NoAnimationPinIndicator(
       spacing: widget.spacing,
       length: widget.length,
-      builder: !initializationCompleter.isCompleted
+      builder: !_isInitialized
           ? widget.builder
           : (i) {
               return i != widget.length - 1
                   ? widget.builder(i)
                   : AnimatedBuilder(
-                      animation: animation,
+                      animation: animation!,
                       builder: (context, child) {
                         return Transform.scale(
-                          scale: animation.value,
+                          scale: animation!.value,
                           child: widget.builder(i),
                         );
                       },
@@ -81,7 +82,7 @@ class _SuccessFillLastPinIndicatorState
 
   @override
   void dispose() {
-    animation.dispose();
+    animation?.dispose();
     super.dispose();
   }
 }

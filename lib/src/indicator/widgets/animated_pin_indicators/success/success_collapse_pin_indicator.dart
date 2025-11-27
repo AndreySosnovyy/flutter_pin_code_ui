@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/pin_indicator.dart';
@@ -83,9 +81,19 @@ class _SuccessCollapsePinIndicatorState
     upperBound: 1.0,
   );
 
+  // Dummy controller for center element when length is odd (no offset animation needed)
+  late final centerDummyAnimation = AnimationController(
+    vsync: this,
+    value: 0.0,
+    lowerBound: 0.0,
+    upperBound: 0.0,
+  );
+
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
       final firstStageDuration = widget.duration * 0.3;
       final pauseDuration = widget.duration * 0.06;
       final secondStageDuration = widget.duration * 0.64;
@@ -102,7 +110,9 @@ class _SuccessCollapsePinIndicatorState
           duration: firstStageDuration,
         ),
       ]);
+      if (!mounted) return;
       await Future.delayed(pauseDuration);
+      if (!mounted) return;
       await Future.wait([
         for (final offsetAnimation in offsetAnimations)
           offsetAnimation.animateTo(
@@ -127,12 +137,11 @@ class _SuccessCollapsePinIndicatorState
         ),
       ]);
     });
-    super.initState();
   }
 
-  AnimationController? getOffsetAnimationForIndex(int index) {
+  AnimationController getOffsetAnimationForIndex(int index) {
     index = getFirstHalfIndexFromGeneralIndex(index);
-    if (index > offsetAnimations.length - 1) return null;
+    if (index > offsetAnimations.length - 1) return centerDummyAnimation;
     return offsetAnimations[index];
   }
 
@@ -150,12 +159,11 @@ class _SuccessCollapsePinIndicatorState
               animation: scaleAnimation,
               builder: (context, child) {
                 return AnimatedBuilder(
-                  animation: getOffsetAnimationForIndex(i) ??
-                      AnimationController(vsync: this),
+                  animation: getOffsetAnimationForIndex(i),
                   builder: (context, child) {
                     final direction = i < centerIndex ? 1 : -1;
                     final double xOffset =
-                        direction * (getOffsetAnimationForIndex(i)?.value ?? 0);
+                        direction * getOffsetAnimationForIndex(i).value;
                     return Transform.scale(
                       scale: scaleAnimation.value,
                       child: Transform.translate(
@@ -199,6 +207,7 @@ class _SuccessCollapsePinIndicatorState
     scaleAnimation.dispose();
     opacityAnimation.dispose();
     childAnimation.dispose();
+    centerDummyAnimation.dispose();
     super.dispose();
   }
 }

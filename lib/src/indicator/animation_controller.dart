@@ -78,9 +78,9 @@ class PinIndicatorAnimationController
   /// will be ignored if already initialized.
   Future<void> initializeVibration() async {
     if (_vibrationInitCompleter.isCompleted) return;
-    canVibrate = (await Vibration.hasVibrator() ?? false) &&
-        (await Vibration.hasCustomVibrationsSupport() ?? false) &&
-        (await Vibration.hasAmplitudeControl() ?? false);
+    canVibrate = await Vibration.hasVibrator() &&
+        await Vibration.hasCustomVibrationsSupport() &&
+        await Vibration.hasAmplitudeControl();
     _vibrationInitCompleter.complete();
   }
 

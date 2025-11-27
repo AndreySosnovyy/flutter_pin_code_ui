@@ -37,9 +37,15 @@
 * Fixed incomplete sentence in "Animations priority" section
 * Fixed grammar issues in README
 
+### Dependencies
+
+* Updated `vibration` from ^2.0.0 to ^3.1.4
+* Updated `flutter_lints` from ^4.0.0 to ^6.0.0
+
 ### Other
 
 * Removed deprecated `package_api_docs` lint rule from analysis_options.yaml
+* Removed unnecessary `library pin_ui;` declaration
 * Replaced deprecated `withOpacity()` with `withValues(alpha:)` for Flutter 3.27+ compatibility
 
 ## 0.1.0+1

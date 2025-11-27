@@ -41,16 +41,20 @@ class _LoadingWaveFadePinIndicatorState
 
   @override
   void initState() {
+    super.initState();
     for (int i = 0; i < widget.length; i++) {
       final delay = widget.duration ~/ (widget.length * 2) * i;
-      Future.delayed(delay).then(
-        (_) => animations[i]
+      Future.delayed(delay).then((_) {
+        if (!mounted) return;
+        animations[i]
             .animateTo(animations[i].lowerBound, curve: Curves.linear)
-            .then((_) => animations[i]
-                .animateTo(animations[i].upperBound, curve: Curves.easeOut)),
-      );
+            .then((_) {
+          if (!mounted) return;
+          animations[i]
+              .animateTo(animations[i].upperBound, curve: Curves.easeOut);
+        });
+      });
     }
-    super.initState();
   }
 
   @override

@@ -94,7 +94,7 @@ class _PinpadState extends State<Pinpad> {
   BoxDecoration _getPressedDecoration(BuildContext context) =>
       widget.keyPressedDecoration ??
       _getDefaultDecoration(context).copyWith(
-        color: Colors.blue.withOpacity(0.1),
+        color: Colors.blue.withValues(alpha: 0.1),
       );
 
   BoxDecoration _getDisabledDecoration(BuildContext context) =>
@@ -187,7 +187,7 @@ class _PinpadState extends State<Pinpad> {
                           enabled: widget.enabled,
                           defaultDecoration: _getDefaultDecoration(context),
                           pressedDecoration: _getPressedDecoration(context),
-                          disabledDecoration: _getDefaultDecoration(context),
+                          disabledDecoration: _getDisabledDecoration(context),
                           width: _getKeyWidth(context),
                           height: _getKeyHeight(context),
                         ),
@@ -209,7 +209,7 @@ class _PinpadState extends State<Pinpad> {
                         onTapStart: onAnyKeyTap,
                         onTapEnd: onAnyKeyReleased,
                         onTap: widget.leftExtraKey!.onTap,
-                        child: widget.leftExtraKey!.child,
+                        builder: widget.leftExtraKey!.builder,
                       )
                     : SizedBox(
                         width: _getKeyWidth(context),
@@ -246,7 +246,7 @@ class _PinpadState extends State<Pinpad> {
                         onTapStart: onAnyKeyTap,
                         onTapEnd: onAnyKeyReleased,
                         onTap: widget.rightExtraKey!.onTap,
-                        child: widget.rightExtraKey!.child,
+                        builder: widget.rightExtraKey!.builder,
                       )
                     : SizedBox(
                         width: _getKeyWidth(context),

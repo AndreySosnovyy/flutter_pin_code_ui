@@ -40,7 +40,7 @@ class PointDetectorBuilder extends StatefulWidget {
 }
 
 class _PointDetectorBuilderState extends State<PointDetectorBuilder> {
-  bool _isPointed = true;
+  bool _isPointed = false;
 
   final initializeCompleter = Completer<void>();
 
@@ -51,6 +51,14 @@ class _PointDetectorBuilderState extends State<PointDetectorBuilder> {
   void onDragUpdate(PointerEvent details) {
     updatePointerOffset(details);
     checkIfPointed();
+  }
+
+  void onPointerExit(PointerEvent details) {
+    setState(() {
+      pointerOffset = null;
+      _isPointed = false;
+    });
+    widget.onChanged?.call(false);
   }
 
   void updatePointerOffset(PointerEvent details) {
@@ -65,7 +73,15 @@ class _PointDetectorBuilderState extends State<PointDetectorBuilder> {
   }
 
   void checkIfPointed() {
+    // Update widget data to ensure we have latest dimensions
+    updateWidgetData();
+
     if (pointerOffset == null || widgetSize == null || widgetOffset == null) {
+      // If we can't calculate, assume pointer is within bounds to prevent tap loss
+      if (_isPointed != true) {
+        setState(() => _isPointed = true);
+        widget.onChanged?.call(true);
+      }
       return;
     }
     final bool isPointed;
@@ -114,6 +130,8 @@ class _PointDetectorBuilderState extends State<PointDetectorBuilder> {
       onPointerDown: onDragUpdate,
       onPointerMove: onDragUpdate,
       onPointerHover: onDragUpdate,
+      onPointerUp: onPointerExit,
+      onPointerCancel: onPointerExit,
       child: widget.builder(context, _isPointed),
     );
   }

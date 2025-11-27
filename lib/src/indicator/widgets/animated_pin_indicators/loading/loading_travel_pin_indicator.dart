@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
 import 'package:pin_ui/src/indicator/widgets/pin_indicator.dart';
@@ -31,13 +29,15 @@ class LoadingTravelPinIndicator extends StatefulWidget {
 
 class _LoadingTravelPinIndicatorState extends State<LoadingTravelPinIndicator>
     with TickerProviderStateMixin {
-  late final AnimationController xOffsetAnimation;
-  late final AnimationController scaleAnimation;
-  final initializationCompleter = Completer<void>();
+  AnimationController? xOffsetAnimation;
+  AnimationController? scaleAnimation;
+  bool _isInitialized = false;
 
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
       final box = context.findRenderObject() as RenderBox;
       final positionX = box.localToGlobal(Offset.zero).dx;
       final indicatorLength = box.size.width;
@@ -54,39 +54,40 @@ class _LoadingTravelPinIndicatorState extends State<LoadingTravelPinIndicator>
         lowerBound: 0.8,
         upperBound: 1.0,
       );
-      setState(() => initializationCompleter.complete());
+      setState(() => _isInitialized = true);
       final delay = widget.duration * 0.3;
       final firstStageDuration = (widget.duration - delay) ~/ 2;
       final secondStageDuration = widget.duration - delay - firstStageDuration;
 
       await Future.wait([
-        xOffsetAnimation.animateTo(
-          xOffsetAnimation.upperBound,
+        xOffsetAnimation!.animateTo(
+          xOffsetAnimation!.upperBound,
           duration: firstStageDuration,
           curve: Curves.easeIn,
         ),
-        scaleAnimation.animateTo(
-          scaleAnimation.lowerBound,
+        scaleAnimation!.animateTo(
+          scaleAnimation!.lowerBound,
           duration: firstStageDuration,
           curve: Curves.easeIn,
         ),
       ]);
-      xOffsetAnimation.value = xOffsetAnimation.lowerBound;
+      if (!mounted) return;
+      xOffsetAnimation!.value = xOffsetAnimation!.lowerBound;
       await Future.delayed(delay);
+      if (!mounted) return;
       await Future.wait([
-        xOffsetAnimation.animateTo(
+        xOffsetAnimation!.animateTo(
           0,
           duration: secondStageDuration,
           curve: Curves.easeOut,
         ),
-        scaleAnimation.animateTo(
-          scaleAnimation.upperBound,
+        scaleAnimation!.animateTo(
+          scaleAnimation!.upperBound,
           duration: secondStageDuration,
           curve: Curves.easeOut,
         ),
       ]);
     });
-    super.initState();
   }
 
   @override
@@ -94,16 +95,16 @@ class _LoadingTravelPinIndicatorState extends State<LoadingTravelPinIndicator>
     return NoAnimationPinIndicator(
       spacing: widget.spacing,
       length: widget.length,
-      builder: !initializationCompleter.isCompleted
+      builder: !_isInitialized
           ? widget.builder
           : (i) {
               return AnimatedBuilder(
-                animation: xOffsetAnimation,
+                animation: xOffsetAnimation!,
                 builder: (context, child) {
                   return Transform.translate(
-                    offset: Offset(xOffsetAnimation.value, 0),
+                    offset: Offset(xOffsetAnimation!.value, 0),
                     child: Transform.scale(
-                      scale: scaleAnimation.value,
+                      scale: scaleAnimation!.value,
                       child: widget.builder(i),
                     ),
                   );
@@ -115,8 +116,8 @@ class _LoadingTravelPinIndicatorState extends State<LoadingTravelPinIndicator>
 
   @override
   void dispose() {
-    xOffsetAnimation.dispose();
-    scaleAnimation.dispose();
+    xOffsetAnimation?.dispose();
+    scaleAnimation?.dispose();
     super.dispose();
   }
 }

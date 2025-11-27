@@ -128,7 +128,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                         .isAnimatingNonInterruptible,
                     vibrationEnabled: false,
                     leftExtraKey: PinpadExtraKey(
-                      child: Text(
+                      builder: (_, __) => Text(
                         'Forgot',
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: !pinIndicatorAnimationController
@@ -152,7 +152,7 @@ class _PinViewState extends State<PinView> with TickerProviderStateMixin {
                       },
                     ),
                     rightExtraKey: PinpadExtraKey(
-                      child: pinText.isEmpty ||
+                      builder: (_, __) =>  pinText.isEmpty ||
                               pinIndicatorAnimationController.isAnimatingClear
                           // Display your current biometrics type icon here
                           ? const Icon(Icons.fingerprint_rounded, size: 32)

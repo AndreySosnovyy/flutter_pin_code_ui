@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_ui/src/indicator/widgets/no_animation_pin_indicator.dart';
@@ -32,17 +30,19 @@ class SuccessKickPinIndicator extends StatefulWidget {
 
 class _SuccessKickPinIndicatorState extends State<SuccessKickPinIndicator>
     with TickerProviderStateMixin {
-  late final List<AnimationController> xOffsetAnimations;
+  List<AnimationController>? xOffsetAnimations;
   late final AnimationController scaleAnimation = AnimationController(
     vsync: this,
     lowerBound: 1.0,
     upperBound: 1.6,
   );
-  final initializationCompleter = Completer<void>();
+  bool _isInitialized = false;
 
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
       final box = context.findRenderObject() as RenderBox;
       final positionX = box.localToGlobal(Offset.zero).dx;
       final indicatorLength = box.size.width;
@@ -59,7 +59,7 @@ class _SuccessKickPinIndicatorState extends State<SuccessKickPinIndicator>
               widget.length * widget.childSize,
         ),
       );
-      setState(() => initializationCompleter.complete());
+      setState(() => _isInitialized = true);
 
       final stretchDuration = widget.duration * 0.32;
       final pauseDuration = widget.duration * 0.05;
@@ -72,8 +72,8 @@ class _SuccessKickPinIndicatorState extends State<SuccessKickPinIndicator>
           kickDuration -
           dockingDuration * dockingCount;
       await Future.wait([
-        xOffsetAnimations[0].animateTo(
-          xOffsetAnimations[0].lowerBound,
+        xOffsetAnimations![0].animateTo(
+          xOffsetAnimations![0].lowerBound,
           duration: stretchDuration,
           curve: Curves.easeOutCubic,
         ),
@@ -83,9 +83,11 @@ class _SuccessKickPinIndicatorState extends State<SuccessKickPinIndicator>
           curve: Curves.easeOutCubic,
         ),
       ]);
+      if (!mounted) return;
       await Future.delayed(pauseDuration);
+      if (!mounted) return;
       await Future.wait([
-        xOffsetAnimations[0].animateTo(
+        xOffsetAnimations![0].animateTo(
           0.0 + widget.spacing,
           duration: kickDuration,
           curve: Curves.easeInCubic,
@@ -96,19 +98,22 @@ class _SuccessKickPinIndicatorState extends State<SuccessKickPinIndicator>
           curve: Curves.easeInCubic,
         ),
       ]);
+      if (!mounted) return;
       if (widget.vibration) HapticFeedback.heavyImpact();
       for (int i = 2; i < widget.length; i++) {
+        if (!mounted) return;
         await Future.wait([
           for (int j = 0; j < i; j++)
-            xOffsetAnimations[j].animateTo(
-              xOffsetAnimations[j].value + widget.spacing,
+            xOffsetAnimations![j].animateTo(
+              xOffsetAnimations![j].value + widget.spacing,
               duration: dockingDuration,
               curve: Curves.linear,
             ),
         ]);
       }
+      if (!mounted) return;
       await Future.wait([
-        for (final animation in xOffsetAnimations)
+        for (final animation in xOffsetAnimations!)
           animation.animateTo(
             animation.upperBound,
             duration: slideOutDuration,
@@ -116,7 +121,6 @@ class _SuccessKickPinIndicatorState extends State<SuccessKickPinIndicator>
           ),
       ]);
     });
-    super.initState();
   }
 
   @override
@@ -124,14 +128,14 @@ class _SuccessKickPinIndicatorState extends State<SuccessKickPinIndicator>
     return NoAnimationPinIndicator(
       spacing: widget.spacing,
       length: widget.length,
-      builder: !initializationCompleter.isCompleted
+      builder: !_isInitialized
           ? widget.builder
           : (i) {
               return AnimatedBuilder(
-                animation: xOffsetAnimations[i],
+                animation: xOffsetAnimations![i],
                 builder: (context, child) {
                   return Transform.translate(
-                    offset: Offset(xOffsetAnimations[i].value, 0),
+                    offset: Offset(xOffsetAnimations![i].value, 0),
                     child: Transform.scale(
                       scale: scaleAnimation.value,
                       child: widget.builder(i),
@@ -146,8 +150,10 @@ class _SuccessKickPinIndicatorState extends State<SuccessKickPinIndicator>
   @override
   void dispose() {
     scaleAnimation.dispose();
-    for (final animation in xOffsetAnimations) {
-      animation.dispose();
+    if (xOffsetAnimations != null) {
+      for (final animation in xOffsetAnimations!) {
+        animation.dispose();
+      }
     }
     super.dispose();
   }
